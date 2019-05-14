@@ -1,4 +1,4 @@
-package com.auth0.samples.authapi.springbootauthupdated.security;
+package com.security;
 
 /**
  * Created by simon on 3/25/2019.
@@ -17,9 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static com.auth0.samples.authapi.springbootauthupdated.security.SecurityConstants.HEADER_STRING;
-import static com.auth0.samples.authapi.springbootauthupdated.security.SecurityConstants.SECRET;
-import static com.auth0.samples.authapi.springbootauthupdated.security.SecurityConstants.TOKEN_PREFIX;
+import static com.security.SecurityConstants.HEADER_STRING;
+import static com.security.SecurityConstants.SECRET;
+import static com.security.SecurityConstants.TOKEN_PREFIX;
 
 public class JWTAuthorizationFilter  extends BasicAuthenticationFilter {
 

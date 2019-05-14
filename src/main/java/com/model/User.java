@@ -1,4 +1,4 @@
-package com.auth0.samples.authapi.springbootauthupdated.user;
+package com.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +9,7 @@ import javax.persistence.Id;
  * Created by simon on 3/25/2019.
  */
 @Entity
-public class ApplicationUser {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

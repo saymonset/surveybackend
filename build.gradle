@@ -27,13 +27,13 @@ repositories {
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-web')
-	//compile('javax.xml.bind:jaxb-api:2.3.0')
 	compile("org.springframework.boot:spring-boot-starter-security")
 	compile("com.auth0:java-jwt:3.4.0")
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-  //  compile("org.hsqldb:hsqldb")
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.14'
-    compile("org.flowable:flowable-spring-boot-starter:6.4.1")
+	compile (group: 'net.sf.dozer', name: 'dozer', version: '5.4.0'){
+		exclude group: 'org.slf4j'
+	}
 }
 
   

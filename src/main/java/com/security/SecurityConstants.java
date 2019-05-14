@@ -1,4 +1,4 @@
-package com.auth0.samples.authapi.springbootauthupdated.security;
+package com.security;
 
 /**
  * Created by simon on 3/25/2019.

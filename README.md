@@ -39,35 +39,4 @@ curl -i -H "Content-Type: application/json" -X POST -d '{
 }' http://localhost:8080/login
 
 Si se hace con postman, el json esta en la carpeta test-json en login.json
-
-3-) Se  crea una tarea con el token y verbo post
-
-# issue a POST request, passing the JWT, to create a task
-# remember to replace xxx.yyy.zzz with the JWT retrieved above
-curl -H "Content-Type: application/json" \
--H "Authorization: Bearer xxx.yyy.zzz" \
--X POST -d '{
-    "description": "Buy watermelon"
-}'  http://localhost:8080/tasks
-
-Si se hace con postman, el json esta en la carpeta test-json en jsonbd.json
-
-4 -) 
-
-Se crea un proceso, inernamente colocan al empleado saymon
-http://localhost:8080/process
-
-5-) Se lista las tareas asignadas a saymon
-localhost:8080/tasks?assignee=saymon
-
-
-6-) Prbando ejemplo con jpa
-
-We can now start a new process instance, providing the user name in the POST body:
-
-curl -H "Content-Type: application/json" -d '{"assignee" : "jbarrez"}' http://localhost:8080/process
-And the task list is now fetched using the person ID:
-
-curl http://localhost:8080/tasks?assignee=1
-
-[{"id":"12505","name":"my task"}]
+ 
