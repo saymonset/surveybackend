@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+
+	<mapping>
+		<class-a>com.sc.wissen.domain.User</class-a>
+		<class-b>com.sc.wissen.dto.UserDTO</class-b>
+
+		<field type="one-way" relationship-type="non-cumulative">
+			<a>functionalAuthorities</a>
+			<b>roles</b>
+			<a-deep-index-hint>com.sc.wissen.domain.Authority</a-deep-index-hint>
+			<b-deep-index-hint>java.lang.String</b-deep-index-hint>
+		</field>
+
+	</mapping>
+
+</mappings>

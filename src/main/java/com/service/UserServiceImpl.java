@@ -5,6 +5,7 @@ package com.service;
  */
 
 import com.model.User;
+
 import com.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,6 +16,7 @@ import static java.util.Collections.emptyList;
 @Service
 public class UserServiceImpl implements UserDetailsService {
     private UserRepository userRepository;
+
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;

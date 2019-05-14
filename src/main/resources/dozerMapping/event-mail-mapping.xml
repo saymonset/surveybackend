@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+	<mapping>
+		<class-a>com.edl.milkflow.domain.EventMail</class-a>
+		<class-b>com.edl.milkflow.dto.EventMailDTO</class-b>
+
+		<field>
+			<a>rolesDestinatarios</a>
+			<b>rolesDestinatarios</b>
+			<a-deep-index-hint>com.edl.milkflow.domain.Authority</a-deep-index-hint>
+			<b-deep-index-hint>java.lang.String</b-deep-index-hint>
+		</field>
+
+	</mapping>
+
+</mappings>

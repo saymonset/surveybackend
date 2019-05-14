@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+	<mapping>
+		<class-a>com.edl.milkflow.dto.ClienteDTO</class-a>
+		<class-b>com.edl.milkflow.domain.Cliente</class-b>
+
+		<field-exclude type="one-way">
+			<a>razonSocial</a>
+			<b>razonSocial</b>
+		</field-exclude>
+		<field-exclude type="one-way">
+			<a>iibb</a>
+			<b>iibb</b>
+		</field-exclude>
+		<field-exclude type="one-way">
+			<a>cuit</a>
+			<b>cuit</b>
+		</field-exclude>
+		<field-exclude type="one-way">
+			<a>codigoPais</a>
+			<b>codigoPais</b>
+		</field-exclude>
+		<field-exclude type="one-way">
+			<a>pais</a>
+			<b>pais</b>
+		</field-exclude>
+		<field-exclude type="one-way">
+			<a>provincia</a>
+			<b>provincia</b>
+		</field-exclude>
+		<field-exclude type="one-way">
+			<a>localidad</a>
+			<b>localidad</b>
+		</field-exclude>
+		<field-exclude type="one-way">
+			<a>codigoPostal</a>
+			<b>codigoPostal</b>
+		</field-exclude>
+		<field-exclude type="one-way">
+			<a>direccion</a>
+			<b>direccion</b>
+		</field-exclude>
+	</mapping>
+</mappings>
+
