@@ -44,13 +44,13 @@ public class UserRest {
     @PostMapping("/sign-up")
     public void signUp(@RequestBody User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setUsername(user.getUsername() + " Withh mongo");
+        user.setUsername(user.getUsername());
         applicationUserRepository.save(user);
 
         UserMongo userMongo =   getDozerBeanMapper().map(user, UserMongo.class);
 
         userMongoRepository.save(userMongo);
-        logger.info("INGRESO USUARIO, es nulo userMongoRepository = " + (userMongoRepository == null));
+        logger.info("INGRESO USUARIO " + userMongo.getUsername());
 
         /**
          * public List<ListUserDTO> getActiveUsers() {
