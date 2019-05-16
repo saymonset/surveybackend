@@ -11,6 +11,13 @@ public class UserDTO {
     private long id;
     private String username;
     private String password;
+    private List<String> authorities;
+
+
+
+
+
+
 
     public long getId() {
         return id;
@@ -36,4 +43,11 @@ public class UserDTO {
         this.password = password;
     }
 
+    public List<String> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(List<String> authorities) {
+        this.authorities = authorities;
+    }
 }

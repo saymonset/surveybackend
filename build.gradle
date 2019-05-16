@@ -36,6 +36,13 @@ dependencies {
 	compile (group: 'net.sf.dozer', name: 'dozer', version: '5.4.0'){
 		exclude group: 'org.slf4j'
 	}
+	// https://mvnrepository.com/artifact/joda-time/joda-time
+	compile group: 'joda-time', name: 'joda-time', version: '2.3'
+// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
+	compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.6.0'
+// https://mvnrepository.com/artifact/com.codahale.metrics/metrics-annotation
+	compile group: 'com.codahale.metrics', name: 'metrics-annotation', version: '3.0.1'
+
 }
 
   

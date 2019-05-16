@@ -3,6 +3,8 @@ package com.security;
 import com.auth0.jwt.JWT;
 import com.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,6 +29,8 @@ import static com.security.SecurityConstants.TOKEN_PREFIX;
  * Created by simon on 3/25/2019.
  */
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
+    Logger log = LoggerFactory.getLogger(this.getClass().getName());
     private AuthenticationManager authenticationManager;
 
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
@@ -40,12 +44,15 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             User creds = new ObjectMapper()
                     .readValue(req.getInputStream(), User.class);
 
-            return authenticationManager.authenticate(
+
+            Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             creds.getUsername(),
                             creds.getPassword(),
-                            new ArrayList<>())
-            );
+                            new ArrayList<>()));
+
+                    log.info((authentication.isAuthenticated()) + "=es  authentication," +creds.getPassword() + " =paswd, username = "  + creds.getUsername());
+            return authentication;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -62,5 +69,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .sign(HMAC512(SECRET.getBytes()));
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+        log.info(res.getHeader(HEADER_STRING));
     }
 }

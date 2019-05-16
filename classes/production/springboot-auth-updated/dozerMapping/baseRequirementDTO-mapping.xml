@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping>
+		<class-a>java.util.Map</class-a>
+		<class-b>com.sc.wissen.dto.jbpm.BaseRequirementDTO</class-b>
+		<field>
+			<a key="requirement_id">this</a>
+			<b>id</b>
+		</field>
+		<field>
+			<a key="request_created_date">this</a>
+			<b>startDate</b>
+		</field>
+		<field>
+			<a key="request_created_date">this</a>
+			<b>createdDate</b>
+		</field>
+		<field>
+			<a key="requiredForm">this</a>
+			<b>requiredForm</b>
+		</field>
+		<field>
+			<a key="requirement_created_by">this</a>
+			<b>createdBy</b>
+		</field>
+		<field>
+			<a key="uploadForm">this</a>
+			<b>uploadForm</b>
+		</field>
+		<field>
+			<a key="requirement_observation">this</a>
+			<b>observation</b>
+		</field>
+		<field>
+			<a key="isManager">this</a>
+			<b>isManager</b>
+		</field>
+		<field>
+			<a key="requirement_state">this</a>
+			<b>state</b>
+		</field>
+		<field>
+			<a key="approvedByManager">this</a>
+			<b>approvedByManager</b>
+		</field>
+		<field>
+			<a key="approvedByConstructionManagement">this</a>
+			<b>approvedByConstructionManagement</b>
+		</field>
+		<field>
+			<a key="approvedByTechnicianResponsible">this</a>
+			<b>approvedByTechnicianResponsible</b>
+		</field>
+		<field>
+			<a key="requirement_title">this</a>
+			<b>title</b>
+		</field>
+		<field>
+			<a key="priority">this</a>
+			<b>priority</b>
+		</field>		
+	</mapping>
+</mappings>

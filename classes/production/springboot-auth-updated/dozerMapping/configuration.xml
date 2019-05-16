@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+
+	<configuration>
+	<!--	<custom-converters>
+			<converter type="com.sc.wissen.dozer.DateTimeCustomConverter">
+				<class-a>org.joda.time.DateTime</class-a>
+				<class-b>org.joda.time.DateTime</class-b>
+			</converter>
+			<converter type="com.sc.wissen.dozer.LocalDateTimeCustomConverter">
+				<class-a>org.joda.time.LocalDateTime</class-a>
+				<class-b>org.joda.time.LocalDateTime</class-b>
+			</converter>
+			<converter type="com.sc.wissen.dozer.LocalDateCustomConverter">
+				<class-a>org.joda.time.LocalDate</class-a>
+				<class-b>org.joda.time.LocalDate</class-b>
+			</converter>
+
+			<converter type="com.sc.wissen.dozer.PermissionToStringConverter">
+				<class-a>com.sc.wissen.domain.Permission</class-a>
+				<class-b>java.lang.String</class-b>
+			</converter>
+
+			<converter type="com.sc.wissen.dozer.AuthorityToStringConverter">
+				<class-a>com.sc.wissen.domain.Authority</class-a>
+				<class-b>java.lang.String</class-b>
+			</converter>
+		</custom-converters>-->
+	</configuration>
+
+</mappings>

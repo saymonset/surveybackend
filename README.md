@@ -14,6 +14,29 @@ the terminal.
  Url fuentes 
 https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/
 
+Instalar mysql con estos parametros de bd y usuario
+
+spring.datasource.url=jdbc:mysql://127.0.0.1:3306/flowable?characterEncoding=UTF-8
+spring.datasource.username=root
+spring.datasource.password=123456
+
+
+
+  Instalar y correr mongodb
+  
+  mongod --config C:\opt\mongodb\mongo.config
+  
+  El archivo mongo.config tiene esta instruccion
+  
+              #store data here
+              dbpath=C:\opt\mongodb\data
+                 #show dbs;
+                 #use nameDb;
+                 #show collections
+                 #Borra collections
+                 db.userMongo.drop();
+                 db.userMongo.find().pretty();
+
 run with gradle bootrun
 
 
