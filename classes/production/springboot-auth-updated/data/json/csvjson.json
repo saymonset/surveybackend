@@ -1,0 +1,49 @@
+{
+  "DATA": [
+  {
+    "id": 1,
+    "value": "Programming languages by programming paradigm",
+    "parent": -1
+  },
+  {
+    "id": 2,
+    "value": "Object-oriented programming",
+    "parent": 1
+  },
+  {
+    "id": 3,
+    "value": "Java",
+    "parent": 2
+  },
+  {
+    "id": 4,
+    "value": "C++",
+    "parent": 2
+  },
+  {
+    "id": 5,
+    "value": "c#",
+    "parent": 2
+  },
+  {
+    "id": 6,
+    "value": "Prototype-based programming",
+    "parent": 1
+  },
+  {
+    "id": 7,
+    "value": "JavaScript",
+    "parent": 6
+  },
+  {
+    "id": 8,
+    "value": "CoffeeScript",
+    "parent": 6
+  },
+  {
+    "id": 9,
+    "value": "Lua",
+    "parent": 6
+  }
+]
+}

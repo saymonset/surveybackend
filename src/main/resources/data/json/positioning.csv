@@ -1,0 +1,10 @@
+id,value,parent
+1,Programming languages by programming paradigm,-1
+2,Object-oriented programming,1
+3,Java,2
+4,C++,2
+5,c#,2
+6,Prototype-based programming,1
+7,JavaScript,6
+8,CoffeeScript,6
+9,Lua,6

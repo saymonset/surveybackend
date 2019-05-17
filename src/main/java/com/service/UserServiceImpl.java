@@ -7,6 +7,8 @@ package com.service;
 import com.model.User;
 
 import com.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import static java.util.Collections.emptyList;
 @Service
 public class UserServiceImpl implements UserDetailsService {
+    Logger logger =  LoggerFactory.getLogger(this.getClass().getName());
     private UserRepository userRepository;
 
 

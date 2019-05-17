@@ -77,52 +77,7 @@ public class UserRest {
     }
 
 
-    private UsernamePasswordAuthenticationToken externalAuthentication(String username){
-        org.springframework.security.core.userdetails.User userDetails =
-                (org.springframework.security.core.userdetails.User) userDetailsService.loadUserByUsername(username);
 
-        UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(
-                userDetails.getUsername(), userDetails.getPassword(),
-                userDetails.getAuthorities());
-
-        result.setDetails(userDetails);
-        return result;
-    }
-
-
-    @Timed
-    @PostMapping(value = "/authenticate",  produces = MediaType.APPLICATION_JSON_VALUE, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public TokenDTO authenticate(@RequestBody User  user2) {
-        User user = userRepository.findByUsername(user2.getUsername());
-
-
-        logger.info(" 1 username =" + user2.getUsername() +  ", password = "+ user.getPassword());
-        if(user == null){
-            throw new BadCredentialsException("Los datos ingresados no son correctos");
-        }
-        UsernamePasswordAuthenticationToken authentication;
-        UsernamePasswordAuthenticationToken token;
-        if(user.getPassword() != null){
-            logger.info(" 2 username =" + user2.getUsername());
-            if(bCryptPasswordEncoder.matches(user2.getPassword(), user.getPassword())){
-                //Autentico usuario interno/LDAP
-                authentication = this.externalAuthentication(user2.getUsername());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                logger.info("Todo excele nte!!!");
-            }else{
-                throw new BadCredentialsException("Los datos ingresados no son correctos");
-            }
-        }
-
-        UserDTO userDTO =   getDozerBeanMapper().map(user, UserDTO.class);
-        logger.info(" 3 userDTO =" + userDTO.getUsername());
-        String tokenOut =  tokenProvider.createToken(userDTO);
-                logger.info("exit = " + tokenOut);
-        TokenDTO tokenDTO = new TokenDTO();
-        tokenDTO.setSuccess(true);
-        tokenDTO.setToken(tokenOut);
-;        return tokenDTO;
-    }
 
 
 
