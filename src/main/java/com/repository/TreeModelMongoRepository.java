@@ -14,4 +14,6 @@ import java.util.List;
 
 public interface TreeModelMongoRepository extends CrudRepository<TreeModelMongo, String> {
     List<TreeModelMongo> findAll();
+    List<TreeModelMongo> findByParent(long parent);
+    TreeModelMongo findById(long node);
 }

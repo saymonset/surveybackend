@@ -38,6 +38,8 @@ public class WebSecurity  extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, AUTHENTICATE).permitAll()
                 .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
                 .antMatchers(HttpMethod.GET, DATAFILL).permitAll()
+                .antMatchers(HttpMethod.GET, "/positioning/all").permitAll()
+
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))

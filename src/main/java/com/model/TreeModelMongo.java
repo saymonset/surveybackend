@@ -12,6 +12,7 @@ import java.util.List;
 public class TreeModelMongo {
     private String value;
     private long id;
+    private long parent;
     private List<TreeModelMongo> children;
 
     public String getValue() {
@@ -37,5 +38,14 @@ public class TreeModelMongo {
     public void setChildren(List<TreeModelMongo> children) {
         this.children = children;
     }
+
+    public long getParent() {
+        return parent;
+    }
+
+    public void setParent(long parent) {
+        this.parent = parent;
+    }
+
 
 }

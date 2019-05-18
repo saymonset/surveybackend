@@ -9,6 +9,7 @@ public class TreeModelDTO {
     private String value;
     private long id;
     private List<TreeModelDTO> children;
+    private long parent;
 
     public String getValue() {
         return value;
@@ -32,5 +33,13 @@ public class TreeModelDTO {
 
     public void setChildren(List<TreeModelDTO> children) {
         this.children = children;
+    }
+
+    public long getParent() {
+        return parent;
+    }
+
+    public void setParent(long parent) {
+        this.parent = parent;
     }
 }
