@@ -4,6 +4,7 @@ import com.dozer.DozerHelper;
 import com.dto.TreeModelDTO;
 import com.model.TreeModelMongo;
 import com.repository.TreeModelMongoRepository;
+import com.service.TreeService;
 import org.dozer.DozerBeanMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,8 @@ public class TreeModelMongoRest {
     private TreeModelMongoRepository treeModelMongoRepository;
     @Inject
     private DozerBeanMapper dozerBeanMapper;
+    @Inject
+    private TreeService treeService;
    /* @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> findAll() {
         return new ResponseEntity<>(treeModelMongoRepository.findAll(), HttpStatus.CREATED);
@@ -37,7 +40,7 @@ public class TreeModelMongoRest {
 
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TreeModelDTO> findAll()  {
-        List<TreeModelMongo> tree = treeModelMongoRepository.findAll();
+        List<TreeModelMongo> tree =    treeService.getTree();;
         List<TreeModelDTO> TreeModelDTOS = DozerHelper.map(dozerBeanMapper, tree, TreeModelDTO.class);
        return TreeModelDTOS;
        /* *

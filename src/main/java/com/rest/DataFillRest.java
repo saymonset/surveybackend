@@ -1,6 +1,7 @@
 package com.rest;
 
 import com.service.DataFillService;
+import com.service.TreeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +18,11 @@ import javax.inject.Inject;
 public class DataFillRest {
     @Inject
     private DataFillService dataFillService;
+
     @RequestMapping(path = "/all", method = RequestMethod.GET)
     public ResponseEntity<?> createAll() {
         dataFillService.createAll();
+
         return new ResponseEntity("All Data Created", HttpStatus.CREATED);
     }
 }
