@@ -4,9 +4,9 @@ package com.service;
  * Created by simon on 3/25/2019.
  */
 
-import com.model.User;
+import com.model.mysql.User;
 
-import com.repository.UserRepository;
+import com.repository.mysql.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;

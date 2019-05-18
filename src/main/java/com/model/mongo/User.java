@@ -1,4 +1,4 @@
-package com.model;
+package com.model.mongo;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,7 +9,7 @@ import java.util.List;
  * Created by simon on 5/14/2019.
  */
 @Document
-public class UserMongo {
+public class User {
     @Id
     private String id;
     private String username;

@@ -2,18 +2,15 @@ package com.rest;
 
 import com.dozer.DozerHelper;
 import com.dto.TreeModelDTO;
-import com.model.TreeModelMongo;
-import com.repository.TreeModelMongoRepository;
+import com.model.mongo.TreeModel;
+import com.repository.mongo.TreeModelRepository;
 import com.service.TreeService;
 import org.dozer.DozerBeanMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
@@ -24,10 +21,10 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/positioning")
-public class TreeModelMongoRest {
+public class TreeRest {
     Logger logger =  LoggerFactory.getLogger(this.getClass().getName());
     @Inject
-    private TreeModelMongoRepository treeModelMongoRepository;
+    private TreeModelRepository treeModelMongoRepository;
     @Inject
     private DozerBeanMapper dozerBeanMapper;
     @Inject
@@ -40,7 +37,7 @@ public class TreeModelMongoRest {
 
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TreeModelDTO> findAll()  {
-        List<TreeModelMongo> tree =    treeService.getTree();;
+        List<TreeModel> tree =    treeService.getTree();;
         List<TreeModelDTO> TreeModelDTOS = DozerHelper.map(dozerBeanMapper, tree, TreeModelDTO.class);
        return TreeModelDTOS;
        /* *

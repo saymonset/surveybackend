@@ -7,9 +7,9 @@ import java.util.List;
  */
 public class TreeModelDTO {
     private String value;
-   // private long id;
+    private long id;
     private List<TreeModelDTO> children;
-   // private long parent;
+    private long parent;
 
     public String getValue() {
         return value;
@@ -30,4 +30,19 @@ public class TreeModelDTO {
     }
 
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getParent() {
+        return parent;
+    }
+
+    public void setParent(long parent) {
+        this.parent = parent;
+    }
 }

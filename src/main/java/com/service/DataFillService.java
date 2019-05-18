@@ -1,9 +1,8 @@
 package com.service;
 
-import com.model.TreeModelMongo;
-import com.repository.TreeModelMongoRepository;
+import com.model.mongo.TreeModel;
+import com.repository.mongo.TreeModelRepository;
 import com.tools.ToJson;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 
@@ -28,7 +26,7 @@ public class DataFillService {
     @Inject
     private ToJson toJson;
     @Inject
-    private TreeModelMongoRepository treeModelMongoRepository;
+    private TreeModelRepository treeModelMongoRepository;
     // CREATE DATA /////////////////////////////////////////////////////////////
     public void createAll() {
         createPositioning();
@@ -38,15 +36,15 @@ public class DataFillService {
         Resource resource = resourceLoader.getResource("classpath:data/json/csvjson.json");
         Map<String, Object> map = toJson.stringToMap(toJson.resourceToString(resource));
         ArrayList data = (ArrayList) map.get("DATA");
-        TreeModelMongo treeModelMongo = null;
+        TreeModel treeModel = null;
         for (Object distObject : data) {
             Map<String, Object> dist = (Map<String, Object>) distObject;
-            treeModelMongo = new TreeModelMongo();
-            treeModelMongo.setParent(Long.valueOf(String.valueOf(dist.get("parent"))));
-            treeModelMongo.setChildren(new ArrayList<>());
-            treeModelMongo.setValue(String.valueOf(dist.get("value")));
-            treeModelMongo.setId(Long.valueOf(String.valueOf(dist.get("id"))));
-            treeModelMongoRepository.save(treeModelMongo);
+            treeModel = new TreeModel();
+            treeModel.setParentNode(Long.valueOf(String.valueOf(dist.get("parent"))));
+            treeModel.setChildren(new ArrayList<>());
+            treeModel.setValue(String.valueOf(dist.get("value")));
+            treeModel.setNode(Long.valueOf(String.valueOf(dist.get("id"))));
+            treeModelMongoRepository.save(treeModel);
         }
     }
 

@@ -1,7 +1,7 @@
 package com.security;
 
 import com.auth0.jwt.JWT;
-import com.model.User;
+import com.model.mysql.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

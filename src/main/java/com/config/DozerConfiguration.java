@@ -19,7 +19,7 @@ public class DozerConfiguration {
 
     @Bean(name = "dozerBeanMapper")
     public DozerBeanMapper dozerBeanMapper() {
-        List<String> mappingFiles = Arrays.asList("./dozerMapping/configuration.xml");
+        List<String> mappingFiles = Arrays.asList("./dozerMapping/treemodel-mapping.xml");
 
         Map<String, CustomConverter> customConvertersWithId = new HashMap<>();
 

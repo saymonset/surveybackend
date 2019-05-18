@@ -3,9 +3,8 @@ package com.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.dto.TokenDTO;
 import com.dto.UserDTO;
-import com.model.User;
-import com.repository.UserMongoRepository;
-import com.repository.UserRepository;
+import com.model.mysql.User;
+import com.repository.mongo.UserRepository;
 import com.security.TokenProvider;
 import org.dozer.DozerBeanMapper;
 import org.slf4j.Logger;
@@ -34,11 +33,11 @@ public class AutenticateRest {
     @Inject
     private DozerBeanMapper dozerBeanMapper;
     @Inject
-    private UserRepository userRepository;
+    private com.repository.mysql.UserRepository userRepository;
     @Inject
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Autowired
-    private UserMongoRepository userMongoRepository;
+   /* @Autowired
+    private com.repository.mongo.UserRepository userMongoRepository;*/
 
     @Inject
     private UserDetailsService userDetailsService;
@@ -61,7 +60,7 @@ public class AutenticateRest {
 
     @Timed
     @PostMapping(value = "/user",  produces = MediaType.APPLICATION_JSON_VALUE, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public TokenDTO authenticate(@RequestBody User user2) {
+    public TokenDTO authenticate(@RequestBody com.model.mysql.User user2) {
         TokenDTO tokenDTO = new TokenDTO();
         User user = getUserRepository().findByUsername(user2.getUsername());
         if(user == null){
@@ -106,11 +105,11 @@ public class AutenticateRest {
         this.dozerBeanMapper = dozerBeanMapper;
     }
 
-    public UserRepository getUserRepository() {
+    public com.repository.mysql.UserRepository getUserRepository() {
         return userRepository;
     }
 
-    public void setUserRepository(UserRepository userRepository) {
+    public void setUserRepository(com.repository.mysql.UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -122,13 +121,7 @@ public class AutenticateRest {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public UserMongoRepository getUserMongoRepository() {
-        return userMongoRepository;
-    }
 
-    public void setUserMongoRepository(UserMongoRepository userMongoRepository) {
-        this.userMongoRepository = userMongoRepository;
-    }
 
     public UserDetailsService getUserDetailsService() {
         return userDetailsService;

@@ -1,7 +1,7 @@
 package com.service;
 
-import com.model.TreeModelMongo;
-import com.repository.TreeModelMongoRepository;
+import com.model.mongo.TreeModel;
+import com.repository.mongo.TreeModelRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -16,20 +16,20 @@ import java.util.Map;
 @Service
 public class TreeService {
     @Inject
-    private TreeModelMongoRepository treeModelMongoRepository;
+    private TreeModelRepository treeModelMongoRepository;
 
 
 
 
-    public List<TreeModelMongo> getTree() {
-        List<TreeModelMongo> childsRoot = treeModelMongoRepository.findByParent(-1);
+    public List<TreeModel> getTree() {
+        List<TreeModel> childsRoot = treeModelMongoRepository.findByParentNode(-1);
 
-        List<TreeModelMongo> childs =  getChilds( childsRoot );
+        List<TreeModel> childs =  getChilds( childsRoot );
         return childs;
     }
-        public List<TreeModelMongo> getChilds( List<TreeModelMongo> trees ){
+        public List<TreeModel> getChilds(List<TreeModel> trees ){
             trees.forEach(child->{
-                List<TreeModelMongo> childs = treeModelMongoRepository.findByParent(child.getId());
+                List<TreeModel> childs = treeModelMongoRepository.findByParentNode(child.getNode());
                 if (childs!=null && childs.size() > 0){
                     child.setChildren(getChilds( childs ));
                 }else{
@@ -42,24 +42,24 @@ public class TreeService {
 
 
     private Long loadPositionrecursivo(long root, ArrayList data){
-        TreeModelMongo treeModelChild = null;
-        TreeModelMongo treeModelMongo = null;
-        List<TreeModelMongo> children = new ArrayList();
+        TreeModel treeModelChild = null;
+        TreeModel treeModel = null;
+        List<TreeModel> children = new ArrayList();
         for (Object distObject : data) {
             Map<String, Object> dist = (Map<String, Object>) distObject;
             if (StringUtils.isNotBlank(String.valueOf(dist.get("parent")))){
                 long parent = Long.valueOf(String.valueOf(dist.get("parent")));
                 if (root == parent){
-                    treeModelChild = new TreeModelMongo();
-                    treeModelChild.setParent(root);
+                    treeModelChild = new TreeModel();
+                    treeModelChild.setParentNode(root);
                     treeModelChild.setChildren(new ArrayList<>());
                     treeModelChild.setValue(String.valueOf(dist.get("value")));
-                    treeModelChild.setId(Long.valueOf(String.valueOf(dist.get("id"))));
+                    treeModelChild.setNode(Long.valueOf(String.valueOf(dist.get("id"))));
                     children.add(treeModelChild);
                 }
             }
         }
-        TreeModelMongo treeModelParent = treeModelMongoRepository.findById(root);
+        TreeModel treeModelParent = treeModelMongoRepository.findByNode(root);
         if (treeModelParent == null){
             children.forEach(tree->{
                 treeModelMongoRepository.save(tree);
@@ -74,7 +74,7 @@ public class TreeService {
         //treeModelChild = treeModelMongoRepository.save(treeModelChild);
 
         children.forEach(treeChild->{
-                    loadPositionrecursivo(treeChild.getId(), data);
+                    loadPositionrecursivo(treeChild.getNode(), data);
                 }
         );
 
