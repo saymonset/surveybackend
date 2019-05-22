@@ -2,9 +2,11 @@ package com.rest;
 
 import com.dozer.DozerHelper;
 import com.dto.TreeModelDTO;
-import com.model.mongo.TreeModel;
+import com.model.mongo.TreeModelServicio;
+import com.model.mongo.TreeModelTerritorial;
 import com.repository.mongo.TreeModelRepository;
-import com.service.TreeService;
+import com.service.TreeServicioService;
+import com.service.TreeTerritorialService;
 import org.dozer.DozerBeanMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,33 +22,32 @@ import java.util.List;
  * Created by simon on 5/17/2019.
  */
 @RestController
-@RequestMapping("/positioning")
+@RequestMapping("/tree")
 public class TreeRest {
     Logger logger =  LoggerFactory.getLogger(this.getClass().getName());
-    @Inject
-    private TreeModelRepository treeModelMongoRepository;
+
     @Inject
     private DozerBeanMapper dozerBeanMapper;
     @Inject
-    private TreeService treeService;
+    private TreeTerritorialService treeService;
+    @Inject
+    private TreeServicioService treeServicioService;
    /* @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> findAll() {
         return new ResponseEntity<>(treeModelMongoRepository.findAll(), HttpStatus.CREATED);
     }*/
 
 
-    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<TreeModelDTO> findAll()  {
-        List<TreeModel> tree =    treeService.getTree();;
+    @GetMapping(value = "/territorial", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<TreeModelDTO> territorialfindAll()  {
+        List<TreeModelTerritorial> tree =    treeService.getTree();;
         List<TreeModelDTO> TreeModelDTOS = DozerHelper.map(dozerBeanMapper, tree, TreeModelDTO.class);
        return TreeModelDTOS;
-       /* *
-         * public List<ListUserDTO> getActiveUsers() {
-         return DozerHelper.map(dozerBeanMapper, userRepository.findAll(), ListUserDTO.class);
-         }
-         * */
-
-
     }
-
+    @GetMapping(value = "/servicio", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<TreeModelDTO> serviciofindAll()  {
+        List<TreeModelServicio> tree =    treeServicioService.getTree();;
+        List<TreeModelDTO> TreeModelDTOS = DozerHelper.map(dozerBeanMapper, tree, TreeModelDTO.class);
+        return TreeModelDTOS;
+    }
 }

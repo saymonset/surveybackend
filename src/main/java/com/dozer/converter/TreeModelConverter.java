@@ -1,26 +1,26 @@
 package com.dozer.converter;
 
 import com.dto.TreeModelDTO;
-import com.model.mongo.TreeModel;
+import com.model.mongo.TreeModelTerritorial;
 import org.dozer.DozerConverter;
 
 
 /**
  * Created by simon on 5/18/2019.
  */
-public class TreeModelConverter extends DozerConverter<TreeModel, TreeModelDTO> {
+public class TreeModelConverter extends DozerConverter<TreeModelTerritorial, TreeModelDTO> {
 
-    public TreeModelConverter(Class<TreeModel> prototypeA, Class<TreeModelDTO> prototypeB) {
+    public TreeModelConverter(Class<TreeModelTerritorial> prototypeA, Class<TreeModelDTO> prototypeB) {
         super(prototypeA, prototypeB);
     }
 
     @Override
-    public TreeModelDTO convertTo(TreeModel treeModel, TreeModelDTO treeModelDTO) {
+    public TreeModelDTO convertTo(TreeModelTerritorial treeModel, TreeModelDTO treeModelDTO) {
         return null;
     }
 
     @Override
-    public TreeModel convertFrom(TreeModelDTO treeModelDTO, TreeModel treeModel) {
+    public TreeModelTerritorial convertFrom(TreeModelDTO treeModelDTO, TreeModelTerritorial treeModel) {
         return null;
     }
 }

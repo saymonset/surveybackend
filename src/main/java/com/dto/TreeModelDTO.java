@@ -6,10 +6,16 @@ import java.util.List;
  * Created by simon on 5/17/2019.
  */
 public class TreeModelDTO {
-    private String value;
-    private long id;
+    private String id;
     private List<TreeModelDTO> children;
-    private long parent;
+    private String parent;
+    private String codigo;
+
+
+    private String value;
+
+
+
 
     public String getValue() {
         return value;
@@ -30,19 +36,29 @@ public class TreeModelDTO {
     }
 
 
-    public long getId() {
+
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public long getParent() {
+    public String getParent() {
         return parent;
     }
 
-    public void setParent(long parent) {
+    public void setParent(String parent) {
         this.parent = parent;
     }
 }

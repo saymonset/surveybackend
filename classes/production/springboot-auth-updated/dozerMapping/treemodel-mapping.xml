@@ -2,7 +2,7 @@
 <mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
 	<mapping>
-		<class-a>com.model.mongo.TreeModel</class-a>
+		<class-a>com.model.mongo.TreeModelTerritorial</class-a>
 		<class-b>com.dto.TreeModelDTO</class-b>
 
 		<field type="one-way" relationship-type="non-cumulative">
@@ -14,5 +14,17 @@
 			<b>parent</b>
 		</field>
 	</mapping>
+	<mapping>
+		<class-a>com.model.mongo.TreeModelServicio</class-a>
+		<class-b>com.dto.TreeModelDTO</class-b>
 
+		<field type="one-way" relationship-type="non-cumulative">
+			<a>node</a>
+			<b>id</b>
+		</field>
+		<field type="one-way" relationship-type="non-cumulative">
+			<a>parentNode</a>
+			<b>parent</b>
+		</field>
+	</mapping>
 </mappings>

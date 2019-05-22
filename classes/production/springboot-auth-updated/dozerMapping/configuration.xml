@@ -7,7 +7,7 @@
 
 		<custom-converters>
 			<converter type="com.dozer.converter.TreeModelConverter">
-				<class-a>com.model.mongo.TreeModel</class-a>
+				<class-a>com.model.mongo.TreeModelTerritorial</class-a>
 				<class-b>com.dto.TreeModelDTO</class-b>
 			</converter>
 		</custom-converters>
