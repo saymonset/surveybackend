@@ -38,9 +38,8 @@ public class FileRest {
                 .path("/downloadFile/")
                 .path(fileName)
                 .toUriString();
-
         return new UploadFileResponse(fileName, fileDownloadUri,
-                file.getContentType(), file.getSize());
+                file.getContentType(), file.getSize(), "success", "ok", fileDownloadUri);
     }
 
     @PostMapping("/uploadMultipleFiles")
