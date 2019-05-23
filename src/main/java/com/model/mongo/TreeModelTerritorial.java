@@ -13,7 +13,7 @@ public class TreeModelTerritorial {
     private String value;
     private String node;
     private String parentNode;
-    private String codigo;
+    private String divisionTerritorial;
     private List<TreeModelTerritorial> children;
 
     public String getValue() {
@@ -35,13 +35,7 @@ public class TreeModelTerritorial {
     }
 
 
-    public String getCodigo() {
-        return codigo;
-    }
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
     public String getNode() {
         return node;
     }
@@ -56,5 +50,13 @@ public class TreeModelTerritorial {
 
     public void setParentNode(String parentNode) {
         this.parentNode = parentNode;
+    }
+
+    public String getDivisionTerritorial() {
+        return divisionTerritorial;
+    }
+
+    public void setDivisionTerritorial(String divisionTerritorial) {
+        this.divisionTerritorial = divisionTerritorial;
     }
 }

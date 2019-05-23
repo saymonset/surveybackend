@@ -1,7 +1,9 @@
 package com.service;
 
+import com.model.mongo.Encuesta;
 import com.model.mongo.TreeModelServicio;
 import com.model.mongo.TreeModelTerritorial;
+import com.repository.mongo.EncuestaRepository;
 import com.repository.mongo.TreeModelRepository;
 import com.repository.mongo.TreeModelServicioRepository;
 import com.tools.ToJson;
@@ -35,15 +37,34 @@ public class DataFillService {
     private ToJson toJson;
     @Inject
     private TreeModelRepository treeModelMongoRepository;
+    @Inject
+    private EncuestaRepository encuestaRepository;
 
     @Inject
     private TreeModelServicioRepository treeModelServicioRepository;
     // CREATE DATA /////////////////////////////////////////////////////////////
     public void createAll() {
-     //   createPositioning();
+        cargarEncuestasExcel();
         createTerritorialTreeExcel();
         createServicioTreeExcel();
     }
+
+
+    private void cargarEncuestasExcel() {
+
+        File file1 = null;
+        try {
+            file1 = ResourceUtils.getFile(
+                    "classpath:data/datamonitorear/data.xlsx");
+            //readAllrow("divisiónTerritorial", 8,file1);
+            readEncuestas("Encuestas", 3,file1);
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     private void createTerritorialTreeExcel() {
 
@@ -81,7 +102,6 @@ public class DataFillService {
         String parentStr = null;
         String parentNode = null;
         String value = null;
-        List<String[]> rowFound = new ArrayList<String[]>();
         int i=0;
         try {
             file = new FileInputStream(file0);
@@ -119,7 +139,7 @@ public class DataFillService {
                         /**Buscamos el parent node de la hoj de excel*/
                         Cell parentNodeBefore = null;
                         try {
-                              parentNodeBefore = row.getCell(node - 2);
+                            parentNodeBefore = row.getCell(node - 2);
                         }catch (Exception e){
                             parentNodeBefore = null;
                         }
@@ -129,36 +149,105 @@ public class DataFillService {
                         }else{
                             parentNode = parentNodeBefore.getStringCellValue();
                         }
-                    /** Fin Buscamos el parent node de la hoj de excel*/
+                        /** Fin Buscamos el parent node de la hoj de excel*/
 
                         /**Si no existe el parentNode.. lo creamos*/
                         String codigo = cell.getStringCellValue();;
                         TreeModelTerritorial treeModelc  = treeModelMongoRepository.findByNode(codigo);
-                         if (treeModelc == null ){
-                             treeModel = new TreeModelTerritorial();
+                        if (treeModelc == null ){
+                            treeModel = new TreeModelTerritorial();
 
-                             value = row.getCell(node + 1).getStringCellValue();
-                             treeModel.setParentNode(parentNode);
-                             treeModel.setChildren(new ArrayList<>());
-                             treeModel.setValue(value);
-                             treeModel.setNode(codigo);
-                             treeModelMongoRepository.save(treeModel);
-                         }
+                            value = row.getCell(node + 1).getStringCellValue();
+                            treeModel.setParentNode(parentNode);
+                            treeModel.setChildren(null);
+                            treeModel.setValue(value);
+                            treeModel.setNode(codigo);
+                            treeModel.setDivisionTerritorial(codigo);
+                            treeModelMongoRepository.save(treeModel);
+                        }
 
 
                         node += 2;
                     }
                 }
-                log.info("stop");
-
             }
         } finally {
-            System.out.println("VI continuamos leyenfd0="+(++i));
             if (file != null) {
                 file.close();
             }
         }
-        System.out.println("exit-ccccccccccccccc--");
+    }
+
+    public void readEncuestas(String sheet1, int numCol, File file0) throws Exception {
+        Logger log = LoggerFactory.getLogger(this.getClass().getName());
+        FileInputStream file = null;
+        String parentStr = null;
+        String parentNode = null;
+        String value = null;
+        List<String[]> rowFound = new ArrayList<String[]>();
+        Encuesta encuesta = null;
+        int i=0;
+        try {
+            file = new FileInputStream(file0);
+            // Get the workbook instance for XLS file
+            XSSFWorkbook workbook = new XSSFWorkbook(file);
+            // Get first sheet from the workbook
+            XSSFSheet sheet = workbook.getSheet(sheet1);
+            // Get iterator to all the rows in current sheet
+            Iterator<Row> rowIterator = sheet.iterator();
+            Cell cell = null;
+            boolean titleRow = true;
+            while (rowIterator.hasNext()) {
+
+                Row row = (Row) rowIterator.next();
+                if (row == null){
+                    break;
+                }
+
+                int node = 0;
+
+                /**Si son los titulos , que es la [rimera fila.. descartar*/
+                if (titleRow){
+                    titleRow = false;
+                    continue;
+                }
+                while (node < numCol) {
+                    // Update the value of cell
+                    cell = row.getCell(node);
+                    if (cell == null){
+                        break;
+                    }
+
+                    if (cell!=null){
+
+
+                        /**Si no existe el parentNode.. lo creamos*/
+                        String divisionTerritorial = row.getCell(node).getStringCellValue();
+                        String divisionServicios = row.getCell( node + 1).getStringCellValue();
+                        String encuestaFile = row.getCell( node + 2).getStringCellValue();
+
+                        Encuesta enc  = encuestaRepository.
+                                findByFileEncuestaAndDivisionTerritorialAndDivisionServicios(encuestaFile,divisionTerritorial,
+                                        divisionServicios);
+                         if (enc == null ){
+
+                             encuesta = new Encuesta();
+                             encuesta.setDivisionTerritorial(divisionTerritorial);
+                             encuesta.setDivisionServicios( divisionServicios);
+                             encuesta.setFileEncuesta(encuestaFile);
+                             encuestaRepository.save(encuesta);
+                         }
+
+
+                        node += 3;
+                    }
+                }
+            }
+        } finally {
+            if (file != null) {
+                file.close();
+            }
+        }
     }
 
 
@@ -226,9 +315,10 @@ public class DataFillService {
 
                             value = row.getCell(node + 1).getStringCellValue();
                             treeModel.setParentNode(parentNode);
-                            treeModel.setChildren(new ArrayList<>());
+                            treeModel.setChildren(null);
                             treeModel.setValue(value);
                             treeModel.setNode(codigo);
+                            treeModel.setDivisionServicios(codigo);
                             treeModelServicioRepository.save(treeModel);
                         }
 
@@ -236,16 +326,12 @@ public class DataFillService {
                         node += 2;
                     }
                 }
-                log.info("stop");
-
             }
         } finally {
-            System.out.println("VI continuamos leyenfd0="+(++i));
             if (file != null) {
                 file.close();
             }
         }
-        System.out.println("exit-ccccccccccccccc--");
     }
 
     public void createPositioning() {

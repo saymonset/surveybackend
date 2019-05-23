@@ -12,7 +12,7 @@ public class TreeModelServicio {
     private String value;
     private String node;
     private String parentNode;
-    private String codigo;
+    private String divisionServicios;
     private List<TreeModelServicio> children;
 
     public String getValue() {
@@ -34,13 +34,7 @@ public class TreeModelServicio {
     }
 
 
-    public String getCodigo() {
-        return codigo;
-    }
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
     public String getNode() {
         return node;
     }
@@ -55,5 +49,13 @@ public class TreeModelServicio {
 
     public void setParentNode(String parentNode) {
         this.parentNode = parentNode;
+    }
+
+    public String getDivisionServicios() {
+        return divisionServicios;
+    }
+
+    public void setDivisionServicios(String divisionServicios) {
+        this.divisionServicios = divisionServicios;
     }
 }
