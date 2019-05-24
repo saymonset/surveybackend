@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
+			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+
+    <!--    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+            <property name="host" value="smtp.sparkpostmail.com" />
+            <property name="port" value="587" />
+            <property name="username" value="SMTP_Injection" />
+            <property name="password" value="007a86fce0af51bfab619f80a1de342ec4ecb891" />
+            <property name="javaMailProperties">
+                <props>
+                    <prop key="mail.smtp.auth">true</prop>
+                    <prop key="mail.smtp.starttls.enable">true</prop>
+                </props>
+            </property>
+        </bean>-->
+
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="email-smtp.us-west-2.amazonaws.com" />
+        <property name="port" value="587" />
+        <property name="username" value="AKIAJLJUBQQPJKEI4SWA" />
+        <property name="password" value="AspGIOrZod8tmINY7IKnh6k8G9upHRwvLOM1gy8cZs3E" />
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+            </props>
+        </property>
+    </bean>
+
+
+    <!-- <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+           <property name="host" value="email-smtp.us-west-2.amazonaws.com" />
+           <property name="port" value="587" />
+           <property name="username" value="AKIAJLJUBQQPJKEI4SWA" />
+           <property name="password" value="AspGIOrZod8tmINY7IKnh6k8G9upHRwvLOM1gy8cZs3E" />
+           <property name="javaMailProperties">
+               <props>
+                   <prop key="mail.smtp.auth">true</prop>
+                   <prop key="mail.smtp.starttls.enable">true</prop>
+               </props>
+           </property>
+       </bean> -->
+
+
+
+</beans>
