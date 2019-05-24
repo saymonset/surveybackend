@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by simon on 5/22/2019.
  */
 @Document
-public class MandoEncuesta {
+public class SendSurvey {
     private Date createdAt;
     private Date resentAt;
     private int countResent = 0;

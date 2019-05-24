@@ -12,6 +12,7 @@ public class UploadFileResponse {
     private String message;
     private String filePath;
 
+    public UploadFileResponse(){}
     public UploadFileResponse(String fileName, String fileDownloadUri, String fileType, long size,
                               String status, String message, String filePath) {
         this.fileName = fileName;

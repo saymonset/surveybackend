@@ -16,6 +16,10 @@ public class TreeModelTerritorial {
     private String divisionTerritorial;
     private List<TreeModelTerritorial> children;
 
+
+    public TreeModelTerritorial() {
+    }
+
     public String getValue() {
         return value;
     }

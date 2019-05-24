@@ -10,6 +10,7 @@ public class TreeModelDTO {
     private List<TreeModelDTO> children;
     private String parent;
     private String codigo;
+    private SettingsDTO settings = new SettingsDTO();
 
 
     private String value;
@@ -60,5 +61,13 @@ public class TreeModelDTO {
 
     public void setParent(String parent) {
         this.parent = parent;
+    }
+
+    public SettingsDTO getSettings() {
+        return settings;
+    }
+
+    public void setSettings(SettingsDTO settings) {
+        this.settings = settings;
     }
 }

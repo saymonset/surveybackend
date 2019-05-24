@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Bean;
 import static com.security.SecurityConstants.SIGN_UP_URL;
 import static com.security.SecurityConstants.AUTHENTICATE;
 import static com.security.SecurityConstants.DATAFILL;
-import static com.security.SecurityConstants.UPLOADFILE;
+import static com.security.SecurityConstants.SEND_ENCUESTAS;
 
 
 @EnableWebSecurity
@@ -38,10 +38,10 @@ public class WebSecurity  extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, AUTHENTICATE).permitAll()
                 .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
-                .antMatchers(HttpMethod.POST, UPLOADFILE).permitAll()
+                .antMatchers(HttpMethod.POST, SEND_ENCUESTAS).permitAll()
                 .antMatchers(HttpMethod.GET, DATAFILL).permitAll()
                 .antMatchers(HttpMethod.GET, "/tree/territorial").permitAll()
-                .antMatchers(HttpMethod.GET, "/tree/servicio").permitAll()
+               .antMatchers(HttpMethod.GET, "/tree/servicio").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
