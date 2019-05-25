@@ -12,4 +12,5 @@ public class SecurityConstants {
     public static final String AUTHENTICATE = "/autenticate/user";
     public static final String DATAFILL = "/datafill/all";
     public static final String SEND_ENCUESTAS = "/send/survey";
+    public static final String SEND_SURVEY = "/sendEmail/survey";
 }

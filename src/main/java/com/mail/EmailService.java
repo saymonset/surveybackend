@@ -34,26 +34,25 @@ public class EmailService {
     @Autowired
     private VelocityEngine velocityEngine;
     private UtilDate utilDate = new UtilDate();
-    public boolean send(String from, String nameFrom, String replyTo, String to, String subject, String templateLocation, Map<String, Object> model) {
+    public boolean send(String from, String replyTo, String to, String subject, String templateLocation, Map<String, Object> model) {
         String[] toArray = new String[1];
         toArray[0] = to;
-        return send(from, nameFrom, replyTo, toArray, subject, templateLocation, model);
+        return send(from, replyTo, toArray, subject, templateLocation, model);
     }
 
-    public boolean send(String from, String nameFrom, String replyTo, String[] to, String subject, String templateLocation, Map<String, Object> model) {
-        return send(from, nameFrom, replyTo, to, new String[0], new String[0], utilDate.createDateMexicoLocalZone(), subject, templateLocation, model);
+    public boolean send(String from, String replyTo, String[] to, String subject, String templateLocation, Map<String, Object> model) {
+        return send(from,  replyTo, to, new String[0], new String[0], utilDate.createDateMexicoLocalZone(), subject, templateLocation, model);
     }
 
-    public boolean send(String from, String nameFrom, String replyTo, String[] to, String[] cc, String[] bcc, Date sentDate, String subject, String templateLocation, Map<String, Object> model) {
+    public boolean send(String from, String replyTo, String[] to, String[] cc, String[] bcc, Date sentDate, String subject, String templateLocation, Map<String, Object> model) {
         try {
 
 
             VelocityContext context = new VelocityContext();
-            context.put("username", "valor 1");
-            context.put("email", "valor 2");
+            context.put("clientName","SIMON ALBERTO RODRIGUEZ PACHECIO");
             StringWriter stringWriter = new StringWriter();
             try {
-                velocityEngine.mergeTemplate("registration.vm", "UTF-8", context, stringWriter);
+                velocityEngine.mergeTemplate(templateLocation, "UTF-8", context, stringWriter);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -63,20 +62,20 @@ public class EmailService {
             String body = "";//VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, templateLocation, ENCODING, model);
             //return send(from, nameFrom, replyTo, to, cc, bcc, sentDate, subject, body, true);
             boolean html = true;
-         return   send( from,  nameFrom,  "",  sentDate,  subject,  text, html);
+         return   send( from,    "",  sentDate,  subject,  text, html);
         } catch (VelocityException exception) {
             Logger.getLogger(EmailService.class.getName()).log(Level.SEVERE, "EmailService => send => (+)", exception);
             return false;
         }
     }
 
-    public boolean send(String from, String nameFrom, String to, Date sentDate, String subject, String text, boolean html) {
+    public boolean send(String from, String to, Date sentDate, String subject, String text, boolean html) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, ENCODING);
             helper.setFrom(from);
             helper.setReplyTo(from);
-            helper.setTo(to);
+            helper.setTo(from);
             helper.setSentDate(sentDate);
             helper.setSubject(subject);
             helper.setText(text, html);

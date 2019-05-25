@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!-- Facebook sharing information tags -->
+    <meta property="og:title" content="*|MC:SUBJECT|*" />
+    <title>*|MC:SUBJECT|*</title>
+    <style type="text/css">
+        @font-face {
+            font-family: MuseoSans;
+            /*src: url("http://www.mazdaescucha.com/backend/survey/emailviewed/$survey") format("opentype");*/
+            src: url("") format("opentype");
+        }
+    
+        #outlook a {
+            padding: 0;
+        }
+
+        body {
+            width: 100% !important;
+        }
+
+        .ReadMsgBody {
+            width: 100%;
+        }
+
+        .ExternalClass {
+            width: 100%;
+        }
+
+        body {
+            -webkit-text-size-adjust: none;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        img {
+            border: 0;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+        }
+
+        table td {
+            border-collapse: collapse;
+        }
+
+        #backgroundTable {
+            height: 100% !important;
+            margin: 0;
+            padding: 0;
+            width: 100% !important;
+        }
+
+        /*----------------------------------------------------------------------------------------------------
+        Custom Styles
+      ----------------------------------------------------------------------------------------------------*/
+
+        body,
+        #backgroundTable {
+            background-color: #FAFAFA;
+        }
+
+        #templateContainer {
+            border: 1px solid #DDDDDD;
+        }
+
+        .preheaderContent div {
+            color: #505050;
+            font-family: Arial;
+            font-size: 10px;
+            line-height: 100%;
+            text-align: left;
+        }
+
+        .preheaderContent div a:link,
+        .preheaderContent div a:visited,
+        /* Yahoo! Mail Override */
+
+        .preheaderContent div a .yshortcuts
+        /* Yahoo! Mail Override */
+
+            {
+            color: #C03633;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+        #templateHeader {
+            border-bottom: 0;
+        }
+
+        #templateContainer,
+        .bodyContent {
+            background-color: #FFFFFF;
+        }
+
+        .bodyContent div {
+            color: #000000;
+            font-family: Arial;
+            font-size: 14px;
+            line-height: 200%;
+            text-align: left;
+        }
+
+        .bodyContent div a:link,
+        .bodyContent div a:visited,
+        /* Yahoo! Mail Override */
+
+        .bodyContent div a .yshortcuts
+        /* Yahoo! Mail Override */
+
+            {
+            color: #C03633;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+        .bodyContent img {
+            display: inline;
+            height: auto;
+        }
+
+        #templateFooter {
+            background-color: #FFFFFF;
+        }
+
+        .footerContent div {
+            color: #000000;
+            font-family: Arial;
+            font-size: 10px;
+            line-height: 150%;
+            text-align: center;
+        }
+
+        .footerContent div a:link,
+        .footerContent div a:visited,
+        /* Yahoo! Mail Override */
+
+        .footerContent div a .yshortcuts
+        /* Yahoo! Mail Override */
+
+            {
+            color: #C03633;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+
+<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
+        <img src="http://www.mazdaescucha.com/backend/survey/emailviewed/$survey" style="max-width:1px; display:none" /> <!--Colocar la url que sirve a la imagen-->
+    <center>
+        <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="backgroundTable">
+            <tr>
+                <td align="center" valign="top">
+
+                    <!-- *|IFNOT:ARCHIVE_PAGE|* -->
+                    <table border="0" cellpadding="10" cellspacing="0" width="600" id="templatePreheader">
+                        <tr>
+                            <td valign="top" class="preheaderContent">
+                                <table border="0" cellpadding="10" cellspacing="0" width="100%">
+                                    <tr>
+                                        <td valign="top">
+                                            <div>
+                                                <center>
+                                                     $urlSurvey
+                                                </center>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <!-- *|END:IF|* -->
+
+                    <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateContainer">
+                        <tr>
+                            <td align="center" valign="top">
+                                <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateHeader">
+                                    <tr>
+                                        <td class="headerContent">
+                                            <img src="http://www.sunsolhoteles.com/Content/img/logo_sunsolhoteles.png" style="max-width:600px;" /> <!--Colocar la url que sirve a la imagen-->
+
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" valign="top">
+                                <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateBody">
+                                    <tr>
+                                        <td valign="top" class="bodyContent">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <div style="padding-left:75px; padding-right: 75px;">
+                                                            <h2 style="font-weight:normal; margin:0; text-align:center; text-transform:uppercase; letter-spacing:4px;">Su opinión nos interesa</h2>
+                                                            <br>
+                                                            <h2 style="color:#C03633; font-weight:normal; margin:0; text-transform:uppercase;letter-spacing:4px;">Estimado(a)</h2>
+                                                            <h2 style="font-weight:normal; margin:0; text-transform:uppercase;letter-spacing:4px;">$clientName</h2>
+
+                                                            <br>Lo invitamos a responder esta breve encuesta
+                                                            <br>para conocer su nivel de satisfacción.
+                                                            <br>
+                                                            <br>
+                                                            <a href="ecologicalpaper.com" style="background-color:#C03633; color:#FFFFFF; text-decoration:none; text-transform: uppercase; padding:10px 25px; letter-spacing:4px; font-size:15px;">Comenzar</a>
+                                                            <div style="padding-top:10px;">
+                                                                Sólo le tomará 2 minutos.
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" valign="top">
+                                <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateHeader">
+                                    <tr>
+                                        <td class="headerContent">
+                                            <img src="http://www.infodestinations.com/hoteles_imagenes/tope/header_infodestinations.jpg" style="max-width:600px;" id="headerImage campaign-icon" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" valign="top">
+                                <table border="0" cellpadding="10" cellspacing="0" width="600" id="templateFooter">
+                                    <tr>
+                                        <td valign="top" class="footerContent">
+                                            <table border="0" cellpadding="10" cellspacing="0" width="100%">
+                                                <tr>
+                                                    <td valign="top">
+                                                        <div>
+                                                            Info
+                                                            #*<a href="#" target="_blank">Aviso de Privacidad</a> de datos,
+                                                            <br>puede ingresar a nuestra página de Internet
+                                                            <a href="http://www.mazda.com.mx" target="_blank">www.mazda.com.mx</a>
+                                                            <br>Si no desea recibir más este tipo de información da clic en
+                                                            <a href="http://www.mazdaescucha.com/backend/unsuscribe/$survey">Unsubscribe.</a>*#
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <br>
+
+                </td>
+            </tr>
+        </table>
+    </center>
+</body>
+
+</html>
