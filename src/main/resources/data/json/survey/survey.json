@@ -1,56 +1,60 @@
 {
-  "completedHtml": "<h3>Thank you for your feedback.</h3> <h5>Your thoughts and ideas will help us to create a great product!</h5>",
-  "completedHtmlOnCondition": [
-    {
-      "expression": "{nps_score} > 8",
-      "html": "<h3>Thank you for your feedback.</h3> <h5>We glad that you love our product. Your ideas and suggestions will help us to make our product even better!</h5>"
-    }, {
-      "expression": "{nps_score} < 7",
-      "html": "<h3>Thank you for your feedback.</h3> <h5> We are glad that you share with us your ideas.We highly value all suggestions from our customers. We do our best to improve the product and reach your expectation.</h5>\n"
-    }
-  ],
+  "title": "Cancellation Survey",
+  "description": "Thank you for using our service. We would highly appreciate if you would take the time to fill our cancellation survey. This would help us improve the service.",
   "pages": [
     {
       "name": "page1",
       "elements": [
         {
-          "type": "rating",
-          "name": "nps_score",
-          "title": "On a scale of zero to ten, how likely are you to recommend our product to a friend or colleague?",
-          "isRequired": true,
-          "rateMin": 0,
-          "rateMax": 10,
-          "minRateDescription": "(Most unlikely)",
-          "maxRateDescription": "(Most likely)"
+          "type": "radiogroup",
+          "name": "using_duration",
+          "title": "How long have you been using the service?",
+          "choices": ["Less than a month", "1-6 months", "7-12 months", "1-3 years", "Over 3 years"]
         }, {
-          "type": "checkbox",
-          "name": "promoter_features",
-          "visibleIf": "{nps_score} >= 9",
-          "title": "What features do you value the most?",
-          "isRequired": true,
-          "validators": [
-            {
-              "type": "answercount",
-              "text": "Please select two features maximum.",
-              "maxCount": 2
-            }
-          ],
+          "type": "radiogroup",
+          "name": "using_frequency",
+          "title": "How often did you use the service?",
+          "choices": ["Once a week", "2 or 3 times a month", "Once a month", "Less than once a month"]
+        }, {
+          "type": "radiogroup",
+          "name": "cancel_reason",
+          "title": "What was the main reason for cancelling the service?",
           "hasOther": true,
           "choices": [
-            "Performance", "Stability", "User Interface", "Complete Functionality"
+            "No longer need it",
+            "It didn't meet my needs",
+            "Found a better alternative",
+            "Found a cheaper alternative",
+            "Quality was less than expected",
+            "Ease of use was less than expected",
+            "Access to the service was less than expected",
+            "Customer service was less than expected"
+          ]
+        }, {
+          "type": "radiogroup",
+          "name": "satisfaction",
+          "title": "Overall, how satisfied were you with the service?",
+          "choices": ["Very Satisfied", "Satisfied", "Neutral", "Unsatisfied", "Very Unsatisfied"]
+        }, {
+          "type": "matrix",
+          "name": "future_using",
+          "titleLocation": "hidden",
+          "columns": [
+            "Definitely", "Probably", "Not Sure", "Probably Not", "Definitely Not"
           ],
-          "otherText": "Other feature:",
-          "colCount": 2
+          "rows": [
+            {
+              "value": "use_in_future",
+              "text": "Will you use our service in the future?"
+            }, {
+              "value": "recommend",
+              "text": "Will you recommend our service to others?"
+            }
+          ]
         }, {
           "type": "comment",
-          "name": "passive_experience",
-          "visibleIf": "{nps_score} > 6  and {nps_score} < 9",
-          "title": "What is the primary reason for your score?"
-        }, {
-          "type": "comment",
-          "name": "disappointed_experience",
-          "visibleIf": "{nps_score} notempty",
-          "title": "What do you miss and what was disappointing in your experience with us?"
+          "name": "service_improvements",
+          "title": "How can we improve our service?"
         }
       ]
     }

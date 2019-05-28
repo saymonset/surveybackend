@@ -1,8 +1,15 @@
 package com.service;
 
+import com.dto.SurveyDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mail.EmailService;
 import com.model.mongo.SendSurvey;
+import com.model.mongo.Survey;
+import com.repository.mongo.EncuestaRepository;
 import com.repository.mongo.SendSurveyRepository;
+import com.tools.ResourcePaths;
+import com.tools.ToJson;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -10,11 +17,15 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.velocity.VelocityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.inject.Inject;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -28,8 +39,10 @@ public class SendSurveyService {
     @Inject
     private EmailService emailService;
 
-
-
+    @Inject
+    private EncuestaRepository encuestaRepository;
+    @Inject
+    private ToJson toJson;
 
     public void sendSurvey(String sheet1, int numCol, File file0) throws Exception {
         Logger log = LoggerFactory.getLogger(this.getClass().getName());
@@ -154,6 +167,33 @@ public class SendSurveyService {
             }
         }
     }
+
+    public SurveyDTO procesar(@RequestParam String codigoEncuesta, @RequestParam String email, @RequestParam String lang) {
+        SurveyDTO surveyDTO = new SurveyDTO();
+        Survey enc  = encuestaRepository.
+                findByCodigoEncuesta(codigoEncuesta);
+        if (enc != null){
+            String nameFile = enc.getFileEncuesta().substring(0,enc.getFileEncuesta().lastIndexOf("."));
+            Resource resource = toJson.getResource(nameFile, lang);
+            Map<String, Object> map = toJson.stringToMap(toJson.resourceToString(resource));
+            ObjectMapper mapperObj = new ObjectMapper();
+            try {
+                String jsonResp = mapperObj.writeValueAsString(map);
+                surveyDTO.setJson(jsonResp);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+
+            surveyDTO.setLang(lang);
+            surveyDTO.setEmail(email);
+            /**La encuesta la vio*/
+            SendSurvey sendSurvey = mandoEncuestaRepository.findByCodigoEncuestaAndEmailAndAnswered(codigoEncuesta,email,false);
+            sendSurvey.setEmailViewed(true);
+            mandoEncuestaRepository.save(sendSurvey);
+        }
+        return surveyDTO;
+    }
+
 
 
 

@@ -26,14 +26,14 @@ public class SendSurveyRest {
     private Logger logger =  LoggerFactory.getLogger(this.getClass().getName());
 
     @Inject
-    private SendSurveyService mandoEncuestaService;
+    private SendSurveyService sendSurveyService;
 
     @PostMapping("/send")
     public UploadFileResponse sendSurvey(@RequestParam("file") MultipartFile file) {
 
         try {
             File file1 = FileTool.convert(file);
-            mandoEncuestaService.sendSurvey("mandarEncuesta",4,file1);
+            sendSurveyService.sendSurvey("mandarEncuesta",4,file1);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -44,11 +44,11 @@ public class SendSurveyRest {
 
     @RequestMapping(value = "/sent", method = RequestMethod.GET)
     public SurveyDTO procesar(@RequestParam String codigoEncuesta, @RequestParam String email, @RequestParam String lang) {
-        SurveyDTO  surveyDTO = new SurveyDTO();
-        surveyDTO.setCodigoEncuesta(codigoEncuesta);
+        SurveyDTO surveyDTO = sendSurveyService.procesar(codigoEncuesta, email,  lang);
+     /*   surveyDTO.setCodigoEncuesta(codigoEncuesta);
         surveyDTO.setEmail(email);
         surveyDTO.setJson(lang);
-        surveyDTO.setLang(lang);
+        surveyDTO.setLang(lang);*/
         return  surveyDTO;
     }
 
@@ -57,7 +57,7 @@ public class SendSurveyRest {
      * @param surveyId id de survey
      * @param lang el idioma de la plantilla
      * @return ResponseEntity La respuesta a la vista
-     */
+     *//*
     public ResponseEntity<?> requestCommon(@PathVariable String email,String lang) {
 
         ResponseEntity<?> response;
@@ -69,7 +69,7 @@ public class SendSurveyRest {
         response =  new ResponseEntity<>(result, HttpStatus.CREATED);
         return response;
 
-    }
+    }*/
 
 
     @RequestMapping(value = "/sent/result",method = RequestMethod.POST)

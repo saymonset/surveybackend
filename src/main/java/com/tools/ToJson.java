@@ -3,7 +3,9 @@ package com.tools;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -20,7 +22,8 @@ import java.util.Map;
 @Service
 public class ToJson {
     Logger logger =  LoggerFactory.getLogger(this.getClass().getName());
-
+    @Autowired
+    private ResourceLoader resourceLoader;
     // AUXILIAR FUNCTIONS //////////////////////////////////////////////////////
     public String resourceToString(Resource resource) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -49,4 +52,48 @@ public class ToJson {
         }
         return result;
     }
+
+
+    /**
+     * Metodo que se encarga de devolver el nombre de archivo de una encuanta, segun los parametros
+     *
+     * @param nameFile nombre del archivo
+     * @param language el lenguaje en el cual va a venir el archivo
+     * @return
+     */
+    public Resource getResource(String nameFile, String language){
+
+        Resource resource;
+        String path = ResourcePaths.JSON_DATA + nameFile  + ".json";
+        String pathLanguage = ResourcePaths.JSON_DATA + nameFile + "_" + language + ".json";
+
+        if(language!=null){
+            boolean exist = existResource(pathLanguage);
+
+            if(exist){
+                resource = resourceLoader.getResource(pathLanguage);
+            }else {
+                resource = resourceLoader.getResource(path);
+            }
+
+        } else {
+            resource = resourceLoader.getResource(path);
+        }
+
+        return resource;
+
+    } // end method
+
+
+    /**
+     * Metodo que evalua si el archivo existe en el path
+     * @param path ruta del resource que vamos a evaluar
+     * @return
+     */
+    private boolean existResource(String path){
+
+        boolean exist = resourceLoader.getResource(path).exists();
+        return exist;
+
+    } // end method existResource
 }
