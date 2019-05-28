@@ -1,8 +1,10 @@
 package com.model.mongo;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -10,6 +12,8 @@ import java.util.List;
  */
 @Document
 public class TreeModelTerritorial {
+    @Id
+    private String id;
     private String value;
     private String node;
     private String parentNode;
@@ -62,5 +66,37 @@ public class TreeModelTerritorial {
 
     public void setDivisionTerritorial(String divisionTerritorial) {
         this.divisionTerritorial = divisionTerritorial;
+    }
+
+    public int hashCode() {
+        int hash = 3;
+        hash = 37 * hash + Objects.hashCode(this.getId());
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final TreeModelTerritorial other = (TreeModelTerritorial) obj;
+        if (!Objects.equals(this.getId(), other.getId())) {
+            return false;
+        }
+        return true;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

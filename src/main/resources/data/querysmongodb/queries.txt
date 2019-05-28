@@ -1,0 +1,6 @@
+db.sendSurvey.update({
+  _id: ObjectId("5cec308d287ec007bc7e9676")},
+  {
+    $set:{answered:true
+          }
+  })

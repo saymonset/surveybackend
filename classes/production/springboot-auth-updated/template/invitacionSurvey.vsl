@@ -9,7 +9,8 @@
     <style type="text/css">
         @font-face {
             font-family: MuseoSans;
-            src: url("http://www.mazdaescucha.com/backend/survey/emailviewed/$survey") format("opentype");
+            /*src: url("http://www.mazdaescucha.com/backend/survey/emailviewed/$survey") format("opentype");*/
+            src: url("") format("opentype");
         }
     
         #outlook a {
@@ -169,7 +170,7 @@
                                         <td valign="top">
                                             <div>
                                                 <center>
-                                                     $urlSurvey
+
                                                 </center>
                                             </div>
                                         </td>
@@ -186,7 +187,8 @@
                                 <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateHeader">
                                     <tr>
                                         <td class="headerContent">
-                                            <img src="https://www.limetropy.com/mazda/email/img/venta-01.png" style="max-width:600px;" /> <!--Colocar la url que sirve a la imagen-->
+                                            <img src="http://www.sunsolhoteles.com/Content/img/logo_sunsolhoteles.png" style="max-width:600px;" /> <!--Colocar la url que sirve a la imagen-->
+
                                         </td>
                                     </tr>
                                 </table>
@@ -207,7 +209,7 @@
                                                             <h2 style="font-weight:normal; margin:0; text-transform:uppercase;letter-spacing:4px;">$clientName</h2>
 
                                                             <br>Lo invitamos a responder esta breve encuesta
-                                                            <br>para conocer su nivel de experiencia.
+                                                            <br>para conocer su nivel de satisfacción.
                                                             <br>
                                                             <br>
                                                             <a href="$urlSurvey" style="background-color:#C03633; color:#FFFFFF; text-decoration:none; text-transform: uppercase; padding:10px 25px; letter-spacing:4px; font-size:15px;">Comenzar</a>
@@ -228,7 +230,7 @@
                                 <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateHeader">
                                     <tr>
                                         <td class="headerContent">
-                                            <img src="https://www.limetropy.com/mazda/email/img/venta-02.jpg" style="max-width:600px;" id="headerImage campaign-icon" />
+                                            <img src="http://www.infodestinations.com/hoteles_imagenes/tope/header_infodestinations.jpg" style="max-width:600px;" id="headerImage campaign-icon" />
                                         </td>
                                     </tr>
                                 </table>
@@ -243,12 +245,12 @@
                                                 <tr>
                                                     <td valign="top">
                                                         <div>
-                                                            Si usted desea conocer nuestro
-                                                            <a href="#" target="_blank">Aviso de Privacidad</a> de datos,
+                                                            Info
+                                                            #*<a href="#" target="_blank">Aviso de Privacidad</a> de datos,
                                                             <br>puede ingresar a nuestra página de Internet
                                                             <a href="http://www.mazda.com.mx" target="_blank">www.mazda.com.mx</a>
                                                             <br>Si no desea recibir más este tipo de información da clic en
-                                                            <a href="http://www.mazdaescucha.com/backend/unsuscribe/$survey">Unsubscribe.</a>
+                                                            <a href="http://www.mazdaescucha.com/backend/unsuscribe/$survey">Unsubscribe.</a>*#
                                                         </div>
                                                     </td>
                                                 </tr>

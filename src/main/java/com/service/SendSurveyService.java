@@ -1,11 +1,13 @@
 package com.service;
 
+import com.mail.EmailService;
 import com.model.mongo.SendSurvey;
 import com.repository.mongo.SendSurveyRepository;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.velocity.VelocityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,8 @@ public class SendSurveyService {
     Logger logger =  LoggerFactory.getLogger(this.getClass().getName());
     @Inject
     private SendSurveyRepository mandoEncuestaRepository;
+    @Inject
+    private EmailService emailService;
 
 
 
@@ -71,25 +75,72 @@ public class SendSurveyService {
 
 
                         /**Si no existe el parentNode.. lo creamos*/
-                        String name = row.getCell(node).getStringCellValue();
-                        String lastName = row.getCell( node + 1).getStringCellValue();
-                        String email = row.getCell( node + 2).getStringCellValue();
-                        String divisionTerritorial = row.getCell( node + 3).getStringCellValue();
-                        String divisionServicios = row.getCell( node + 4).getStringCellValue();
+                        String name = row.getCell(node++).getStringCellValue();
+                        String lastName = row.getCell( node++).getStringCellValue();
+                        String email = row.getCell( node++).getStringCellValue();
+                        String codigoEncuesta = row.getCell( node++).getStringCellValue();
                         SendSurvey enc  = null;//mandoEncuestaRepository.findByNode("-1");
-
+                        VelocityContext context = new VelocityContext();
+                        context.put("clientName",lastName + ", " + name);
+                        context.put("urlSurvey","http://localhost:8180/survey?codigoEncuesta="+codigoEncuesta+"&email="+email+"&lang=es");
                         if (enc == null ){
 
-                            mandoEncuesta = new SendSurvey();
-                            mandoEncuesta.setDivisionTerritorial(divisionTerritorial);
-                            mandoEncuesta.setDivisionServicios( divisionServicios);
-                            mandoEncuesta.setName(name);
-                            mandoEncuesta.setLastName(lastName);
-                            mandoEncuesta.setEmail(email);
-                            mandoEncuesta.setCreatedAt(new Date());
-                            mandoEncuesta.setAnswered(false);
-                            mandoEncuesta.setEmailViewed(false);
-                            mandoEncuestaRepository.save(mandoEncuesta);
+
+                            try {
+                                boolean sendMail = false;
+                                boolean resent = false;
+
+                                SendSurvey sendSurvey = mandoEncuestaRepository.findByCodigoEncuestaAndEmailAndAnswered(codigoEncuesta,email,false);
+                                if (sendSurvey == null){
+                                    sendMail = true;
+                                }else if (sendSurvey != null){
+                                    resent = true;
+                                }
+
+
+
+
+
+                                if (resent || sendMail){
+                                    emailService.send("saymon_set@hotmail.com", email, email,  "ecologicalpaper.com", "template/invitacionSurvey.vsl", context) ;
+                                }
+
+
+
+
+
+                                if (sendMail){
+                                    mandoEncuesta = new SendSurvey();
+                                    mandoEncuesta.setName(name);
+                                    mandoEncuesta.setLastName(lastName);
+                                    mandoEncuesta.setEmail(email);
+                                    mandoEncuesta.setCodigoEncuesta(codigoEncuesta);
+                                    mandoEncuesta.setCreatedAt(new Date());
+                                    mandoEncuesta.setAnswered(false);
+                                    mandoEncuesta.setEmailViewed(false);
+                                    mandoEncuestaRepository.save(mandoEncuesta);
+                                }else if (resent){
+                                    Optional<SendSurvey> ssendSurvey =  mandoEncuestaRepository.findById(sendSurvey.getId());
+                                    /**
+                                     * Optional<Foo> result = repository.findById(…);
+
+                                     result.ifPresent(it -> …); // do something with the value if present
+                                     result.map(it -> …); // map the value if present
+                                     Foo foo = result.orElse(null); // if you want to continue just like before
+                                     * */
+                                    ssendSurvey.ifPresent(it -> {
+                                        sendSurvey.setCountResent(sendSurvey.getCountResent() + 1);
+                                        sendSurvey.setResentAt(new Date());
+                                        mandoEncuestaRepository.save(sendSurvey);
+                                    });
+
+                                }
+
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
                         }
 
 

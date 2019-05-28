@@ -170,7 +170,7 @@
                                         <td valign="top">
                                             <div>
                                                 <center>
-                                                     $urlSurvey
+
                                                 </center>
                                             </div>
                                         </td>
@@ -212,7 +212,7 @@
                                                             <br>para conocer su nivel de satisfacción.
                                                             <br>
                                                             <br>
-                                                            <a href="ecologicalpaper.com" style="background-color:#C03633; color:#FFFFFF; text-decoration:none; text-transform: uppercase; padding:10px 25px; letter-spacing:4px; font-size:15px;">Comenzar</a>
+                                                            <a href="$urlSurvey" style="background-color:#C03633; color:#FFFFFF; text-decoration:none; text-transform: uppercase; padding:10px 25px; letter-spacing:4px; font-size:15px;">Comenzar</a>
                                                             <div style="padding-top:10px;">
                                                                 Sólo le tomará 2 minutos.
                                                             </div>

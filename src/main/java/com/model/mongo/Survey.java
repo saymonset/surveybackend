@@ -3,56 +3,34 @@ package com.model.mongo;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
 import java.util.Objects;
 
 /**
  * Created by simon on 5/22/2019.
  */
 @Document
-public class TreeModelServicio {
+public class Survey {
     @Id
     private String id;
-    private String value;
-    private String node;
-    private String parentNode;
+    private String codigoEncuesta;
+    private String fileEncuesta;
+    private String divisionTerritorial;
     private String divisionServicios;
-    private List<TreeModelServicio> children;
 
-    public String getValue() {
-        return value;
+    public String getFileEncuesta() {
+        return fileEncuesta;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setFileEncuesta(String fileEncuesta) {
+        this.fileEncuesta = fileEncuesta;
     }
 
-
-
-    public List<TreeModelServicio> getChildren() {
-        return children;
+    public String getDivisionTerritorial() {
+        return divisionTerritorial;
     }
 
-    public void setChildren(List<TreeModelServicio> children) {
-        this.children = children;
-    }
-
-
-
-    public String getNode() {
-        return node;
-    }
-
-    public void setNode(String node) {
-        this.node = node;
-    }
-
-    public String getParentNode() {
-        return parentNode;
-    }
-
-    public void setParentNode(String parentNode) {
-        this.parentNode = parentNode;
+    public void setDivisionTerritorial(String divisionTerritorial) {
+        this.divisionTerritorial = divisionTerritorial;
     }
 
     public String getDivisionServicios() {
@@ -63,6 +41,13 @@ public class TreeModelServicio {
         this.divisionServicios = divisionServicios;
     }
 
+    public String getCodigoEncuesta() {
+        return codigoEncuesta;
+    }
+
+    public void setCodigoEncuesta(String codigoEncuesta) {
+        this.codigoEncuesta = codigoEncuesta;
+    }
 
     public int hashCode() {
         int hash = 3;
@@ -81,7 +66,7 @@ public class TreeModelServicio {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final TreeModelServicio other = (TreeModelServicio) obj;
+        final Survey other = (Survey) obj;
         if (!Objects.equals(this.getId(), other.getId())) {
             return false;
         }

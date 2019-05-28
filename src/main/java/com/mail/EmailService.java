@@ -34,28 +34,25 @@ public class EmailService {
     @Autowired
     private VelocityEngine velocityEngine;
     private UtilDate utilDate = new UtilDate();
-    public boolean send(String from, String replyTo, String to, String subject, String templateLocation, Map<String, Object> model) {
+    public boolean send(String from, String replyTo, String to, String subject, String templateLocation, VelocityContext context)throws Exception  {
         String[] toArray = new String[1];
         toArray[0] = to;
-        return send(from, replyTo, toArray, subject, templateLocation, model);
+        return send(from, replyTo, toArray, subject, templateLocation, context);
     }
 
-    public boolean send(String from, String replyTo, String[] to, String subject, String templateLocation, Map<String, Object> model) {
-        return send(from,  replyTo, to, new String[0], new String[0], utilDate.createDateMexicoLocalZone(), subject, templateLocation, model);
+    public boolean send(String from, String replyTo, String[] to, String subject, String templateLocation, VelocityContext context)throws Exception  {
+        return send(from,  replyTo, to, utilDate.createDateMexicoLocalZone(), subject, templateLocation, context);
     }
 
-    public boolean send(String from, String replyTo, String[] to, String[] cc, String[] bcc, Date sentDate, String subject, String templateLocation, Map<String, Object> model) {
-        try {
+    public boolean send(String from, String replyTo, String[] to,Date sentDate, String subject, String templateLocation,VelocityContext context) throws Exception {
 
 
-            VelocityContext context = new VelocityContext();
-            context.put("clientName","SIMON ALBERTO RODRIGUEZ PACHECIO");
+
+
             StringWriter stringWriter = new StringWriter();
-            try {
+
                 velocityEngine.mergeTemplate(templateLocation, "UTF-8", context, stringWriter);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
             String text = stringWriter.toString();
 
 
@@ -63,14 +60,11 @@ public class EmailService {
             //return send(from, nameFrom, replyTo, to, cc, bcc, sentDate, subject, body, true);
             boolean html = true;
          return   send( from,    "",  sentDate,  subject,  text, html);
-        } catch (VelocityException exception) {
-            Logger.getLogger(EmailService.class.getName()).log(Level.SEVERE, "EmailService => send => (+)", exception);
-            return false;
-        }
+
     }
 
-    public boolean send(String from, String to, Date sentDate, String subject, String text, boolean html) {
-        try {
+    public boolean send(String from, String to, Date sentDate, String subject, String text, boolean html) throws MessagingException {
+    //    try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, ENCODING);
             helper.setFrom(from);
@@ -81,9 +75,9 @@ public class EmailService {
             helper.setText(text, html);
             mailSender.send(message);
             return true;
-        } catch (MessagingException | MailException exception) {
+        /*} catch (MessagingException | MailException exception) {
             Logger.getLogger(EmailService.class.getName()).log(Level.SEVERE, "EmailService => send => (+)", exception);
             return false;
-        }
+        }*/
     }
 }

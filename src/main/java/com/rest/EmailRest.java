@@ -3,6 +3,7 @@ package com.rest;
 import com.mail.EmailService;
 import com.payload.UploadFileResponse;
 import com.tools.FileTool;
+import org.apache.velocity.VelocityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,9 +32,17 @@ public class EmailRest {
     @PostMapping("/survey")
     public UploadFileResponse sendSurvey() {
 
+/*
 Map<String,Object> map = new HashMap();
 map.put("clientName","SIMON ALBERTO RODRIGUEZ PACHECIO");
-        emailService.send("saymon_set@hotmail.com", "saymon_set@hotmail.com", "saymon_set@hotmail.com",  "saymon_set@hotmail.com", "template/invitacionSurvey.vsl", map) ;
+*/
+             VelocityContext context = new VelocityContext();
+            context.put("clientName","SIMON ALBERTO RODRIGUEZ PACHECIO");
+        try {
+            emailService.send("saymon_set@hotmail.com", "saymon_set@hotmail.com", "saymon_set@hotmail.com",  "saymon_set@hotmail.com", "template/invitacionSurvey.vsl", context) ;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return new UploadFileResponse();
     }

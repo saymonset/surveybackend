@@ -1,6 +1,6 @@
 package com.service;
 
-import com.model.mongo.Encuesta;
+import com.model.mongo.Survey;
 import com.model.mongo.SendSurvey;
 import com.model.mongo.TreeModelServicio;
 import com.model.mongo.TreeModelTerritorial;
@@ -61,7 +61,7 @@ public class DataFillService {
             file1 = ResourceUtils.getFile(
                     "classpath:data/datamonitorear/data.xlsx");
             //readAllrow("divisiónTerritorial", 8,file1);
-            readEncuestas("Encuestas", 3,file1);
+            readEncuestas("Encuestas", 4,file1);
 
         }catch (Exception e) {
             e.printStackTrace();
@@ -189,7 +189,7 @@ public class DataFillService {
         String parentNode = null;
         String value = null;
         List<String[]> rowFound = new ArrayList<String[]>();
-        Encuesta encuesta = null;
+        Survey encuesta = null;
         int i=0;
         try {
             file = new FileInputStream(file0);
@@ -226,16 +226,18 @@ public class DataFillService {
 
 
                         /**Si no existe el parentNode.. lo creamos*/
-                        String divisionTerritorial = row.getCell(node).getStringCellValue();
-                        String divisionServicios = row.getCell( node + 1).getStringCellValue();
-                        String encuestaFile = row.getCell( node + 2).getStringCellValue();
+                        String codigoEncuesta = row.getCell(node++).getStringCellValue();
+                        String divisionTerritorial = row.getCell(node++).getStringCellValue();
+                        String divisionServicios = row.getCell( node ++).getStringCellValue();
+                        String encuestaFile = row.getCell( node ++).getStringCellValue();
 
-                        Encuesta enc  = encuestaRepository.
+                        Survey enc  = encuestaRepository.
                                 findByFileEncuestaAndDivisionTerritorialAndDivisionServicios(encuestaFile,divisionTerritorial,
                                         divisionServicios);
                          if (enc == null ){
 
-                             encuesta = new Encuesta();
+                             encuesta = new Survey();
+                             encuesta.setCodigoEncuesta(codigoEncuesta);
                              encuesta.setDivisionTerritorial(divisionTerritorial);
                              encuesta.setDivisionServicios( divisionServicios);
                              encuesta.setFileEncuesta(encuestaFile);
@@ -309,8 +311,6 @@ public class DataFillService {
                         if (enc == null ){
 
                             mandoEncuesta = new SendSurvey();
-                            mandoEncuesta.setDivisionTerritorial(divisionTerritorial);
-                            mandoEncuesta.setDivisionServicios( divisionServicios);
                             mandoEncuesta.setName(name);
                             mandoEncuesta.setLastName(lastName);
                             mandoEncuesta.setEmail(email);

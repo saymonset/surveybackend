@@ -21,7 +21,9 @@ import static com.security.SecurityConstants.SIGN_UP_URL;
 import static com.security.SecurityConstants.AUTHENTICATE;
 import static com.security.SecurityConstants.DATAFILL;
 import static com.security.SecurityConstants.SEND_ENCUESTAS;
-import static com.security.SecurityConstants.SEND_SURVEY;
+import static com.security.SecurityConstants.SENT_SURVEY;
+import static com.security.SecurityConstants.SENT_RESULT;
+
 
 
 
@@ -44,7 +46,8 @@ public class WebSecurity  extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, DATAFILL).permitAll()
                 .antMatchers(HttpMethod.GET, "/tree/territorial").permitAll()
                .antMatchers(HttpMethod.GET, "/tree/servicio").permitAll()
-                .antMatchers(HttpMethod.POST, SEND_SURVEY).permitAll()
+                .antMatchers(HttpMethod.GET, SENT_SURVEY).permitAll()
+                .antMatchers(HttpMethod.POST, SENT_RESULT).permitAll()
 
                 .anyRequest().authenticated()
                 .and()
