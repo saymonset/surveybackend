@@ -15,7 +15,7 @@ import java.io.FileNotFoundException;
  */
 @RestController
 @RequestMapping("/datafill")
-public class DataFillRest {
+public class CreateDataRest {
     @Inject
     private DataFillService dataFillService;
 

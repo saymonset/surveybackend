@@ -23,8 +23,8 @@ public class SendSurvey {
     private String name;
     private String lastName;
     private String email;
-    private String divisionTerritorial;
-    private String divisionServicios;
+  /*  private String divisionTerritorial;
+    private String divisionServicios;*/
     private String codigoEncuesta;
 
     public Date getCreatedAt() {
@@ -83,21 +83,7 @@ public class SendSurvey {
         this.email = email;
     }
 
-    public String getDivisionTerritorial() {
-        return divisionTerritorial;
-    }
 
-    public void setDivisionTerritorial(String divisionTerritorial) {
-        this.divisionTerritorial = divisionTerritorial;
-    }
-
-    public String getDivisionServicios() {
-        return divisionServicios;
-    }
-
-    public void setDivisionServicios(String divisionServicios) {
-        this.divisionServicios = divisionServicios;
-    }
 
     public int getCountResent() {
         return countResent;

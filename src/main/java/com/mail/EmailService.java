@@ -59,7 +59,7 @@ public class EmailService {
             String body = "";//VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, templateLocation, ENCODING, model);
             //return send(from, nameFrom, replyTo, to, cc, bcc, sentDate, subject, body, true);
             boolean html = true;
-         return   send( from,    "",  sentDate,  subject,  text, html);
+         return   send( from,  replyTo,  sentDate,  subject,  text, html);
 
     }
 
@@ -68,8 +68,8 @@ public class EmailService {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, ENCODING);
             helper.setFrom(from);
-            helper.setReplyTo(from);
-            helper.setTo(from);
+            //helper.setReplyTo(from);
+            helper.setTo(to);
             helper.setSentDate(sentDate);
             helper.setSubject(subject);
             helper.setText(text, html);

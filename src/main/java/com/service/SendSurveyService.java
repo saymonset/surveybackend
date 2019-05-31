@@ -4,11 +4,12 @@ import com.dto.SurveyDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mail.EmailService;
+import com.model.mongo.NetPromoterScore;
+import com.model.mongo.SatisfactionResponse;
 import com.model.mongo.SendSurvey;
 import com.model.mongo.Survey;
-import com.repository.mongo.EncuestaRepository;
-import com.repository.mongo.SendSurveyRepository;
-import com.tools.ResourcePaths;
+import com.repository.mongo.*;
+import com.tools.Constant;
 import com.tools.ToJson;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -17,15 +18,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.velocity.VelocityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.inject.Inject;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -37,12 +35,22 @@ public class SendSurveyService {
     @Inject
     private SendSurveyRepository mandoEncuestaRepository;
     @Inject
+    private SatisfactionService satisfactionService;
+    @Inject
     private EmailService emailService;
-
+    private  SurveyDTO  surveyDTOResult = new SurveyDTO();
     @Inject
     private EncuestaRepository encuestaRepository;
     @Inject
     private ToJson toJson;
+    @Inject
+    private NetPromoterScoreRepository netPromoterScoreRepository;
+    @Inject
+    private SatisfactionRepository satisfactionRepository;
+    @Inject
+    private SurveyRepository surveyRepository;
+
+
 
     public void sendSurvey(String sheet1, int numCol, File file0) throws Exception {
         Logger log = LoggerFactory.getLogger(this.getClass().getName());
@@ -115,7 +123,7 @@ public class SendSurveyService {
 
 
                                 if (resent || sendMail){
-                                    emailService.send("saymon_set@hotmail.com", email, email,  "ecologicalpaper.com", "template/invitacionSurvey.vsl", context) ;
+                                    emailService.send("ecologicalpaper", email, email,  "ecologicalpaper.com", "template/invitacionSurvey.vsl", context) ;
                                 }
 
 
@@ -168,7 +176,8 @@ public class SendSurveyService {
         }
     }
 
-    public SurveyDTO procesar(@RequestParam String codigoEncuesta, @RequestParam String email, @RequestParam String lang) {
+
+    public SurveyDTO searchSurvey(@RequestParam String codigoEncuesta, @RequestParam String email, @RequestParam String lang) {
         SurveyDTO surveyDTO = new SurveyDTO();
         Survey enc  = encuestaRepository.
                 findByCodigoEncuesta(codigoEncuesta);
@@ -180,12 +189,14 @@ public class SendSurveyService {
             try {
                 String jsonResp = mapperObj.writeValueAsString(map);
                 surveyDTO.setJson(jsonResp);
+                surveyDTO.setLang(lang);
+                surveyDTO.setEmail(email);
+                surveyDTO.setCodigoEncuesta(codigoEncuesta);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
 
-            surveyDTO.setLang(lang);
-            surveyDTO.setEmail(email);
+
             /**La encuesta la vio*/
             SendSurvey sendSurvey = mandoEncuestaRepository.findByCodigoEncuestaAndEmailAndAnswered(codigoEncuesta,email,false);
             sendSurvey.setEmailViewed(true);
@@ -195,7 +206,82 @@ public class SendSurveyService {
     }
 
 
+    public SurveyDTO procesar( Map<String, Object> response) {
 
+        Map<String, Object> result = (Map<String, Object>) response.get("result");
+        Map<String, Object> origin = (Map<String, Object>) response.get("origin");
+        Map<String, Object> surveyDTOs = (Map<String, Object>) response.get("surveyDTO");
+        List<Map<String, Object>> questions = satisfactionService.questions(origin);
+        surveyDTOs.forEach((k,v)->
+                {
+                    if (k.equalsIgnoreCase("email")){
+                        surveyDTOResult.setEmail((String)v);
+                    }
+                    if (k.equalsIgnoreCase("lang")){
+                        surveyDTOResult.setLang((String)v);
+                    }
+                    if (k.equalsIgnoreCase("json")){
+                        surveyDTOResult.setJson((String)v);
+                    }
+                    if (k.equalsIgnoreCase("codigoEncuesta")){
+                        surveyDTOResult.setCodigoEncuesta((String)v);
+                    }
+                    System.out.println("Item : " + k + " Count : " + v);
+
+                }
+        );
+
+        /**La respondio la vio*/
+        SendSurvey sendSurvey = mandoEncuestaRepository.findByCodigoEncuestaAndEmailAndAnswered(surveyDTOResult.getCodigoEncuesta(),surveyDTOResult.getEmail(),false);
+      //  sendSurvey.setAnswered(true);
+        mandoEncuestaRepository.save(sendSurvey);
+        Survey survey = surveyRepository.findByCodigoEncuesta(surveyDTOResult.getCodigoEncuesta());
+
+        List<Map<String, Object>> simplifySurvey = satisfactionService.simplifyAll(result, questions);
+
+         satisfactionService.getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_REGISTRO, sendSurvey, survey);
+
+        satisfactionService.getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_HABITACION, sendSurvey, survey);
+
+        satisfactionService.getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_PERSONAL, sendSurvey, survey);
+
+        satisfactionService.getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_COMIDA, sendSurvey, survey);
+
+        satisfactionService.getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_SALIDA, sendSurvey, survey);
+
+        int point = satisfactionService.getSatisfaction(simplifySurvey, Constant.SATISFACTION,"rating") ;
+        if (point > 0){
+            SatisfactionResponse satisfactionResponse = new SatisfactionResponse();
+            satisfactionResponse.setSendSurvey(sendSurvey);
+            satisfactionResponse.setCodigoEncuesta(survey.getCodigoEncuesta());
+            satisfactionResponse.setDivisionServicios(survey.getDivisionServicios());
+            satisfactionResponse.setDivisionTerritorial(survey.getDivisionTerritorial());
+            satisfactionResponse.setPoint(point);
+            satisfactionResponse.setResponsedate(new Date());
+            satisfactionResponse.setType(satisfactionService.typeNps(point));
+            satisfactionRepository.save(satisfactionResponse);
+        }
+
+
+
+        NetPromoterScore netPromoterScore = new NetPromoterScore();
+
+        point = satisfactionService.getSatisfaction(simplifySurvey, Constant.NPS_SCORE,"rating") ;
+        if (point > 0) {
+            netPromoterScore.setSendSurvey(sendSurvey);
+            netPromoterScore.setCodigoEncuesta(survey.getCodigoEncuesta());
+            netPromoterScore.setDivisionServicios(survey.getDivisionServicios());
+            netPromoterScore.setDivisionTerritorial(survey.getDivisionTerritorial());
+            netPromoterScore.setPoint(point);
+            netPromoterScore.setResponsedate(new Date());
+            netPromoterScore.setType(satisfactionService.typeNps(point));
+            netPromoterScoreRepository.save(netPromoterScore);
+        }
+//        String type = satisfactionService.typeNps(procesoRegistroSatisfaction);
+
+
+        return surveyDTOResult;
+    }
 
 
 }

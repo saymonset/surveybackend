@@ -1,63 +1,218 @@
 {
-  "title": "Cancellation Survey",
-  "description": "Thank you for using our service. We would highly appreciate if you would take the time to fill our cancellation survey. This would help us improve the service.",
+
   "pages": [
     {
       "name": "page1",
       "elements": [
         {
-          "type": "radiogroup",
-          "name": "using_duration",
-          "title": "How long have you been using the service?",
-          "choices": ["Less than a month", "1-6 months", "7-12 months", "1-3 years", "Over 3 years"]
-        }, {
-          "type": "radiogroup",
-          "name": "using_frequency",
-          "title": "How often did you use the service?",
-          "choices": ["Once a week", "2 or 3 times a month", "Once a month", "Less than once a month"]
-        }, {
-          "type": "radiogroup",
-          "name": "cancel_reason",
-          "title": "What was the main reason for cancelling the service?",
-          "hasOther": true,
-          "choices": [
-            "No longer need it",
-            "It didn't meet my needs",
-            "Found a better alternative",
-            "Found a cheaper alternative",
-            "Quality was less than expected",
-            "Ease of use was less than expected",
-            "Access to the service was less than expected",
-            "Customer service was less than expected"
-          ]
-        }, {
-          "type": "radiogroup",
-          "name": "satisfaction",
-          "title": "Overall, how satisfied were you with the service?",
-          "choices": ["Very Satisfied", "Satisfied", "Neutral", "Unsatisfied", "Very Unsatisfied"]
-        }, {
           "type": "matrix",
-          "name": "future_using",
-          "titleLocation": "hidden",
+          "observer" :"proceso_registro",
+          "name": "proceso_registro",
+          "title": "Por favor, evalúa el proceso de registro:",
           "columns": [
-            "Definitely", "Probably", "Not Sure", "Probably Not", "Definitely Not"
+            {
+              "value": 3,
+              "text": "De acuerdo"
+            }, {
+              "value": 1,
+              "text": "Desacuerdo"
+            }, {
+              "value": 2,
+              "text": "Neutro"
+            }
           ],
           "rows": [
             {
-              "value": "use_in_future",
-              "text": "Will you use our service in the future?"
+              "value": "calidadrecepcion",
+              "text": "El proceso de registro fue rápido y eficiente."
             }, {
-              "value": "recommend",
-              "text": "Will you recommend our service to others?"
+              "value": "calidadrecepcion0",
+              "text": "El personal de la recepción fue muy amable."
+            }, {
+              "value": "calidadrecepcion1",
+              "text": "La reserva contenía todos los servicios pedidos"
             }
           ]
-        }, {
+        },
+        {
+          "type": "matrix",
+          "name": "proceso_habitacion",
+          "observer" :"proceso_habitacion",
+          "title": "Por favor, evalúa tu habitación:",
+          "columns": [
+            {
+              "value": 3,
+              "text": "De acuerdo"
+            }, {
+              "value": 1,
+              "text": "Desacuerdo"
+            }, {
+              "value": 2,
+              "text": "Neutro"
+            }
+          ],
+          "rows": [
+            {
+              "value": "calidaddelproducto0",
+              "text": "Mi habitación fue amueblada apropiadamente."
+            }, {
+              "value": "calidaddelservicio0",
+              "text": "Mi habitación estuvo limpia y cómoda."
+            }, {
+              "value": "calidaddelservicio1",
+              "text": "Mi cama y las sábanas fueron muy confortables."
+            }, {
+              "value": "calidaddelproducto1",
+              "text": "El cuarto de baño estuvo limpio y bien equipado."
+            }
+          ]
+        },
+        {
+          "type": "matrix",
+          "name": "proceso_personal",
+          "observer" :"proceso_personal",
+          "title": "Por favor, evalúa nuestro personal:",
+          "columns": [
+            {
+              "value": 3,
+              "text": "De acuerdo"
+            }, {
+              "value": 1,
+              "text": "Desacuerdo"
+            }, {
+              "value": 2,
+              "text": "Neutro"
+            }
+          ],
+          "rows": [
+            {
+              "value": "calidaddelservicio2",
+              "text": "Las encargadas de limpieza fueron muy amables y de mucha confianza."
+            }, {
+              "value": "calidaddelservicio3",
+              "text": "La seguridad estuvo presente en todos los lados del hotel."
+            }, {
+              "value": "calidaddelservicio4",
+              "text": "El personal fue capaz de responder todas mis preguntas."
+            }, {
+              "value": "calidaddelservicio5",
+              "text": "Los mánagers estuvieron disponibles a cualquier hora para resolver dudas o problemas que pudiera tener."
+            }
+          ]
+        },
+        {
+          "type": "matrix",
+          "name": "proceso_comida",
+          "observer" :"proceso_comida",
+          "title": "Por favor, evalúa las comidas y las cenas en el hotel:",
+          "columns": [
+            {
+              "value": 3,
+              "text": "De acuerdo"
+            }, {
+              "value": 1,
+              "text": "Desacuerdo"
+            }, {
+              "value": 2,
+              "text": "Neutro"
+            }
+          ],
+          "rows": [
+            {
+              "value": "calidaddelservicio6",
+              "text": "El servicio de habitaciones traía comida pedida, sin equivocarse."
+            }, {
+              "value": "calidaddelservicio7",
+              "text": "La comida fue de buena calidad."
+            }, {
+              "value": "calidaddelservicio8",
+              "text": "El personal fue muy amable."
+            }, {
+              "value": "calidaddelservicio9",
+              "text": "La variedad de platos y bebida fue amplia."
+            }, {
+              "value": "calidaddelservicio10",
+              "text": "Precios fueron adecuados a lo que recibía."
+            }
+          ]
+        },
+        {
+          "type": "matrix",
+          "name": "proceso_salida",
+          "observer" :"proceso_salida",
+          "title": "Por favor, evalúa el proceso de salida:",
+          "columns": [
+            {
+              "value": 3,
+              "text": "De acuerdo"
+            }, {
+              "value": 1,
+              "text": "Desacuerdo"
+            }, {
+              "value": 2,
+              "text": "Neutro"
+            }
+          ],
+          "rows": [
+            {
+              "value": "calidaddelservicio11",
+              "text": "Recibí una cuenta completa y precisa."
+            }, {
+              "value": "calidaddelservicio12",
+              "text": "El proceso de salida fue rápido y eficiente."
+            }
+          ]
+        },
+        {
+          "type": "rating",
+          "name": "satisfaction",
+          "observer" :"satisfaction",
+          "title": "¿Cómo evaluarías tu experiencia en nuestro hotel?",
+          "minRateDescription": "No satisfecho",
+          "maxRateDescription": "Satisfecho"
+        },
+        {
           "type": "comment",
-          "name": "service_improvements",
-          "title": "How can we improve our service?"
+          "observer" :"satisfaction",
+          "alarma": "alarma_bad",
+          "isRequired": true,
+          "name": "alarma_bad",
+          "title":"Por favor, indica alguna sugerencia para mejorar día a día nuestro servicio",
+          "visible": false,
+          "visibleIf": "{satisfaction}=1 or {satisfaction}=2 "
+        },
+        {
+          "type": "comment",
+          "observer" :"satisfaction",
+          "alarma": "alarma_none",
+          "name": "alarma_none",
+          "title":"Por favor, nos indica cualquier apreciación y/o sugerencia ",
+          "visible": false,
+          "visibleIf": "{satisfaction}=3"
+        },
+
+
+        {
+          "type": "comment",
+          "observer" :"satisfaction",
+          "alarma": "alarma_good",
+          "name": "alarma_good",
+          "title":"Por favor, indica cuál fue la experiencia",
+          "visible": false,
+          "visibleIf": "{satisfaction}=4 or {satisfaction}=5 "
+        },
+        {
+          "type": "rating",
+          "observer" :"nps_score",
+          "name": "nps_score",
+          "title": "¿Qué probabilidades hay de que recomiende la empresa a un amigo o colega?",
+          "isRequired": true,
+          "rateMin": 0,
+          "rateMax": 10,
+          "minRateDescription": "(Más improbable)",
+          "maxRateDescription": "(Más probable)"
         }
       ]
     }
-  ],
-  "showQuestionNumbers": "off"
+  ]
 };

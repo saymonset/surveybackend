@@ -64,8 +64,8 @@ public class ToJson {
     public Resource getResource(String nameFile, String language){
 
         Resource resource;
-        String path = ResourcePaths.JSON_DATA + nameFile  + ".json";
-        String pathLanguage = ResourcePaths.JSON_DATA + nameFile + "_" + language + ".json";
+        String path = Constant.JSON_DATA + nameFile  + ".json";
+        String pathLanguage = Constant.JSON_DATA + nameFile + "_" + language + ".json";
 
         if(language!=null){
             boolean exist = existResource(pathLanguage);

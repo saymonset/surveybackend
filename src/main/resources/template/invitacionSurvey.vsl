@@ -203,13 +203,17 @@
                                                 <tr>
                                                     <td colspan="2">
                                                         <div style="padding-left:75px; padding-right: 75px;">
-                                                            <h2 style="font-weight:normal; margin:0; text-align:center; text-transform:uppercase; letter-spacing:4px;">Su opinión nos interesa</h2>
+                                                            <h2 style="font-weight:normal; margin:0; text-align:center; text-transform:uppercase; letter-spacing:4px;">NECESITAMOS SU OPINIÓN PARA MEJORAR</h2>
                                                             <br>
                                                             <h2 style="color:#C03633; font-weight:normal; margin:0; text-transform:uppercase;letter-spacing:4px;">Estimado(a)</h2>
                                                             <h2 style="font-weight:normal; margin:0; text-transform:uppercase;letter-spacing:4px;">$clientName</h2>
 
-                                                            <br>Lo invitamos a responder esta breve encuesta
-                                                            <br>para conocer su nivel de satisfacción.
+                                                            <br>En el intento de mejorar día a día nuestro servicio, la Empresa desea evaluar el grado de satisfacción
+                                                            <br>de nuestros clientes, entendiendo que cualquier apreciación y/o sugerencia recibida, representa una
+                                                            <br>oportunidad de mejora y una herramienta para cumplir con el compromiso de mejora continua adquirido por
+                                                            <br>nuestra parte.
+                                                            <br>Para ello, le invitamos contestar las siguientes preguntas relacionadas
+                                                            <br>con la calidad de nuestro servicio, y que lo haga de la forma más sincera y objetiva posible.
                                                             <br>
                                                             <br>
                                                             <a href="$urlSurvey" style="background-color:#C03633; color:#FFFFFF; text-decoration:none; text-transform: uppercase; padding:10px 25px; letter-spacing:4px; font-size:15px;">Comenzar</a>

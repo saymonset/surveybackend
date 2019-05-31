@@ -24,12 +24,15 @@ spring.datasource.password=123456
 
   Instalar y correr mongodb
   
+  
+  
   mongod --config C:\opt\mongodb\mongo.config
   
   El archivo mongo.config tiene esta instruccion
   
               #store data here
               dbpath=C:\opt\mongodb\data
+                #db.dropDatabase();
                  #show dbs;
                  #use nameDb;
                  #show collections
