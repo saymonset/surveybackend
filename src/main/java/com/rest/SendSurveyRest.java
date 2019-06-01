@@ -56,9 +56,6 @@ public class SendSurveyRest {
     @RequestMapping(value = "/sent/result",method = RequestMethod.POST)
     public ResponseEntity<?> procesar(@RequestBody Map<String, Object> response) {
 
-
-
-
         surveyDTOResult = sendSurveyService.procesar( response);
 
         return new ResponseEntity<>(surveyDTOResult,HttpStatus.CREATED);

@@ -4,10 +4,7 @@ import com.dto.SurveyDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mail.EmailService;
-import com.model.mongo.NetPromoterScore;
-import com.model.mongo.SatisfactionResponse;
-import com.model.mongo.SendSurvey;
-import com.model.mongo.Survey;
+import com.model.mongo.*;
 import com.repository.mongo.*;
 import com.tools.Constant;
 import com.tools.ToJson;
@@ -49,6 +46,8 @@ public class SendSurveyService {
     private SatisfactionRepository satisfactionRepository;
     @Inject
     private SurveyRepository surveyRepository;
+    @Inject
+    private RawSurveyRepository rawSurveyRepository;
 
 
 
@@ -211,7 +210,11 @@ public class SendSurveyService {
         Map<String, Object> result = (Map<String, Object>) response.get("result");
         Map<String, Object> origin = (Map<String, Object>) response.get("origin");
         Map<String, Object> surveyDTOs = (Map<String, Object>) response.get("surveyDTO");
+
+
         List<Map<String, Object>> questions = satisfactionService.questions(origin);
+
+
         surveyDTOs.forEach((k,v)->
                 {
                     if (k.equalsIgnoreCase("email")){
@@ -233,8 +236,19 @@ public class SendSurveyService {
 
         /**La respondio la vio*/
         SendSurvey sendSurvey = mandoEncuestaRepository.findByCodigoEncuestaAndEmailAndAnswered(surveyDTOResult.getCodigoEncuesta(),surveyDTOResult.getEmail(),false);
+
       //  sendSurvey.setAnswered(true);
         mandoEncuestaRepository.save(sendSurvey);
+
+
+        RawSurveyResponse rawSurveyResponse = new RawSurveyResponse();
+        rawSurveyResponse.setOrigin(origin);
+        rawSurveyResponse.setResult(result);
+        rawSurveyResponse.setSendSurvey(sendSurvey);
+        rawSurveyResponse.setQuestions(questions);
+        rawSurveyRepository.save(rawSurveyResponse);
+
+
         Survey survey = surveyRepository.findByCodigoEncuesta(surveyDTOResult.getCodigoEncuesta());
 
         List<Map<String, Object>> simplifySurvey = satisfactionService.simplifyAll(result, questions);
@@ -274,7 +288,7 @@ public class SendSurveyService {
             netPromoterScore.setDivisionTerritorial(survey.getDivisionTerritorial());
             netPromoterScore.setPoint(point);
             netPromoterScore.setResponsedate(new Date());
-            netPromoterScore.setType(satisfactionService.typeNps(point));
+            netPromoterScore.setType(satisfactionService.typeNpsParent(point));
             netPromoterScoreRepository.save(netPromoterScore);
         }
 //        String type = satisfactionService.typeNps(procesoRegistroSatisfaction);

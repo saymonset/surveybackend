@@ -40,6 +40,18 @@ public class SatisfactionService {
         return type;
     }
 
+    public String typeNpsParent(float value){
+        String npsType =typeNPS.pasivos;
+        if (value < 7) {
+            npsType =  typeNPS.detractores;
+        }
+        if (value >= 9) {
+            npsType = typeNPS.promotores;
+        }
+
+
+        return npsType;
+    }
 
     public void getSatisfactionMatrix(List<Map<String, Object>> simplifySurvey, String evaluar, SendSurvey sendSurvey, Survey survey ) {
         float count = 0;
