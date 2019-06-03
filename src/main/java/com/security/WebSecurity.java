@@ -46,8 +46,8 @@ public class WebSecurity  extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, DATAFILL).permitAll()
                 .antMatchers(HttpMethod.GET, "/tree/territorial").permitAll()
                .antMatchers(HttpMethod.GET, "/tree/servicio").permitAll()
-                .antMatchers(HttpMethod.POST, "/chart/nps*").permitAll()
-                .antMatchers(HttpMethod.GET, "/chart/nps*").permitAll()
+                .antMatchers(HttpMethod.POST, "/search/nps*").permitAll()
+                //.antMatchers(HttpMethod.GET, "/chart/nps*").permitAll()
                 .antMatchers(HttpMethod.GET, SENT_SURVEY).permitAll()
                 .antMatchers(HttpMethod.POST, SENT_RESULT).permitAll()
 

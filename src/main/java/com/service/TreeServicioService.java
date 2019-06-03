@@ -1,14 +1,11 @@
 package com.service;
 import com.model.mongo.TreeModelServicio;
-import com.repository.mongo.TreeModelRepository;
 import com.repository.mongo.TreeModelServicioRepository;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by simon on 5/18/2019.
@@ -18,7 +15,7 @@ public class TreeServicioService {
     @Inject
     private TreeModelServicioRepository treeModelServicioRepository;
 
-
+    /**Dame los hijos de los parents*/
     public List<TreeModelServicio> getTree() {
         List<TreeModelServicio> childsRoot = treeModelServicioRepository.findByParentNode("-1");
 
@@ -26,57 +23,49 @@ public class TreeServicioService {
         return childs;
     }
 
+
+
+    /**Dame los hijos  y recursivo .. los nietos de los hijos*/
     public List<TreeModelServicio> getChilds(List<TreeModelServicio> trees ){
-        trees.forEach(child->{
-            List<TreeModelServicio> childs = treeModelServicioRepository.findByParentNode(child.getNode());
+        trees.forEach(childParent->{
+            List<TreeModelServicio> childs = treeModelServicioRepository.findByParentNode(childParent.getNode());
             if (childs!=null && childs.size() > 0){
-                child.setChildren(getChilds( childs ));
+                childParent.setChildren(getChilds( childs ));
             }else{
-                child.setChildren(null);
+                childParent.setChildren(null);
             }
         });
 
         return trees;
     }
 
-
-  /*  private Long loadPositionrecursivo(String root, ArrayList data){
-        TreeModelServicio treeModelChild = null;
-        TreeModelServicio treeModel = null;
-        List<TreeModelServicio> children = new ArrayList();
-        for (Object distObject : data) {
-            Map<String, Object> dist = (Map<String, Object>) distObject;
-            if (StringUtils.isNotBlank(String.valueOf(dist.get("parent")))){
-                String parent = String.valueOf(dist.get("parent"));
-                if (root == parent){
-                    treeModelChild = new TreeModelServicio();
-                    treeModelChild.setParentNode(root);
-                    treeModelChild.setChildren(new ArrayList<>());
-                    treeModelChild.setValue(String.valueOf(dist.get("value")));
-                    treeModelChild.setNode(String.valueOf(dist.get("id")));
-                    children.add(treeModelChild);
-                }
-            }
-        }
-        TreeModelServicio treeModelParent = treeModelServicioRepository.findByNode(root);
-        if (treeModelParent == null){
-            children.forEach(tree->{
-                treeModelServicioRepository.save(tree);
-            });
+    /**Dame la marcas  de este nodo y recursivo .. */
+    public List<TreeModelServicio> getMarcaChilds(String node) {
+        List<TreeModelServicio> marcaChildsRoot = new ArrayList<>();
+        TreeModelServicio tree = treeModelServicioRepository.findByNode(node);
+        List<TreeModelServicio> childs = treeModelServicioRepository.findByParentNode(node);
+        /**Si estan en el ultimo escanio.. son marcas*/
+        if (null != tree && (childs == null || childs.size() ==0)){
+            marcaChildsRoot.add(tree);
         }else{
-            if (treeModelParent.getChildren() == null ){
-                treeModelParent.setChildren(new ArrayList<>());
-            }
-            treeModelParent.getChildren().addAll(children);
-            treeModelServicioRepository.save(treeModelParent);
+            getMarcaChilds( childs, marcaChildsRoot );
         }
-        //treeModelChild = treeModelServicioRepository.save(treeModelChild);
 
-        children.forEach(treeChild->{
-                    loadPositionrecursivo(treeChild.getNode(), data);
-                }
-        );
+        return marcaChildsRoot;
+    }
 
-        return null;
-    }*/
+    /**Dame la marcas  hijos*/
+    private List<TreeModelServicio> getMarcaChilds(List<TreeModelServicio> trees, List<TreeModelServicio> marcaChildsRoot ){
+        trees.forEach(childParent->{
+            List<TreeModelServicio> childs = treeModelServicioRepository.findByParentNode(childParent.getNode());
+            if (childs!=null && childs.size() > 0){
+                getMarcaChilds( childs, marcaChildsRoot );
+            }else{
+                marcaChildsRoot.add(childParent);
+            }
+        });
+
+        return trees;
+    }
+
 }

@@ -20,6 +20,8 @@ public interface Constant {
 
     String NPS_SCORE = "nps_score";
 
+    int NUM_BARRA_NPS = 10;
+
 
 
 

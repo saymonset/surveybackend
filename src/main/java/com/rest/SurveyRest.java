@@ -24,7 +24,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/survey")
-public class SendSurveyRest {
+public class SurveyRest {
 
     private Logger logger =  LoggerFactory.getLogger(this.getClass().getName());
     private  SurveyDTO  surveyDTOResult = new SurveyDTO();

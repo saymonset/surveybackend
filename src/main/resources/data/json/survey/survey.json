@@ -207,7 +207,7 @@
           "name": "nps_score",
           "title": "¿Qué probabilidades hay de que recomiende la empresa a un amigo o colega?",
           "isRequired": true,
-          "rateMin": 0,
+          "rateMin": 1,
           "rateMax": 10,
           "minRateDescription": "(Más improbable)",
           "maxRateDescription": "(Más probable)"

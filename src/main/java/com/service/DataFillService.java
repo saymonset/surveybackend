@@ -6,7 +6,7 @@ import com.model.mongo.TreeModelServicio;
 import com.model.mongo.TreeModelTerritorial;
 import com.repository.mongo.EncuestaRepository;
 import com.repository.mongo.SendSurveyRepository;
-import com.repository.mongo.TreeModelRepository;
+import com.repository.mongo.TreeModelTerritorialRepository;
 import com.repository.mongo.TreeModelServicioRepository;
 import com.tools.ToJson;
 import org.apache.poi.ss.usermodel.Cell;
@@ -38,7 +38,7 @@ public class DataFillService {
     @Inject
     private ToJson toJson;
     @Inject
-    private TreeModelRepository treeModelMongoRepository;
+    private TreeModelTerritorialRepository treeModelMongoRepository;
     @Inject
     private EncuestaRepository encuestaRepository;
     @Inject
