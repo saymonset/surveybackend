@@ -15,8 +15,15 @@ public class TreeServicioService {
     @Inject
     private TreeModelServicioRepository treeModelServicioRepository;
 
+    /**Dame root*/
+    public TreeModelServicio getTree() {
+        List<TreeModelServicio> childsRoot = treeModelServicioRepository.findByParentNode("-1");
+        TreeModelServicio root = childsRoot.get(0);
+
+        return root;
+    }
     /**Dame los hijos de los parents*/
-    public List<TreeModelServicio> getTree() {
+    public List<TreeModelServicio> getChildsTree() {
         List<TreeModelServicio> childsRoot = treeModelServicioRepository.findByParentNode("-1");
 
         List<TreeModelServicio> childs =  getChilds( childsRoot );

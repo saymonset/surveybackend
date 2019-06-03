@@ -17,9 +17,16 @@ public class TreeTerritorialService {
     private TreeModelTerritorialRepository treeModelTerritorialRepository;
 
 
+    /**Dame root*/
+    public TreeModelTerritorial getTree() {
+        List<TreeModelTerritorial> childsRoot = treeModelTerritorialRepository.findByParentNode("-1");
+        TreeModelTerritorial root = childsRoot.get(0);
+
+        return root;
+    }
 
     /**Dame los hijos de los parents*/
-    public List<TreeModelTerritorial> getTree() {
+    public List<TreeModelTerritorial> getChildsTree() {
         List<TreeModelTerritorial> childsRoot = treeModelTerritorialRepository.findByParentNode("-1");
 
         List<TreeModelTerritorial> childs =  getChilds( childsRoot );

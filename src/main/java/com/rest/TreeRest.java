@@ -39,13 +39,13 @@ public class TreeRest {
 
     @GetMapping(value = "/territorial", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TreeModelDTO> territorialfindAll()  {
-        List<TreeModelTerritorial> tree =    treeService.getTree();;
+        List<TreeModelTerritorial> tree =    treeService.getChildsTree();;
         List<TreeModelDTO> TreeModelDTOS = DozerHelper.map(dozerBeanMapper, tree, TreeModelDTO.class);
        return TreeModelDTOS;
     }
     @GetMapping(value = "/servicio", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TreeModelDTO> serviciofindAll()  {
-        List<TreeModelServicio> tree =    treeServicioService.getTree();;
+        List<TreeModelServicio> tree =    treeServicioService.getChildsTree();;
         List<TreeModelDTO> TreeModelDTOS = DozerHelper.map(dozerBeanMapper, tree, TreeModelDTO.class);
         return TreeModelDTOS;
     }
