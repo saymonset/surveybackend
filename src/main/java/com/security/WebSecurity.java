@@ -23,7 +23,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import static com.security.SecurityConstants.DATAFILL;
-
+import static com.security.SecurityConstants.SENT_SURVEY;
+import static com.security.SecurityConstants.SENT_RESULT;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -66,6 +67,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/**").permitAll()
                 .antMatchers(HttpMethod.GET, DATAFILL).permitAll()
+                //.antMatchers(HttpMethod.POST, SENT_RESULT).permitAll()
+                //.antMatchers(HttpMethod.GET, SENT_SURVEY).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtEntryPoint)

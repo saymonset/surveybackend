@@ -12,9 +12,10 @@ public class SecurityConstants {
     public static final String AUTHENTICATE = "/autenticate/user";
     public static final String DATAFILL = "/datafill/all";
     public static final String URL ="http://localhost:8180";
+    public static final String SENT_SURVEY = "/survey/searchSurvey*";
+    public static final String SENT_RESULT = "/survey/sent/result*";
 /*
     public static final String SEND_ENCUESTAS = "/survey/send";
-    public static final String SENT_SURVEY = "/survey/searchSurvey*";
-    public static final String SENT_RESULT = "/survey/sent/result*";*/
+   */
 
 }

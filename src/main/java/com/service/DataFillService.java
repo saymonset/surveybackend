@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
@@ -40,11 +41,14 @@ public class DataFillService {
     private CompanyRepository companyRepository;
     @Inject
     private SendSurveyRepository mandoEncuestaRepository;
-
+    @Autowired
+    PasswordEncoder passwordEncoder;
     @Inject
     private TreeModelServicioRepository treeModelServicioRepository;
     @Inject
     private RolService rolService;
+    @Autowired
+    UsuarioService usuarioService;
     // CREATE DATA /////////////////////////////////////////////////////////////
     public void createAll() {
         cargarCompanyExcel();
@@ -75,6 +79,7 @@ public class DataFillService {
                     "classpath:data/datamonitorear/data.xlsx");
             //readAllrow("divisiónTerritorial", 8,file1);
             Company company =   readCompany("company", 2,file1);
+            saveUsuario("oraclefedora@gmail.com", company);
             createroles(  company);
             cargarEncuestasExcel(company);
             createTerritorialTreeExcel(company);
@@ -349,10 +354,13 @@ public class DataFillService {
                         String divisionTerritorial = row.getCell(node++).getStringCellValue();
                         String divisionServicios = row.getCell( node ++).getStringCellValue();
                         String encuestaFile = row.getCell( node ++).getStringCellValue();
+                        if ("Coche-17".equalsIgnoreCase(codigoEncuesta)){
+                            System.out.println("");
+                        }
 
                         Survey enc  = encuestaRepository.
-                                findByFileEncuestaAndDivisionTerritorialAndDivisionServiciosAndCompany(encuestaFile,divisionTerritorial,
-                                        divisionServicios,company);
+                                findByFileEncuestaAndDivisionTerritorialAndDivisionServiciosAndCompanyAndCodigoEncuesta(encuestaFile,divisionTerritorial,
+                                        divisionServicios,company, codigoEncuesta);
                          if (enc == null ){
 
                              encuesta = new Survey();
@@ -365,7 +373,7 @@ public class DataFillService {
                          }
 
 
-                        node += 3;
+                        node += 1;
                     }
                 }
             }
@@ -374,6 +382,27 @@ public class DataFillService {
                 file.close();
             }
         }
+    }
+
+
+    public void saveUsuario(String email, Company company){
+
+        Optional<Usuario> usu = usuarioService.findByEmailAndCompany(email,company);
+        if (!usu.isPresent()){
+            Usuario usuario =
+                    new Usuario("admin", "admin",email,
+                            passwordEncoder.encode("123456"));
+
+            Set<Rol> roles = new HashSet<>();
+          /*  Rol rolAdmin = rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get();
+            roles.add(rolAdmin);
+            Rol rolUser = rolService.getByRolNombre(RolNombre.ROLE_USER).get();*/
+            roles.add(new Rol(RolNombre.ROLE_ADMIN));
+            roles.add(new Rol(RolNombre.ROLE_USER));
+            usuario.setRoles(roles);
+            usuarioService.guardar(usuario);
+        }
+
     }
 
 

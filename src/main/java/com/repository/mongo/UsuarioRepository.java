@@ -1,4 +1,5 @@
 package com.repository.mongo;
+import com.model.mongo.Company;
 import com.model.mongo.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
@@ -13,4 +14,5 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
     Optional<Usuario> findByNombreUsuario(String nu);
     boolean existsByNombreUsuario(String nu);
     boolean existsByEmail(String email);
+    Optional<Usuario> findByEmailAndCompany(String email, Company company);
 }

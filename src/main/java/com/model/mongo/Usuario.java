@@ -1,6 +1,7 @@
 package com.model.mongo;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Column;
@@ -35,6 +36,8 @@ public class Usuario {
     @NotNull
     private String password;
 
+    @DBRef
+    private Company company;
 
     @ManyToMany
     @JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "rol_id"))
@@ -47,6 +50,14 @@ public class Usuario {
         this.nombreUsuario = nombreUsuario;
         this.email = email;
         this.password = password;
+    }
+
+    public Usuario(@NotNull String nombre, @NotNull String nombreUsuario, @NotNull String email, @NotNull String password, Company company) {
+        this.nombre = nombre;
+        this.nombreUsuario = nombreUsuario;
+        this.email = email;
+        this.password = password;
+        this.company = company;
     }
     public String getId() {
         return id;
