@@ -4,15 +4,15 @@ import com.codahale.metrics.annotation.Timed;
 import com.dto.TokenDTO;
 import com.dto.UserDTO;
 import com.model.mysql.User;
-import com.repository.mongo.UserRepository;
-import com.security.TokenProvider;
+import com.security_delete.SecurityUtils;
+import com.security_delete.TokenProvider;
 import org.dozer.DozerBeanMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,18 +26,18 @@ import javax.inject.Inject;
 /**
  * Created by simon on 5/16/2019.
  */
-@RestController
-@RequestMapping("/autenticate")
+/*@RestController
+@RequestMapping("/autenticate")*/
 public class AutenticateRest {
-    private Logger logger =  LoggerFactory.getLogger(this.getClass().getName());
+  /*  private Logger logger =  LoggerFactory.getLogger(this.getClass().getName());
     @Inject
     private DozerBeanMapper dozerBeanMapper;
     @Inject
     private com.repository.mysql.UserRepository userRepository;
     @Inject
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-   /* @Autowired
-    private com.repository.mongo.UserRepository userMongoRepository;*/
+   *//* @Autowired
+    private com.repository.mongo.UserRepository userMongoRepository;*//*
 
     @Inject
     private UserDetailsService userDetailsService;
@@ -75,14 +75,23 @@ public class AutenticateRest {
 
             if(getbCryptPasswordEncoder().matches(user2.getPassword(), user.getPassword())){
                 //Autentico usuario interno/LDAP
-                authentication = this.externalAuthentication(user2.getUsername());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+             *//*   authentication = this.externalAuthentication(user2.getUsername());
+                SecurityContextHolder.getContext().setAuthentication(authentication);*//*
+
+
+
+                SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+                securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(user2.getUsername(), user.getPassword()));
+                SecurityContextHolder.setContext(securityContext);
+                String login = SecurityUtils.getCurrentLogin();
+
+
                 tokenDTO.setSuccess(true);
                 tokenDTO.setToken(tokenOut);
             }
-            /*else{
+            *//*else{
                 throw new BadCredentialsException("Los datos ingresados no son correctos");
-            }*/
+            }*//*
         }
 
 
@@ -137,5 +146,5 @@ public class AutenticateRest {
 
     public void setTokenProvider(TokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;
-    }
+    }*/
 }

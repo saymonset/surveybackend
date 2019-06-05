@@ -1,6 +1,6 @@
 package com.config;
 
-import com.security.TokenProvider;
+import com.security_delete.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

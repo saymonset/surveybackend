@@ -3,15 +3,12 @@ package com.rest;
 /**
  * Created by simon on 3/25/2019.
  */
-import com.model.mongo.User;
-import com.repository.inject.MongoBd;
 import com.repository.inject.MysqlBd;
-import com.repository.mongo.UserRepository;
-import com.security.TokenProvider;
+import com.security.SecurityConstants;
+import com.security_delete.TokenProvider;
 import org.dozer.DozerBeanMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +18,7 @@ import javax.inject.Inject;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
 public class UserRest {
     Logger logger =  LoggerFactory.getLogger(this.getClass().getName());
 

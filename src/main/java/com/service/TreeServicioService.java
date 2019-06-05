@@ -49,7 +49,7 @@ public class TreeServicioService {
     /**Dame la marcas  de este nodo y recursivo .. */
     public List<TreeModelServicio> getMarcaChilds(String node) {
         List<TreeModelServicio> marcaChildsRoot = new ArrayList<>();
-        TreeModelServicio tree = treeModelServicioRepository.findByNode(node);
+        TreeModelServicio tree = treeModelServicioRepository.findByNodeAndCompany(node, null);
         List<TreeModelServicio> childs = treeModelServicioRepository.findByParentNode(node);
         /**Si estan en el ultimo escanio.. son marcas*/
         if (null != tree && (childs == null || childs.size() ==0)){

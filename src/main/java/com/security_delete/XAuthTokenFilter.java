@@ -1,4 +1,4 @@
-package com.security;
+package com.security_delete;
 import com.exceptions.ServiceErrorRestException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -27,7 +28,10 @@ import java.io.IOException;
  * Filters incoming requests and installs a Spring Security principal if a
  * header corresponding to a valid user is found.
  */
-public class XAuthTokenFilter extends GenericFilterBean {
+//@Component
+public class XAuthTokenFilter {
+/*    extends
+ GenericFilterBean {
 
     private final static Logger LOG = LoggerFactory.getLogger(TokenProvider.class);
     private final static String XAUTH_TOKEN_HEADER_NAME = "Authorization";
@@ -76,17 +80,17 @@ public class XAuthTokenFilter extends GenericFilterBean {
         }
     }
 
-    /**
+    *//**
      * Obtiene el {@link UserDetails} del usuario en base al nombre de usuario.
      * Carga la informacion del {@link UserDetails} dentro del contexto de
-     * spring security para asignar los permisos del usuario.
+     * spring security_delete para asignar los permisos del usuario.
      *
      * @param username
-     */
+     *//*
     private void loadAuthentication(String username) {
         UserDetails details = this.detailsService.loadUserByUsername(username);
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(details,
                 details.getPassword(), details.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(token);
-    }
+    }*/
 }

@@ -1,4 +1,4 @@
-package com.security;
+package com.security_delete;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -56,7 +56,7 @@ public class SecurityUtils {
 
 
     /**
-     * If the current user has a specific security role.
+     * If the current user has a specific security_delete role.
      */
     public static boolean isUserInRole(String role) {
         SecurityContext securityContext = SecurityContextHolder.getContext();

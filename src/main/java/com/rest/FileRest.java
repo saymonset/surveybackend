@@ -1,6 +1,7 @@
 package com.rest;
 
 import com.payload.UploadFileResponse;
+import com.security.SecurityConstants;
 import com.service.DataFillService;
 import com.service.FileStorageService;
 import com.tools.FileTool;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
  * Created by simon on 5/23/2019.
  */
 @RestController
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
 public class FileRest {
 
     private Logger logger =  LoggerFactory.getLogger(this.getClass().getName());

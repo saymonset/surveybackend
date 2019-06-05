@@ -3,6 +3,7 @@ package com.rest;
 import com.dto.SurveyDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.payload.UploadFileResponse;
+import com.security.SecurityConstants;
 import com.service.SendSurveyService;
 import com.tools.FileTool;
 import org.json.JSONException;
@@ -24,6 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/survey")
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
 public class SurveyRest {
 
     private Logger logger =  LoggerFactory.getLogger(this.getClass().getName());

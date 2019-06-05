@@ -17,6 +17,8 @@ public class ProcesoRegistroResponse extends ProcesoMatrix{
     private SendSurvey sendSurvey;
     private String text;
     private String value;
+    @DBRef
+    private Company company;
     public String getText() {
         return text;
     }
@@ -46,5 +48,15 @@ public class ProcesoRegistroResponse extends ProcesoMatrix{
 
     public void setSendSurvey(SendSurvey sendSurvey) {
         this.sendSurvey = sendSurvey;
+    }
+
+
+    public Company getCompany() {
+        return company;
+    }
+
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }

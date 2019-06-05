@@ -2,14 +2,12 @@ package com.rest;
 
 import com.mail.EmailService;
 import com.payload.UploadFileResponse;
+import com.security.SecurityConstants;
 import com.tools.FileTool;
 import org.apache.velocity.VelocityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
@@ -22,6 +20,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/sendEmail")
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
 public class EmailRest {
     @Inject
     private EmailService emailService;

@@ -1,5 +1,6 @@
 package com.repository.mongo;
 
+import com.model.mongo.Company;
 import com.model.mongo.TreeModelServicio;
 import org.springframework.data.repository.CrudRepository;
 
@@ -11,5 +12,5 @@ import java.util.List;
 public interface TreeModelServicioRepository extends CrudRepository<TreeModelServicio, String> {
     List<TreeModelServicio> findAll();
     List<TreeModelServicio> findByParentNode(String parentNode);
-    TreeModelServicio findByNode(String node);
+    TreeModelServicio findByNodeAndCompany(String node, Company company);
 }

@@ -1,5 +1,7 @@
 package com.model.mongo;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
+
 import java.util.Date;
 
 /**
@@ -68,4 +70,6 @@ public class ProcesoMatrix {
      public void setCodigoEncuesta(String codigoEncuesta) {
           this.codigoEncuesta = codigoEncuesta;
      }
+
+
 }

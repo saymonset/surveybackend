@@ -15,7 +15,8 @@ public class ProcesoSalidaResponse  extends ProcesoMatrix {
     private String id;
     @DBRef
     private SendSurvey sendSurvey;
-
+    @DBRef
+    private Company company;
     private String text;
     private String value;
     public String getText() {
@@ -50,4 +51,13 @@ public class ProcesoSalidaResponse  extends ProcesoMatrix {
     }
 
 
+
+    public Company getCompany() {
+        return company;
+    }
+
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
 }

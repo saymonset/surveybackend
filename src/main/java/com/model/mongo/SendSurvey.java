@@ -1,6 +1,7 @@
 package com.model.mongo;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -26,6 +27,8 @@ public class SendSurvey {
   /*  private String divisionTerritorial;
     private String divisionServicios;*/
     private String codigoEncuesta;
+    @DBRef
+    private Company company;
 
     public Date getCreatedAt() {
         return createdAt;
@@ -131,5 +134,13 @@ public class SendSurvey {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }

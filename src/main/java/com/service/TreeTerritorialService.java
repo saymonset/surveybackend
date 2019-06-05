@@ -53,7 +53,7 @@ public class TreeTerritorialService {
     /**Dame la marcas  de este nodo y recursivo .. */
     public List<TreeModelTerritorial> getMarcaChilds(String node) {
         List<TreeModelTerritorial> marcaChildsRoot = new ArrayList<>();
-        TreeModelTerritorial tree = treeModelTerritorialRepository.findByNode(node);
+        TreeModelTerritorial tree = treeModelTerritorialRepository.findByNodeAndCompany(node,null);
         List<TreeModelTerritorial> childs = treeModelTerritorialRepository.findByParentNode(node);
         /**Si estan en el ultimo escanio.. son marcas*/
         if (null != tree && (childs == null || childs.size() ==0)){

@@ -15,8 +15,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import static java.util.Collections.emptyList;
-@Service
-public class UserServiceImpl implements UserDetailsService {
+//@Service
+public class UserServiceImpl {
+
+        /*implements UserDetailsService {
     Logger logger =  LoggerFactory.getLogger(this.getClass().getName());
     private UserRepository userRepository;
 
@@ -32,5 +34,5 @@ public class UserServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
         return new org.springframework.security.core.userdetails.User(applicationUser.getUsername(), applicationUser.getPassword(), emptyList());
-    }
+    }*/
 }

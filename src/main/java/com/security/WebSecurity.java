@@ -1,75 +1,76 @@
 package com.security;
 
-/**
- * Created by simon on 3/25/2019.
- */
-
+import com.security.jwt.JwtEntryPoint;
+import com.security.jwt.JwtTokenFilter;
+import com.service.UserDetailsServiceImpl;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+/**
+ * Created by simon on 6/4/2019.
+ */
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import com.service.UserServiceImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.context.annotation.Bean;
-
-import static com.security.SecurityConstants.SIGN_UP_URL;
-import static com.security.SecurityConstants.AUTHENTICATE;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import static com.security.SecurityConstants.DATAFILL;
-import static com.security.SecurityConstants.SEND_ENCUESTAS;
-import static com.security.SecurityConstants.SENT_SURVEY;
-import static com.security.SecurityConstants.SENT_RESULT;
 
-
-
-
+@Configuration
 @EnableWebSecurity
-public class WebSecurity  extends WebSecurityConfigurerAdapter {
-    private UserServiceImpl userDetailsService;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class WebSecurity extends WebSecurityConfigurerAdapter {
+    @Autowired
+    UserDetailsServiceImpl userDetailsServiceImpl;
 
-    public WebSecurity(UserServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userDetailsService = userDetailsService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    @Autowired
+    JwtEntryPoint jwtEntryPoint;
+
+    @Bean
+    public JwtTokenFilter jwtTokenFilter(){
+        return new JwtTokenFilter();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Override
+    protected AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsServiceImpl).passwordEncoder(passwordEncoder());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.POST, AUTHENTICATE).permitAll()
-                .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
-                .antMatchers(HttpMethod.POST, SEND_ENCUESTAS).permitAll()
+        http.cors().and().csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/api/auth/**").permitAll()
                 .antMatchers(HttpMethod.GET, DATAFILL).permitAll()
-                .antMatchers(HttpMethod.GET, "/tree/territorial").permitAll()
-               .antMatchers(HttpMethod.GET, "/tree/servicio").permitAll()
-                .antMatchers(HttpMethod.POST, "/search/nps*").permitAll()
-                //.antMatchers(HttpMethod.GET, "/chart/nps*").permitAll()
-                .antMatchers(HttpMethod.GET, SENT_SURVEY).permitAll()
-                .antMatchers(HttpMethod.POST, SENT_RESULT).permitAll()
-
                 .anyRequest().authenticated()
                 .and()
-                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
-                // this disables session creation on Spring Security
+                .exceptionHandling().authenticationEntryPoint(jwtEntryPoint)
+                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
-
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
-    }
-
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-        return source;
-    }
-
-
 }

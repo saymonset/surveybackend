@@ -1,6 +1,7 @@
 package com.model.mongo;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -15,7 +16,8 @@ public class User {
     private String id;
     private String username;
     private String password;
-
+    @DBRef
+    private Company company;
 
 
 
@@ -65,5 +67,13 @@ public class User {
             return false;
         }
         return true;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }

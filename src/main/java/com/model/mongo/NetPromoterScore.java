@@ -15,7 +15,8 @@ public class NetPromoterScore extends ProcesoMatrix{
     private String id;
     @DBRef
     private SendSurvey sendSurvey;
-
+    @DBRef
+    private Company company;
 
     public String getId() {
         return id;
@@ -31,5 +32,14 @@ public class NetPromoterScore extends ProcesoMatrix{
 
     public void setSendSurvey(SendSurvey sendSurvey) {
         this.sendSurvey = sendSurvey;
+    }
+
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }

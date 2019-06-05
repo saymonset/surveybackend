@@ -4,15 +4,14 @@ import com.dozer.DozerHelper;
 import com.dto.TreeModelDTO;
 import com.model.mongo.TreeModelServicio;
 import com.model.mongo.TreeModelTerritorial;
+import com.security.SecurityConstants;
 import com.service.TreeServicioService;
 import com.service.TreeTerritorialService;
 import org.dozer.DozerBeanMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -22,6 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/tree")
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
 public class TreeRest {
     Logger logger =  LoggerFactory.getLogger(this.getClass().getName());
 

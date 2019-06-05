@@ -16,6 +16,8 @@ public class RawSurveyResponse {
     private String id;
     @DBRef
     private SendSurvey sendSurvey;
+    @DBRef
+    private Company company;
     private Map<String, Object> origin;
     private Map<String, Object> result;
     private List<Map<String, Object>> questions;
@@ -58,5 +60,13 @@ public class RawSurveyResponse {
 
     public void setQuestions(List<Map<String, Object>> questions) {
         this.questions = questions;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }
