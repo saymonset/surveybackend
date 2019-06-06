@@ -55,22 +55,6 @@ public class DataFillService {
 
     }
 
-
-    private void cargarEncuestasExcel(Company company) {
-
-        File file1 = null;
-        try {
-            file1 = ResourceUtils.getFile(
-                    "classpath:data/datamonitorear/data.xlsx");
-            //readAllrow("divisiónTerritorial", 8,file1);
-            readEncuestas("Encuestas", 4,file1, company);
-
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
     private void cargarCompanyExcel() {
 
         File file1 = null;
@@ -90,6 +74,23 @@ public class DataFillService {
         }
 
     }
+
+    private void cargarEncuestasExcel(Company company) {
+
+        File file1 = null;
+        try {
+            file1 = ResourceUtils.getFile(
+                    "classpath:data/datamonitorear/data.xlsx");
+            //readAllrow("divisiónTerritorial", 8,file1);
+            readEncuestas("Encuestas", 4,file1, company);
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
 
 
 
@@ -354,9 +355,9 @@ public class DataFillService {
                         String divisionTerritorial = row.getCell(node++).getStringCellValue();
                         String divisionServicios = row.getCell( node ++).getStringCellValue();
                         String encuestaFile = row.getCell( node ++).getStringCellValue();
-                        if ("Coche-17".equalsIgnoreCase(codigoEncuesta)){
+                      /*  if ("Coche-17".equalsIgnoreCase(codigoEncuesta)){
                             System.out.println("");
-                        }
+                        }*/
 
                         Survey enc  = encuestaRepository.
                                 findByFileEncuestaAndDivisionTerritorialAndDivisionServiciosAndCompanyAndCodigoEncuesta(encuestaFile,divisionTerritorial,
@@ -391,7 +392,7 @@ public class DataFillService {
         if (!usu.isPresent()){
             Usuario usuario =
                     new Usuario("admin", "admin",email,
-                            passwordEncoder.encode("123456"));
+                            passwordEncoder.encode("password"));
 
             Set<Rol> roles = new HashSet<>();
           /*  Rol rolAdmin = rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get();
@@ -400,6 +401,7 @@ public class DataFillService {
             roles.add(new Rol(RolNombre.ROLE_ADMIN));
             roles.add(new Rol(RolNombre.ROLE_USER));
             usuario.setRoles(roles);
+            usuario.setCompany(company);
             usuarioService.guardar(usuario);
         }
 

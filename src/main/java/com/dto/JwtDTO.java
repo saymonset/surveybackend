@@ -10,12 +10,14 @@ import java.util.Collection;
 public class JwtDTO {
     private String token;
     private String bearer = "Bearer";
+    private String codeCompany;
     private String nombreUsuario;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public JwtDTO(String token, String nombreUsuario, Collection<? extends GrantedAuthority> authorities) {
+    public JwtDTO(String token, String nombreUsuario, String codeCompany, Collection<? extends GrantedAuthority> authorities) {
         this.token = token;
         this.nombreUsuario = nombreUsuario;
+        this.setCodeCompany(codeCompany);
         this.authorities = authorities;
     }
 
@@ -49,5 +51,13 @@ public class JwtDTO {
 
     public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
         this.authorities = authorities;
+    }
+
+    public String getCodeCompany() {
+        return codeCompany;
+    }
+
+    public void setCodeCompany(String codeCompany) {
+        this.codeCompany = codeCompany;
     }
 }

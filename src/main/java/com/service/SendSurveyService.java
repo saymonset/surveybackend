@@ -48,10 +48,13 @@ public class SendSurveyService {
     private SurveyRepository surveyRepository;
     @Inject
     private RawSurveyRepository rawSurveyRepository;
+    @Inject
+    private CompanyRepository companyRepository;
 
 
 
-    public void sendSurvey(String sheet1, int numCol, File file0) throws Exception {
+    public void sendSurvey(String codeCompany, String sheet1, int numCol, File file0) throws Exception {
+        Company company =   companyRepository.findByCode(codeCompany);
         Logger log = LoggerFactory.getLogger(this.getClass().getName());
         FileInputStream file = null;
         String parentStr = null;
@@ -102,7 +105,7 @@ public class SendSurveyService {
                         SendSurvey enc  = null;//mandoEncuestaRepository.findByNode("-1");
                         VelocityContext context = new VelocityContext();
                         context.put("clientName",lastName + ", " + name);
-                        context.put("urlSurvey","http://localhost:8180/survey?codigoEncuesta="+codigoEncuesta+"&email="+email+"&lang=es");
+                        context.put("urlSurvey","http://localhost:8180/survey?codigoEncuesta="+codigoEncuesta+"&email="+email+"&lang=es" + "&codeCompany="+codeCompany);
                         if (enc == null ){
 
 
@@ -110,7 +113,7 @@ public class SendSurveyService {
                                 boolean sendMail = false;
                                 boolean resent = false;
 
-                                SendSurvey sendSurvey = mandoEncuestaRepository.findByCodigoEncuestaAndEmailAndAnswered(codigoEncuesta,email,false);
+                                SendSurvey sendSurvey = mandoEncuestaRepository.findByCodigoEncuestaAndEmailAndAnsweredAndCompany(codigoEncuesta,email,false, company);
                                 if (sendSurvey == null){
                                     sendMail = true;
                                 }else if (sendSurvey != null){
@@ -122,7 +125,12 @@ public class SendSurveyService {
 
 
                                 if (resent || sendMail){
-                                    emailService.send("ecologicalpaper", email, email,  "ecologicalpaper.com", "template/invitacionSurvey.vsl", context) ;
+                                    //long i1 - 100000;
+
+                                   emailService.send("ecologicalpaper", email, email,  "ecologicalpaper.com", "template/invitacionSurvey.vsl", context) ;
+                                    for (int h = 100000; h>0; h--){
+
+                                    }
                                 }
 
 
@@ -131,6 +139,8 @@ public class SendSurveyService {
 
                                 if (sendMail){
                                     mandoEncuesta = new SendSurvey();
+
+                                    mandoEncuesta.setCompany( company);
                                     mandoEncuesta.setName(name);
                                     mandoEncuesta.setLastName(lastName);
                                     mandoEncuesta.setEmail(email);
@@ -176,7 +186,8 @@ public class SendSurveyService {
     }
 
 
-    public SurveyDTO searchSurvey(@RequestParam String codigoEncuesta, @RequestParam String email, @RequestParam String lang) {
+    public SurveyDTO searchSurvey(@RequestParam String codigoEncuesta, @RequestParam String email, @RequestParam String lang, String codeCompany) {
+        Company company =   companyRepository.findByCode(codeCompany);
         SurveyDTO surveyDTO = new SurveyDTO();
         Survey enc  = encuestaRepository.
                 findByCodigoEncuesta(codigoEncuesta);
@@ -197,7 +208,7 @@ public class SendSurveyService {
 
 
             /**La encuesta la vio*/
-            SendSurvey sendSurvey = mandoEncuestaRepository.findByCodigoEncuestaAndEmailAndAnswered(codigoEncuesta,email,false);
+            SendSurvey sendSurvey = mandoEncuestaRepository.findByCodigoEncuestaAndEmailAndAnsweredAndCompany(codigoEncuesta,email,false, company);
             sendSurvey.setEmailViewed(true);
             mandoEncuestaRepository.save(sendSurvey);
         }
@@ -207,10 +218,13 @@ public class SendSurveyService {
 
     public SurveyDTO procesar( Map<String, Object> response) {
 
+
         Map<String, Object> result = (Map<String, Object>) response.get("result");
         Map<String, Object> origin = (Map<String, Object>) response.get("origin");
         Map<String, Object> surveyDTOs = (Map<String, Object>) response.get("surveyDTO");
 
+        String codeCompany = (String )response.get("codeCompany");
+        Company company =   companyRepository.findByCode(codeCompany);
 
         List<Map<String, Object>> questions = satisfactionService.questions(origin);
 
@@ -235,7 +249,7 @@ public class SendSurveyService {
         );
 
         /**La respondio la vio*/
-        SendSurvey sendSurvey = mandoEncuestaRepository.findByCodigoEncuestaAndEmailAndAnswered(surveyDTOResult.getCodigoEncuesta(),surveyDTOResult.getEmail(),false);
+        SendSurvey sendSurvey = mandoEncuestaRepository.findByCodigoEncuestaAndEmailAndAnsweredAndCompany(surveyDTOResult.getCodigoEncuesta(),surveyDTOResult.getEmail(),false, company);
 
       //  sendSurvey.setAnswered(true);
         mandoEncuestaRepository.save(sendSurvey);

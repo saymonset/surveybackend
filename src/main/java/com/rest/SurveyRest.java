@@ -34,11 +34,12 @@ public class SurveyRest {
     private SendSurveyService sendSurveyService;
 
     @PostMapping("/send")
-    public UploadFileResponse sendSurvey(@RequestParam("file") MultipartFile file) {
+    public UploadFileResponse sendSurvey(@RequestParam("file") MultipartFile file, @RequestParam("codeCompany") String codeCompany) {
 
         try {
             File file1 = FileTool.convert(file);
-            sendSurveyService.sendSurvey("mandarEncuesta",4,file1);
+            //sendSurvey(String codeCompany, String sheet1, int numCol, File file0) throws Exception {
+            sendSurveyService.sendSurvey(codeCompany,"mandarEncuesta",4,file1);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -48,8 +49,8 @@ public class SurveyRest {
 
 
     @RequestMapping(value = "/searchSurvey", method = RequestMethod.GET)
-    public SurveyDTO searchSurvey(@RequestParam String codigoEncuesta, @RequestParam String email, @RequestParam String lang) {
-        SurveyDTO surveyDTO = sendSurveyService.searchSurvey(codigoEncuesta, email,  lang);
+    public SurveyDTO searchSurvey(@RequestParam String codigoEncuesta, @RequestParam String email, @RequestParam String lang,@RequestParam String codeCompany ) {
+        SurveyDTO surveyDTO = sendSurveyService.searchSurvey(codigoEncuesta, email,  lang, codeCompany);
         return  surveyDTO;
     }
 

@@ -1,5 +1,6 @@
 package com.repository.mongo;
 
+import com.model.mongo.Company;
 import com.model.mongo.SendSurvey;
 import org.springframework.data.repository.CrudRepository;
 
@@ -12,7 +13,7 @@ import java.util.Optional;
  */
 public interface SendSurveyRepository extends CrudRepository<SendSurvey, String> {
 
-       SendSurvey findByCodigoEncuestaAndEmailAndAnswered(String codigoEncuesta, String email, boolean answered);
-       List<SendSurvey>   findByCodigoEncuestaAndEmailAndCreatedAt(String codigoEncuesta, String email, Date Date);
+       SendSurvey findByCodigoEncuestaAndEmailAndAnsweredAndCompany(String codigoEncuesta, String email, boolean answered, Company company);
+       List<SendSurvey>   findByCodigoEncuestaAndEmailAndCreatedAtAndCompany(String codigoEncuesta, String email, Date Date, Company company);
 
 }
