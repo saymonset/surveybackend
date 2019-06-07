@@ -12,11 +12,13 @@ public class JwtDTO {
     private String bearer = "Bearer";
     private String codeCompany;
     private String nombreUsuario;
+    private String email;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public JwtDTO(String token, String nombreUsuario, String codeCompany, Collection<? extends GrantedAuthority> authorities) {
+    public JwtDTO(String token, String nombreUsuario, String email, String codeCompany, Collection<? extends GrantedAuthority> authorities) {
         this.token = token;
         this.nombreUsuario = nombreUsuario;
+        this.setEmail(email);
         this.setCodeCompany(codeCompany);
         this.authorities = authorities;
     }
@@ -59,5 +61,13 @@ public class JwtDTO {
 
     public void setCodeCompany(String codeCompany) {
         this.codeCompany = codeCompany;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

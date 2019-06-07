@@ -32,7 +32,7 @@ public class MongoDBConfiguration extends AbstractMongoConfiguration {
 
     @Override
     protected String getDatabaseName() {
-        return "surveyeco";
+        return "ecological";
     }
 
     @Bean

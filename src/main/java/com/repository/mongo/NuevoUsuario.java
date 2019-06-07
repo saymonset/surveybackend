@@ -1,5 +1,8 @@
 package com.repository.mongo;
 
+import com.model.mongo.Company;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Set;
@@ -18,6 +21,7 @@ public class NuevoUsuario {
     @NotBlank
     private String nombreUsuario;
 
+    private String codeCompany;
     @NotBlank
     private String password;
 
@@ -61,5 +65,14 @@ public class NuevoUsuario {
 
     public void setRoles(Set<String> roles) {
         this.roles = roles;
+    }
+
+
+    public String getCodeCompany() {
+        return codeCompany;
+    }
+
+    public void setCodeCompany(String codeCompany) {
+        this.codeCompany = codeCompany;
     }
 }

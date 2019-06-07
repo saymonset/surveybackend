@@ -28,8 +28,8 @@ public class UsuarioService {
     public  boolean existePorEmail(String email){
         return usuarioRepository.existsByEmail(email);
     }
-    public Optional<Usuario> findByEmailAndCompany(String email, Company company){
-        return usuarioRepository.findByEmailAndCompany( email, company);
+    public Optional<Usuario> findByEmail(String email){
+        return usuarioRepository.findByEmail( email);
     }
     public void guardar(Usuario usuario){
         usuarioRepository.save(usuario);

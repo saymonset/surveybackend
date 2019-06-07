@@ -10,7 +10,7 @@ import java.util.List;
  * Created by simon on 5/22/2019.
  */
 public interface TreeModelServicioRepository extends CrudRepository<TreeModelServicio, String> {
-    List<TreeModelServicio> findAll();
-    List<TreeModelServicio> findByParentNode(String parentNode);
+    List<TreeModelServicio> findByCompany(Company company);
+    List<TreeModelServicio> findByParentNodeAndCompany(String parentNode, Company company);
     TreeModelServicio findByNodeAndCompany(String node, Company company);
 }

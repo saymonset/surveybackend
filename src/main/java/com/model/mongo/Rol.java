@@ -2,6 +2,7 @@ package com.model.mongo;
 
 import com.enums.RolNombre;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.EnumType;
@@ -18,11 +19,14 @@ public class Rol {
     @Enumerated(EnumType.STRING)
     @NotNull
     private RolNombre rolNombre;
+    @DBRef
+    private Company company;
     public Rol() {
     }
 
-    public Rol(@NotNull RolNombre rolNombre) {
+    public Rol(@NotNull RolNombre rolNombre, Company company) {
         this.setRolNombre(rolNombre);
+        this.company = company;
     }
 
 
@@ -41,5 +45,13 @@ public class Rol {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }

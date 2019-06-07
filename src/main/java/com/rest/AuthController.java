@@ -2,12 +2,10 @@ package com.rest;
 import com.dto.JwtDTO;
 import com.dto.Mensaje;
 import com.enums.RolNombre;
+import com.model.mongo.Company;
 import com.model.mongo.Rol;
 import com.model.mongo.Usuario;
-import com.repository.mongo.LoginUsuario;
-import com.repository.mongo.NuevoUsuario;
-import com.repository.mongo.RolService;
-import com.repository.mongo.UsuarioService;
+import com.repository.mongo.*;
 import com.security.SecurityConstants;
 import com.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.inject.Inject;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Optional;
@@ -50,6 +49,9 @@ public class AuthController {
     @Autowired
     JwtProvider jwtProvider;
 
+    @Inject
+    private CompanyRepository companyRepository;
+
     @PostMapping("/nuevo")
     public ResponseEntity<?> nuevo(@Valid @RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult){
         if(bindingResult.hasErrors())
@@ -58,6 +60,9 @@ public class AuthController {
             return new ResponseEntity(new Mensaje("ese nombre ya existe"), HttpStatus.BAD_REQUEST);
         if(usuarioService.existePorEmail(nuevoUsuario.getEmail()))
             return new ResponseEntity(new Mensaje("ese email ya existe"), HttpStatus.BAD_REQUEST);
+
+        String codeCompany = nuevoUsuario.getCodeCompany();
+        Company company =   companyRepository.findByCode(codeCompany);
         Usuario usuario =
                 new Usuario(nuevoUsuario.getNombre(), nuevoUsuario.getNombreUsuario(), nuevoUsuario.getEmail(),
                         passwordEncoder.encode(nuevoUsuario.getPassword()));
@@ -66,11 +71,11 @@ public class AuthController {
         for (String rol : rolesStr) {
             switch (rol) {
                 case "admin":
-                    Rol rolAdmin = rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get();
+                    Rol rolAdmin = rolService.getByRolNombreAndCompany(RolNombre.ROLE_ADMIN,company).get();
                     roles.add(rolAdmin);
                     break;
                 default:
-                    Rol rolUser = rolService.getByRolNombre(RolNombre.ROLE_USER).get();
+                    Rol rolUser = rolService.getByRolNombreAndCompany(RolNombre.ROLE_USER, company ).get();
                     roles.add(rolUser);
             }
         }
@@ -80,21 +85,22 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<JwtDTO> login(@Valid @RequestBody LoginUsuario loginUsuario, BindingResult bindingResult){
+    public ResponseEntity<?> login(@Valid @RequestBody LoginUsuario loginUsuario, BindingResult bindingResult){
         if(bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("campos vacíos o email inválido"), HttpStatus.BAD_REQUEST);
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginUsuario.getNombreUsuario(), loginUsuario.getPassword())
+                new UsernamePasswordAuthenticationToken(loginUsuario.getEmail(), loginUsuario.getPassword())
         );
-        Optional<Usuario> usuario =  usuarioService.getByNombreUsuario(loginUsuario.getNombreUsuario());
+        Optional<Usuario> usuario =  usuarioService.findByEmail(loginUsuario.getEmail());
         String codeCompany = "";
         if (usuario.isPresent()){
             codeCompany =  usuario.get().getCompany().getCode();
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtProvider.generateToken(authentication);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            JwtDTO jwtDTO = new JwtDTO(jwt, userDetails.getUsername(),usuario.get().getEmail(), codeCompany, userDetails.getAuthorities());
+            return new ResponseEntity<JwtDTO>(jwtDTO, HttpStatus.OK);
         }
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtProvider.generateToken(authentication);
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        JwtDTO jwtDTO = new JwtDTO(jwt, userDetails.getUsername(), codeCompany, userDetails.getAuthorities());
-        return new ResponseEntity<JwtDTO>(jwtDTO, HttpStatus.OK);
+        return new ResponseEntity<>(new Object(), HttpStatus.BAD_REQUEST);
     }
 }

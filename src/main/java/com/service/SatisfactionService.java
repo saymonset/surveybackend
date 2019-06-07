@@ -53,7 +53,7 @@ public class SatisfactionService {
         return npsType;
     }
 
-    public void getSatisfactionMatrix(List<Map<String, Object>> simplifySurvey, String evaluar, SendSurvey sendSurvey, Survey survey ) {
+    public void getSatisfactionMatrix(List<Map<String, Object>> simplifySurvey, String evaluar, SendSurvey sendSurvey, Survey survey, Company company ) {
         float count = 0;
         float satisfaction = 0;
         boolean exist = false;
@@ -76,6 +76,7 @@ public class SatisfactionService {
                                 int  point = Integer.valueOf(stkPoint.nextToken());
                                 if (Constant.PROCESO_REGISTRO.equalsIgnoreCase(evaluar)){
                                     ProcesoRegistroResponse procesoRegistroResponse = new ProcesoRegistroResponse();
+                                    procesoRegistroResponse.setCompany(company);
                                     procesoRegistroResponse.setCodigoEncuesta(sendSurvey.getCodigoEncuesta());
                                     procesoRegistroResponse.setDivisionServicios(survey.getDivisionServicios());
                                     procesoRegistroResponse.setDivisionTerritorial(survey.getDivisionTerritorial());
@@ -91,6 +92,7 @@ public class SatisfactionService {
                                 if (Constant.PROCESO_HABITACION.equalsIgnoreCase(evaluar)){
 
                                     ProcesoHabitacionResponse procesoRegistroResponse = new ProcesoHabitacionResponse();
+                                    procesoRegistroResponse.setCompany(company);
                                     procesoRegistroResponse.setCodigoEncuesta(sendSurvey.getCodigoEncuesta());
                                     procesoRegistroResponse.setDivisionServicios(survey.getDivisionServicios());
                                     procesoRegistroResponse.setDivisionTerritorial(survey.getDivisionTerritorial());
@@ -105,6 +107,7 @@ public class SatisfactionService {
 
                                 if (Constant.PROCESO_PERSONAL.equalsIgnoreCase(evaluar)){
                                     ProcesoPersonalResponse procesoRegistroResponse = new ProcesoPersonalResponse();
+                                    procesoRegistroResponse.setCompany(company);
                                     procesoRegistroResponse.setCodigoEncuesta(sendSurvey.getCodigoEncuesta());
                                     procesoRegistroResponse.setDivisionServicios(survey.getDivisionServicios());
                                     procesoRegistroResponse.setDivisionTerritorial(survey.getDivisionTerritorial());
@@ -119,6 +122,7 @@ public class SatisfactionService {
 
                                 if (Constant.PROCESO_COMIDA.equalsIgnoreCase(evaluar)){
                                     ProcesoComidaResponse procesoRegistroResponse = new ProcesoComidaResponse();
+                                    procesoRegistroResponse.setCompany(company);
                                     procesoRegistroResponse.setCodigoEncuesta(sendSurvey.getCodigoEncuesta());
                                     procesoRegistroResponse.setDivisionServicios(survey.getDivisionServicios());
                                     procesoRegistroResponse.setDivisionTerritorial(survey.getDivisionTerritorial());
@@ -133,6 +137,7 @@ public class SatisfactionService {
 
                                 if (Constant.PROCESO_SALIDA.equalsIgnoreCase(evaluar)){
                                     ProcesoSalidaResponse procesoRegistroResponse = new ProcesoSalidaResponse();
+                                    procesoRegistroResponse.setCompany(company);
                                     procesoRegistroResponse.setCodigoEncuesta(sendSurvey.getCodigoEncuesta());
                                     procesoRegistroResponse.setDivisionServicios(survey.getDivisionServicios());
                                     procesoRegistroResponse.setDivisionTerritorial(survey.getDivisionTerritorial());

@@ -10,5 +10,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface EncuestaRepository  extends CrudRepository<Survey, String> {
     Survey findByFileEncuestaAndDivisionTerritorialAndDivisionServiciosAndCompanyAndCodigoEncuesta(String fileEncuesta, String divisionTerritorial, String divisionServicios, Company company,String codigoEncuesta);
 
-    Survey findByCodigoEncuesta(String codigoEncuesta);
+    Survey findByCodigoEncuestaAndCompany(String codigoEncuesta,  Company company);
 }

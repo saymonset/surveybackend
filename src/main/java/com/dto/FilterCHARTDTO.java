@@ -8,6 +8,7 @@ public class FilterCHARTDTO {
     private String  servicioNode;
     private String  dateBegin;
     private String  dateEnd;
+    private String codeCompany;
 
     public String getTerritorialNode() {
         return territorialNode;
@@ -39,5 +40,13 @@ public class FilterCHARTDTO {
 
     public void setDateEnd(String dateEnd) {
         this.dateEnd = dateEnd;
+    }
+
+    public String getCodeCompany() {
+        return codeCompany;
+    }
+
+    public void setCodeCompany(String codeCompany) {
+        this.codeCompany = codeCompany;
     }
 }

@@ -4,9 +4,11 @@ import com.dto.ChartCHARTDTO;
 import com.dto.FilterCHARTDTO;
 import com.dto.NpsChartDTO;
 import com.dto.Serie0ChartDTO;
+import com.model.mongo.Company;
 import com.model.mongo.NetPromoterScore;
 import com.model.mongo.TreeModelServicio;
 import com.model.mongo.TreeModelTerritorial;
+import com.repository.mongo.CompanyRepository;
 import com.repository.mongo.NetPromoterScoreRepository;
 import com.tools.Calc;
 import com.tools.Constant;
@@ -37,6 +39,8 @@ public class NetPromoterScoreService {
     private TreeTerritorialService treeTerritorialService;
     @Inject
     private TreeServicioService treeServicioService;
+    @Inject
+    private CompanyRepository companyRepository;
 
     private int acumdetractor = 0;
     private int acumpromotores = 0;
@@ -45,6 +49,8 @@ public class NetPromoterScoreService {
     private float promotoresValue = 0f;
     private float pasivosValue = 0f;
     public NpsChartDTO searchNpsSurvey(@RequestBody FilterCHARTDTO filterCHARTDTO) {
+
+        Company company =   companyRepository.findByCode(filterCHARTDTO.getCodeCompany());
         NpsChartDTO npsChartDTO = new NpsChartDTO();
         List<TreeModelServicio> marcaServicios = null;
         List<TreeModelTerritorial> marcaTerritorios = null;
@@ -54,10 +60,10 @@ public class NetPromoterScoreService {
         ArrayList<String> marcas = new ArrayList<>();
         boolean isProcesar = false;
         if (null != filterCHARTDTO && filterCHARTDTO.getTerritorialNode() == null){
-            filterCHARTDTO.setTerritorialNode(treeTerritorialService.getTree().getNode());
+            filterCHARTDTO.setTerritorialNode(treeTerritorialService.getTree(company).getNode());
         }
         if (null != filterCHARTDTO && filterCHARTDTO.getTerritorialNode() != null){
-            marcaTerritorios = treeTerritorialService.getMarcaChilds(filterCHARTDTO.getTerritorialNode());
+            marcaTerritorios = treeTerritorialService.getMarcaChilds(filterCHARTDTO.getTerritorialNode(), company);
             if (null != marcaTerritorios){
                 marcaTerritorios.stream().forEach(e->{
                     territorials.add(e.getDivisionTerritorial());
@@ -67,11 +73,11 @@ public class NetPromoterScoreService {
         }
 
         if (null != filterCHARTDTO && filterCHARTDTO.getServicioNode() == null){
-            filterCHARTDTO.setServicioNode(treeServicioService.getTree().getNode());
+            filterCHARTDTO.setServicioNode(treeServicioService.getTree(company).getNode());
         }
 
         if (null != filterCHARTDTO && filterCHARTDTO.getServicioNode() != null){
-            marcaServicios = treeServicioService.getMarcaChilds(filterCHARTDTO.getServicioNode());
+            marcaServicios = treeServicioService.getMarcaChilds(filterCHARTDTO.getServicioNode(), company);
             if (null != marcaServicios ){
                 marcaServicios.stream().forEach((e->{
                     marcas.add(e.getDivisionServicios());
@@ -116,7 +122,7 @@ public class NetPromoterScoreService {
             isProcesar = true;
         }
 
-        Map<String,Object> npsMap = nps(territorials,  marcas, start,  end);
+        Map<String,Object> npsMap = nps(territorials,  marcas, start,  end, company);
 
         if (isProcesar ){
             npsChartDTO =  npsValuesChart((Float)npsMap.get(typeNPS.detractores),
@@ -186,7 +192,7 @@ public class NetPromoterScoreService {
     }
 */
 
-    public Map<String,Object> nps(List<String> territorials, List<String> marcas, Date start, Date end) {
+    public Map<String,Object> nps(List<String> territorials, List<String> marcas, Date start, Date end, Company company) {
         Map<String,Object> result = new HashMap<>();
         List<NetPromoterScore> detractores = null;
         List<NetPromoterScore> pasivos = null;
@@ -194,22 +200,22 @@ public class NetPromoterScoreService {
         int contPromotor = 0;
 
         if (start != null && end != null) {
-            detractores = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBetween(territorials, marcas, typeNPS.detractores,  start,  end);
-            pasivos = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBetween(territorials, marcas, typeNPS.pasivos,  start,  end);
-            promotores = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBetween(territorials, marcas, typeNPS.promotores,  start,  end);
+            detractores = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBetweenAndCompany(territorials, marcas, typeNPS.detractores,  start,  end, company);
+            pasivos = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBetweenAndCompany(territorials, marcas, typeNPS.pasivos,  start,  end, company);
+            promotores = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBetweenAndCompany(territorials, marcas, typeNPS.promotores,  start,  end, company);
 
         }else if  (start != null) {
-            detractores = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateAfter(territorials, marcas,   typeNPS.detractores,  start);
-            pasivos = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateAfter(territorials, marcas,   typeNPS.pasivos,  start);
-            promotores = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateAfter(territorials, marcas,   typeNPS.promotores,  start);
+            detractores = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateAfterAndCompany(territorials, marcas,   typeNPS.detractores,  start, company);
+            pasivos = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateAfterAndCompany(territorials, marcas,   typeNPS.pasivos,  start, company);
+            promotores = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateAfterAndCompany(territorials, marcas,   typeNPS.promotores,  start, company);
         }else if  (end != null) {
-            detractores = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBefore(territorials, marcas,   typeNPS.detractores,  end);
-            pasivos = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBefore(territorials, marcas,   typeNPS.pasivos,  end);
-            promotores = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBefore(territorials, marcas,   typeNPS.promotores,  end);
+            detractores = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBeforeAndCompany(territorials, marcas,   typeNPS.detractores,  end, company);
+            pasivos = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBeforeAndCompany(territorials, marcas,   typeNPS.pasivos,  end, company);
+            promotores = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBeforeAndCompany(territorials, marcas,   typeNPS.promotores,  end, company);
         }else  if (start == null && end == null){
-            detractores = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndType(territorials, marcas,     typeNPS.detractores);
-            pasivos = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndType(territorials, marcas,     typeNPS.pasivos);
-            promotores = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndType(territorials, marcas,     typeNPS.promotores);
+            detractores = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndCompany(territorials, marcas,     typeNPS.detractores, company);
+            pasivos = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndCompany(territorials, marcas,     typeNPS.pasivos, company);
+            promotores = netPromoterScoreRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndCompany(territorials, marcas,     typeNPS.promotores, company);
         }
 
 

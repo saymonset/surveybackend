@@ -190,7 +190,7 @@ public class SendSurveyService {
         Company company =   companyRepository.findByCode(codeCompany);
         SurveyDTO surveyDTO = new SurveyDTO();
         Survey enc  = encuestaRepository.
-                findByCodigoEncuesta(codigoEncuesta);
+                findByCodigoEncuestaAndCompany(codigoEncuesta, company);
         if (enc != null){
             String nameFile = enc.getFileEncuesta().substring(0,enc.getFileEncuesta().lastIndexOf("."));
             Resource resource = toJson.getResource(nameFile, lang);
@@ -256,6 +256,7 @@ public class SendSurveyService {
 
 
         RawSurveyResponse rawSurveyResponse = new RawSurveyResponse();
+        rawSurveyResponse.setCompany(company);
         rawSurveyResponse.setOrigin(origin);
         rawSurveyResponse.setResult(result);
         rawSurveyResponse.setSendSurvey(sendSurvey);
@@ -263,23 +264,24 @@ public class SendSurveyService {
         rawSurveyRepository.save(rawSurveyResponse);
 
 
-        Survey survey = surveyRepository.findByCodigoEncuesta(surveyDTOResult.getCodigoEncuesta());
+        Survey survey = surveyRepository.findByCodigoEncuestaAndCompany(surveyDTOResult.getCodigoEncuesta(), company);
 
         List<Map<String, Object>> simplifySurvey = satisfactionService.simplifyAll(result, questions);
 
-         satisfactionService.getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_REGISTRO, sendSurvey, survey);
+         satisfactionService.getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_REGISTRO, sendSurvey, survey, company);
 
-        satisfactionService.getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_HABITACION, sendSurvey, survey);
+        satisfactionService.getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_HABITACION, sendSurvey, survey, company);
 
-        satisfactionService.getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_PERSONAL, sendSurvey, survey);
+        satisfactionService.getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_PERSONAL, sendSurvey, survey, company);
 
-        satisfactionService.getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_COMIDA, sendSurvey, survey);
+        satisfactionService.getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_COMIDA, sendSurvey, survey, company);
 
-        satisfactionService.getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_SALIDA, sendSurvey, survey);
+        satisfactionService.getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_SALIDA, sendSurvey, survey, company);
 
         int point = satisfactionService.getSatisfaction(simplifySurvey, Constant.SATISFACTION,"rating") ;
         if (point > 0){
             SatisfactionResponse satisfactionResponse = new SatisfactionResponse();
+            satisfactionResponse.setCompany(company);
             satisfactionResponse.setSendSurvey(sendSurvey);
             satisfactionResponse.setCodigoEncuesta(survey.getCodigoEncuesta());
             satisfactionResponse.setDivisionServicios(survey.getDivisionServicios());
@@ -296,6 +298,7 @@ public class SendSurveyService {
 
         point = satisfactionService.getSatisfaction(simplifySurvey, Constant.NPS_SCORE,"rating") ;
         if (point > 0) {
+            netPromoterScore.setCompany(company);
             netPromoterScore.setSendSurvey(sendSurvey);
             netPromoterScore.setCodigoEncuesta(survey.getCodigoEncuesta());
             netPromoterScore.setDivisionServicios(survey.getDivisionServicios());

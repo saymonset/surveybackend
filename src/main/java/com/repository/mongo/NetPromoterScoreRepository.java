@@ -1,5 +1,6 @@
 package com.repository.mongo;
 
+import com.model.mongo.Company;
 import com.model.mongo.NetPromoterScore;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -12,19 +13,19 @@ import java.util.List;
  * Created by simon on 5/31/2019.
  */
 public interface NetPromoterScoreRepository extends CrudRepository<NetPromoterScore, String> {
-    List<NetPromoterScore> findByDivisionTerritorialInAndDivisionServiciosInAndResponsedateBetween(List<String> territorialsIds, List<String> marcasIds, Date start, Date end);
+    List<NetPromoterScore> findByDivisionTerritorialInAndDivisionServiciosInAndResponsedateBetweenAndCompany(List<String> territorialsIds, List<String> marcasIds, Date start, Date end, Company company);
 
 
 
-    List<NetPromoterScore> findByDivisionTerritorialInAndDivisionServiciosInAndResponsedateAfter(List<String> territorialsIds, List<String> marcasIds, Date start);
-    List<NetPromoterScore> findByDivisionTerritorialInAndDivisionServiciosInAndResponsedateBefore(List<String> territorialsIds, List<String> marcasIds, Date end);
-    List<NetPromoterScore> findByDivisionTerritorialInAndDivisionServiciosIn(List<String> territorialsIds, List<String> marcasIds, Date start, Date end);
+    List<NetPromoterScore> findByDivisionTerritorialInAndDivisionServiciosInAndResponsedateAfterAndCompany(List<String> territorialsIds, List<String> marcasIds, Date start, Company company);
+    List<NetPromoterScore> findByDivisionTerritorialInAndDivisionServiciosInAndResponsedateBeforeAndCompany(List<String> territorialsIds, List<String> marcasIds, Date end, Company company);
+    List<NetPromoterScore> findByDivisionTerritorialInAndDivisionServiciosInAndCompany(List<String> territorialsIds, List<String> marcasIds, Date start, Date end, Company company);
 
-    List<NetPromoterScore> findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBetween(List<String> territorialsIds, List<String> marcasIds,String type, Date start, Date end);
-    List<NetPromoterScore> findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateAfter(List<String> territorialsIds, List<String> marcasIds,String type, Date start);
-    List<NetPromoterScore> findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBefore(List<String> territorialsIds, List<String> marcasIds,String type, Date end);
-    List<NetPromoterScore> findByDivisionTerritorialInAndDivisionServiciosInAndType(List<String> territorialsIds, List<String> marcasIds, String type);
+    List<NetPromoterScore> findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBetweenAndCompany(List<String> territorialsIds, List<String> marcasIds,String type, Date start, Date end, Company company);
+    List<NetPromoterScore> findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateAfterAndCompany(List<String> territorialsIds, List<String> marcasIds,String type, Date start, Company company);
+    List<NetPromoterScore> findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBeforeAndCompany(List<String> territorialsIds, List<String> marcasIds,String type, Date end, Company company);
+    List<NetPromoterScore> findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndCompany(List<String> territorialsIds, List<String> marcasIds, String type, Company company);
 
-    List<NetPromoterScore> findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateGreaterThanEqualAndResponsedateLessThanEqual(List<String> territorialsIds, List<String> marcasIds,String type, Date start, Date end);
+    List<NetPromoterScore> findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateGreaterThanEqualAndResponsedateLessThanEqualAndCompany(List<String> territorialsIds, List<String> marcasIds,String type, Date start, Date end, Company company);
 }
 

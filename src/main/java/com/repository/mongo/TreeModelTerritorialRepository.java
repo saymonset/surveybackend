@@ -11,7 +11,7 @@ import java.util.List;
  */
 
 public interface TreeModelTerritorialRepository extends CrudRepository<TreeModelTerritorial, String> {
-    List<TreeModelTerritorial> findAll();
-    List<TreeModelTerritorial> findByParentNode(String parentNode);
+    List<TreeModelTerritorial> findByCompany(Company company);
+    List<TreeModelTerritorial> findByParentNodeAndCompany(String parentNode, Company company);
     TreeModelTerritorial findByNodeAndCompany(String node, Company company);
 }

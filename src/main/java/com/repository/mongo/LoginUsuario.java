@@ -6,8 +6,11 @@ import javax.validation.constraints.NotBlank;
  * Created by simon on 6/4/2019.
  */
 public class LoginUsuario {
-    @NotBlank
+   // @NotBlank
     private String nombreUsuario;
+
+    @NotBlank
+    private String email;
 
     @NotBlank
     private String password;
@@ -26,5 +29,13 @@ public class LoginUsuario {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

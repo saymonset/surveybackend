@@ -62,12 +62,12 @@ public class DataFillService {
             file1 = ResourceUtils.getFile(
                     "classpath:data/datamonitorear/data.xlsx");
             //readAllrow("divisiónTerritorial", 8,file1);
-            Company company =   readCompany("company", 2,file1);
-            saveUsuario("oraclefedora@gmail.com", company);
-            createroles(  company);
-            cargarEncuestasExcel(company);
-            createTerritorialTreeExcel(company);
-            createServicioTreeExcel(company);
+            Company company =   readCompany("company", 3,file1);
+            usuario(company.getEmail(), company);
+            rol(  company);
+            survey(company);
+            treeModelTerritorial(company);
+            treeModelSservicio(company);
 
         }catch (Exception e) {
             e.printStackTrace();
@@ -75,7 +75,7 @@ public class DataFillService {
 
     }
 
-    private void cargarEncuestasExcel(Company company) {
+    private void survey(Company company) {
 
         File file1 = null;
         try {
@@ -94,7 +94,7 @@ public class DataFillService {
 
 
 
-    private void createTerritorialTreeExcel(Company company) {
+    private void treeModelTerritorial(Company company) {
 
         File file1 = null;
         try {
@@ -110,7 +110,7 @@ public class DataFillService {
     }
 
 
-    private void createServicioTreeExcel(Company company) {
+    private void treeModelSservicio(Company company) {
 
         File file1 = null;
         try {
@@ -255,7 +255,7 @@ public class DataFillService {
                         /**Si no existe el parentNode.. lo creamos*/
                         String code = row.getCell(node++).getStringCellValue();
                         String name = row.getCell(node++).getStringCellValue();
-
+                        String email = row.getCell(node++).getStringCellValue();
 
                           enc  = companyRepository.
                                 findByCode(code);
@@ -263,11 +263,12 @@ public class DataFillService {
                             enc = new Company ();
                             enc.setCode(code);
                             enc.setName(name);
+                            enc.setEmail(email);
                             companyRepository.save(enc);
                         }
 
 
-                        node += 2;
+                        node += 3;
                     }
                 }
             }
@@ -280,30 +281,21 @@ public class DataFillService {
     }
 
 
-    public void createroles( Company company) throws Exception {
+    public void rol(Company company) throws Exception {
 
-        //Optional<Rol> rolService.findByRolNombre();
-        RolNombre rolNombre = RolNombre.ROLE_ADMIN;
+        RolNombre roleAdmin = RolNombre.ROLE_ADMIN;
         RolNombre rolUser = RolNombre.ROLE_USER ;
-        Rol rol = new Rol(rolNombre);
-        rolService.save(rol);
-        rol = new Rol(rolUser);
-        rolService.save(rol);
-      //  usuarioService.sa
-
-                      /*  Survey enc  = encuestaRepository.
-                                findByFileEncuestaAndDivisionTerritorialAndDivisionServiciosAndCompany(encuestaFile,divisionTerritorial,
-                                        divisionServicios,company);
-                      //  if (enc == null ){
-
-                            encuesta = new Survey();
-                            encuesta.setCompany(company);
-                            encuesta.setCodigoEncuesta(codigoEncuesta);
-                            encuesta.setDivisionTerritorial(divisionTerritorial);
-                            encuesta.setDivisionServicios( divisionServicios);
-                            encuesta.setFileEncuesta(encuestaFile);
-                            encuestaRepository.save(encuesta);*/
-
+        Rol rol = null;
+                Optional<Rol> rolBd =  rolService.getByRolNombreAndCompany(roleAdmin, company);
+        if (!rolBd.isPresent()){
+            rol = new Rol(roleAdmin, company);
+            rolService.save(rol);
+        }
+        rolBd =  rolService.getByRolNombreAndCompany(rolUser, company);
+        if (!rolBd.isPresent()){
+            rol = new Rol(rolUser, company);
+            rolService.save(rol);
+        }
     }
 
 
@@ -386,20 +378,20 @@ public class DataFillService {
     }
 
 
-    public void saveUsuario(String email, Company company){
+    public void usuario(String email, Company company){
 
-        Optional<Usuario> usu = usuarioService.findByEmailAndCompany(email,company);
+        Optional<Usuario> usu = usuarioService.findByEmail(email);
         if (!usu.isPresent()){
             Usuario usuario =
                     new Usuario("admin", "admin",email,
-                            passwordEncoder.encode("password"));
+                            passwordEncoder.encode("123456"));
 
             Set<Rol> roles = new HashSet<>();
           /*  Rol rolAdmin = rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get();
             roles.add(rolAdmin);
             Rol rolUser = rolService.getByRolNombre(RolNombre.ROLE_USER).get();*/
-            roles.add(new Rol(RolNombre.ROLE_ADMIN));
-            roles.add(new Rol(RolNombre.ROLE_USER));
+            roles.add(new Rol(RolNombre.ROLE_ADMIN, company));
+            roles.add(new Rol(RolNombre.ROLE_USER, company));
             usuario.setRoles(roles);
             usuario.setCompany(company);
             usuarioService.guardar(usuario);
