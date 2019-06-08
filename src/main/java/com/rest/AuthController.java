@@ -94,7 +94,10 @@ public class AuthController {
         Optional<Usuario> usuario =  usuarioService.findByEmail(loginUsuario.getEmail());
         String codeCompany = "";
         if (usuario.isPresent()){
-            codeCompany =  usuario.get().getCompany().getCode();
+            if ( usuario.get().getCompany() != null){
+                codeCompany =  usuario.get().getCompany().getCode();
+            }
+
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = jwtProvider.generateToken(authentication);
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();

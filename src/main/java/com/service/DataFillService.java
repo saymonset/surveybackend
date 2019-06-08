@@ -50,24 +50,25 @@ public class DataFillService {
     @Autowired
     UsuarioService usuarioService;
     // CREATE DATA /////////////////////////////////////////////////////////////
-    public void createAll() {
-        cargarCompanyExcel();
+    public void createAll(File file1 ) {
+        usuarioRoot("root@gmail.com");
+        cargarCompanyExcel(file1);
 
     }
 
-    private void cargarCompanyExcel() {
+    private void cargarCompanyExcel(File file1 ) {
 
-        File file1 = null;
+     //   File file1 = null;
         try {
-            file1 = ResourceUtils.getFile(
-                    "classpath:data/datamonitorear/data.xlsx");
+           /* file1 = ResourceUtils.getFile(
+                    "classpath:data/datamonitorear/data.xlsx");*/
             //readAllrow("divisiónTerritorial", 8,file1);
             Company company =   readCompany("company", 3,file1);
             usuario(company.getEmail(), company);
             rol(  company);
-            survey(company);
-            treeModelTerritorial(company);
-            treeModelSservicio(company);
+            survey(company, file1);
+            treeModelTerritorial(company, file1);
+            treeModelSservicio(company, file1);
 
         }catch (Exception e) {
             e.printStackTrace();
@@ -75,12 +76,12 @@ public class DataFillService {
 
     }
 
-    private void survey(Company company) {
+    private void survey(Company company, File file1) {
 
-        File file1 = null;
+       // File file1 = null;
         try {
-            file1 = ResourceUtils.getFile(
-                    "classpath:data/datamonitorear/data.xlsx");
+           /* file1 = ResourceUtils.getFile(
+                    "classpath:data/datamonitorear/data.xlsx");*/
             //readAllrow("divisiónTerritorial", 8,file1);
             readEncuestas("Encuestas", 4,file1, company);
 
@@ -94,12 +95,12 @@ public class DataFillService {
 
 
 
-    private void treeModelTerritorial(Company company) {
+    private void treeModelTerritorial(Company company,  File file1) {
 
-        File file1 = null;
+      // File file1 = null;
         try {
-            file1 = ResourceUtils.getFile(
-                    "classpath:data/datamonitorear/data.xlsx");
+            /*file1 = ResourceUtils.getFile(
+                    "classpath:data/datamonitorear/data.xlsx");*/
             //readAllrow("divisiónTerritorial", 8,file1);
             readAllrow("divisiónTerritorial", 8,file1,company);
 
@@ -110,12 +111,12 @@ public class DataFillService {
     }
 
 
-    private void treeModelSservicio(Company company) {
+    private void treeModelSservicio(Company company, File file1) {
 
-        File file1 = null;
+       // File file1 = null;
         try {
-            file1 = ResourceUtils.getFile(
-                    "classpath:data/datamonitorear/data.xlsx");
+        /*    file1 = ResourceUtils.getFile(
+                    "classpath:data/datamonitorear/data.xlsx");*/
             //readAllrow("divisiónTerritorial", 8,file1);
             servicioReadAllrow("divisiónServicios", 8,file1, company);
 
@@ -377,6 +378,20 @@ public class DataFillService {
         }
     }
 
+
+    public void usuarioRoot(String email){
+
+        Optional<Usuario> usu = usuarioService.findByEmail(email);
+        if (!usu.isPresent()){
+            Usuario usuario =
+                    new Usuario("root", "root",email,
+                            passwordEncoder.encode("123456"));
+            Set<Rol> roles = new HashSet<>();
+            usuario.setRoles(roles);
+            usuarioService.guardar(usuario);
+        }
+
+    }
 
     public void usuario(String email, Company company){
 
