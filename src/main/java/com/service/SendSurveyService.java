@@ -186,6 +186,21 @@ public class SendSurveyService {
     }
 
 
+
+
+    public Boolean findByCompany(String codeCompany) {
+        boolean isExist = false;
+        Company company =   companyRepository.findByCode(codeCompany);
+
+        List<Survey> encs  = encuestaRepository.
+                findByCompany(company);
+        if (encs != null && encs.size() >  0 ){
+            isExist = true;
+        }
+        return isExist;
+    }
+
+
     public SurveyDTO searchSurvey(@RequestParam String codigoEncuesta, @RequestParam String email, @RequestParam String lang, String codeCompany) {
         Company company =   companyRepository.findByCode(codeCompany);
         SurveyDTO surveyDTO = new SurveyDTO();

@@ -54,7 +54,11 @@ public class SurveyRest {
         return  surveyDTO;
     }
 
-
+    @RequestMapping(value = "/existSurveyBd", method = RequestMethod.GET)
+    public Boolean existSurveyBd(@RequestParam String codeCompany ) {
+        boolean result = sendSurveyService.findByCompany(codeCompany );
+        return result;
+    }
 
     @RequestMapping(value = "/sent/result",method = RequestMethod.POST)
     public ResponseEntity<?> procesar(@RequestBody Map<String, Object> response) {
