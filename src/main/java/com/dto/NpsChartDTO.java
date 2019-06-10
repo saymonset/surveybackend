@@ -1,5 +1,7 @@
 package com.dto;
 
+import com.tools.Constant;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,13 +18,12 @@ public class NpsChartDTO {
 
     public NpsChartDTO() {
         // promotor
-        getColors().add("#32f253");
+        getColors().add(Constant.PROMOTOR);
         //Pasivo
-        getColors().add("#f6ed16");
+        getColors().add( Constant.PASIVO);
         //Detractor
-        getColors().add("#0f0101");
+        getColors().add(Constant.DETRACTOR);
     }
-
 
     public ChartCHARTDTO getChart() {
         return chart;

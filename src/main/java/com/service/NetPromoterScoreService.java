@@ -254,9 +254,9 @@ public class NetPromoterScoreService {
 
         List<Object> operationsummaryRescue2 = new ArrayList<>();
 
-        operationsummaryRescue2.add(new KeyValueCHARTDTO(typeNPS.pasivos, pasivos, "#f6ed16"));
-        operationsummaryRescue2.add( new KeyValueCHARTDTO(typeNPS.promotores, promotores, "#32f253"));
-        operationsummaryRescue2.add(new KeyValueCHARTDTO(typeNPS.detractores, detractores, "#0f0101"));
+        operationsummaryRescue2.add(new KeyValueCHARTDTO(typeNPS.pasivos, pasivos, Constant.PASIVO));
+        operationsummaryRescue2.add( new KeyValueCHARTDTO(typeNPS.promotores, promotores, Constant.PROMOTOR));
+        operationsummaryRescue2.add(new KeyValueCHARTDTO(typeNPS.detractores, detractores, Constant.DETRACTOR));
 
         nerie0ChartDTO.setData(operationsummaryRescue2);
 

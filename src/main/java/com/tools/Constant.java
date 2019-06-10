@@ -22,6 +22,10 @@ public interface Constant {
 
     int NUM_BARRA_NPS = 10;
 
+    String PROMOTOR = "#32f253";
+    String PASIVO = "#f6ed16";
+    String DETRACTOR = "#e7300f";
+
 
 
 
