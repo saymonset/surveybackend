@@ -4,10 +4,18 @@ package com.dto;
  * Created by simon on 5/31/2019.
  */
 public class TitleCHARTDTO {
-   private String  text= "NPS - Net Promoter Score";
+    private String  text= "NPS - Net Promoter Score";
     private String  align ="center";
-    private String verticalAlign = "middle";
+    // The vertical alignment of the legend box. Can be one of top, middle or bottom
+    private String verticalAlign = "top";
     private int y =  40;
+
+
+    public TitleCHARTDTO() {
+    }
+    public TitleCHARTDTO(String text) {
+        this.text = text;
+    }
 
     public String getText() {
         return text;

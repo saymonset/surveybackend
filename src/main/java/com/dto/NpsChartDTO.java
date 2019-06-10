@@ -1,7 +1,6 @@
 package com.dto;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -13,6 +12,16 @@ public class NpsChartDTO {
     private TooltipCHARTDTO tooltip = new TooltipCHARTDTO();
     private PlotOptionsCHARTDTO plotOptions = new PlotOptionsCHARTDTO();
     private List<Serie0ChartDTO> series = new ArrayList<Serie0ChartDTO>();
+   private  List<String> colors = new ArrayList<>();
+
+    public NpsChartDTO() {
+        // promotor
+        getColors().add("#32f253");
+        //Pasivo
+        getColors().add("#f6ed16");
+        //Detractor
+        getColors().add("#0f0101");
+    }
 
 
     public ChartCHARTDTO getChart() {
@@ -53,5 +62,14 @@ public class NpsChartDTO {
 
     public void setSeries(List<Serie0ChartDTO> series) {
         this.series = series;
+    }
+
+
+    public List<String> getColors() {
+        return colors;
+    }
+
+    public void setColors(List<String> colors) {
+        this.colors = colors;
     }
 }

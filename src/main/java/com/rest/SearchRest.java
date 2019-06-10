@@ -20,15 +20,17 @@ public class SearchRest {
 
 
 
-    //@RequestMapping(value = "/nps", method = RequestMethod.POST)
     @PostMapping("/nps")
-   // public NpsChartDTO searchSurvey(@RequestParam String territorialNode, @RequestParam String servicioNode, @RequestParam Date dateBegin, @RequestParam Date dateEnd) {
     public NpsChartDTO searchNpsSurvey(@RequestBody FilterCHARTDTO filterCHARTDTO) {
         String login = SecurityUtils.getCurrentLogin();
         return searchService.searchNpsSurvey(filterCHARTDTO);
     }
 
-
+    @PostMapping("/satisfactionGeneral")
+    public com.dto.piecircle.SatisfactionGeneralCHARTDTO searchSatisfactionGeneralSurvey(@RequestBody FilterCHARTDTO filterCHARTDTO) {
+        String login = SecurityUtils.getCurrentLogin();
+        return searchService.searchSatisfactionGeneralSurvey(filterCHARTDTO);
+    }
 
 
 }

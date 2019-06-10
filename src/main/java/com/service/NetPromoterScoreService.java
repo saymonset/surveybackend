@@ -1,9 +1,6 @@
 package com.service;
 
-import com.dto.ChartCHARTDTO;
-import com.dto.FilterCHARTDTO;
-import com.dto.NpsChartDTO;
-import com.dto.Serie0ChartDTO;
+import com.dto.*;
 import com.model.mongo.Company;
 import com.model.mongo.NetPromoterScore;
 import com.model.mongo.TreeModelServicio;
@@ -48,6 +45,7 @@ public class NetPromoterScoreService {
     private float detractorValue = 0f;
     private float promotoresValue = 0f;
     private float pasivosValue = 0f;
+
     public NpsChartDTO searchNpsSurvey(@RequestBody FilterCHARTDTO filterCHARTDTO) {
 
         Company company =   companyRepository.findByCode(filterCHARTDTO.getCodeCompany());
@@ -134,28 +132,108 @@ public class NetPromoterScoreService {
 
 
 
+    public com.dto.piecircle.SatisfactionGeneralCHARTDTO searchSatisfactionGeneralSurvey(@RequestBody FilterCHARTDTO filterCHARTDTO) {
+
+        Company company =   companyRepository.findByCode(filterCHARTDTO.getCodeCompany());
+       // SatisfactionGeneralCHARTDTO npsChartDTO = new SatisfactionGeneralCHARTDTO();
+        List<TreeModelServicio> marcaServicios = null;
+        List<TreeModelTerritorial> marcaTerritorios = null;
+        Date start = null;
+        Date end = null;
+        ArrayList<String> territorials = new ArrayList<>();
+        ArrayList<String> marcas = new ArrayList<>();
+        boolean isProcesar = false;
+        if (null != filterCHARTDTO && filterCHARTDTO.getTerritorialNode() == null){
+            filterCHARTDTO.setTerritorialNode(treeTerritorialService.getTree(company).getNode());
+        }
+        if (null != filterCHARTDTO && filterCHARTDTO.getTerritorialNode() != null){
+            marcaTerritorios = treeTerritorialService.getMarcaChilds(filterCHARTDTO.getTerritorialNode(), company);
+            if (null != marcaTerritorios){
+                marcaTerritorios.stream().forEach(e->{
+                    territorials.add(e.getDivisionTerritorial());
+                });
+                isProcesar = true;
+            }
+        }
+
+        if (null != filterCHARTDTO && filterCHARTDTO.getServicioNode() == null){
+            filterCHARTDTO.setServicioNode(treeServicioService.getTree(company).getNode());
+        }
+
+        if (null != filterCHARTDTO && filterCHARTDTO.getServicioNode() != null){
+            marcaServicios = treeServicioService.getMarcaChilds(filterCHARTDTO.getServicioNode(), company);
+            if (null != marcaServicios ){
+                marcaServicios.stream().forEach((e->{
+                    marcas.add(e.getDivisionServicios());
+                }));
+                isProcesar = true;
+            }
+        }
+
+        if (filterCHARTDTO.getDateBegin() != null && filterCHARTDTO.getDateBegin().length() > 0){
+
+            /**
+             * String s = "2013-07-17T03:58:00.000Z";
+             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+             Date d = formatter.parse(s);
+             * */
+            DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+            try {
+                Date date = sdf.parse(filterCHARTDTO.getDateBegin());
+
+
+
+                start = DateUtils.getStartOfDay(date);
+                isProcesar = true;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+        if (filterCHARTDTO.getDateEnd() != null && filterCHARTDTO.getDateEnd().length() > 0){
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+            try {
+
+                Date date = sdf.parse(filterCHARTDTO.getDateEnd());
+                end = DateUtils.getEndOfDay( date);
+                isProcesar = true;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            isProcesar = true;
+        }
+
+        Map<String,Object> npsMap = nps(territorials,  marcas, start,  end, company);
+        com.dto.piecircle.SatisfactionGeneralCHARTDTO npsChartDTO = null;
+       if (isProcesar ){
+            npsChartDTO =  searchSatisfactionGeneralSurvey((Float)npsMap.get(typeNPS.detractores),
+                    (Float)npsMap.get(typeNPS.promotores), (Float)npsMap.get(typeNPS.pasivos)) ;
+        }
+
+        return npsChartDTO;
+    }
+
     public NpsChartDTO npsValuesChart(float detractores, float promotores, float pasivos) {
         NpsChartDTO npsChartDTO = new NpsChartDTO();
         List<Serie0ChartDTO> series = new ArrayList<Serie0ChartDTO>();
+
         Serie0ChartDTO nerie0ChartDTO = new Serie0ChartDTO();
-        List<Object>operationsummaryRescue = new ArrayList<>();
+
         List<Object> operationsummaryRescue2 = new ArrayList<>();
-       // operationsummaryRescue2.add("\'Detractores\',13.29f");
+        operationsummaryRescue2.add(typeNPS.promotores + ", " + promotores);
+        nerie0ChartDTO.getData().add(operationsummaryRescue2);
+
+        operationsummaryRescue2 = new ArrayList<>();
+        operationsummaryRescue2.add(typeNPS.pasivos + ", " + pasivos);
+        nerie0ChartDTO.getData().add(operationsummaryRescue2);
+
+        operationsummaryRescue2 = new ArrayList<>();
         operationsummaryRescue2.add(typeNPS.detractores + ", " + detractores);
         nerie0ChartDTO.getData().add(operationsummaryRescue2);
-        //operationsummaryRescue.add(operationsummaryRescue2);
 
-        operationsummaryRescue2 = new ArrayList<>();
-        operationsummaryRescue2.add(typeNPS.promotores + ", " + promotores);
-       // operationsummaryRescue2.add("\'Promotores\',13f");
-        nerie0ChartDTO.getData().add(operationsummaryRescue2);
-        // operationsummaryRescue.add(operationsummaryRescue2);
-
-        operationsummaryRescue2 = new ArrayList<>();
-        //operationsummaryRescue2.add("\'pasivos\',3.29f");
-        operationsummaryRescue2.add(typeNPS.pasivos + ", " + pasivos);
-        // operationsummaryRescue.add(operationsummaryRescue2);
-        nerie0ChartDTO.getData().add(operationsummaryRescue2);
 
         series.add(nerie0ChartDTO);
         npsChartDTO.setSeries(series);
@@ -164,6 +242,30 @@ public class NetPromoterScoreService {
         return npsChartDTO;
     }
 
+
+    public com.dto.piecircle.SatisfactionGeneralCHARTDTO searchSatisfactionGeneralSurvey(float detractores, float promotores, float pasivos) {
+        com.dto.piecircle.SatisfactionGeneralCHARTDTO npsChartDTO = new com.dto.piecircle.SatisfactionGeneralCHARTDTO();
+        List<com.dto.piecircle.Serie0ChartDTO> series = new ArrayList<com.dto.piecircle.Serie0ChartDTO>();
+
+        com.dto.piecircle.Serie0ChartDTO nerie0ChartDTO = new com.dto.piecircle.Serie0ChartDTO();
+        nerie0ChartDTO.setName("Share");
+
+
+
+        List<Object> operationsummaryRescue2 = new ArrayList<>();
+
+        operationsummaryRescue2.add(new KeyValueCHARTDTO(typeNPS.pasivos, pasivos, "#f6ed16"));
+        operationsummaryRescue2.add( new KeyValueCHARTDTO(typeNPS.promotores, promotores, "#32f253"));
+        operationsummaryRescue2.add(new KeyValueCHARTDTO(typeNPS.detractores, detractores, "#0f0101"));
+
+        nerie0ChartDTO.setData(operationsummaryRescue2);
+
+        series.add(nerie0ChartDTO);
+        npsChartDTO.setSeries(series);
+      /*  ChartCHARTDTO chartCHARTDTO = new ChartCHARTDTO();
+        chartCHARTDTO.setPlotBackgroundColor(18l);*/
+        return npsChartDTO;
+    }
    /* public NpsChartDTO searchNpsSurveyXXX(@RequestBody FilterCHARTDTO filterCHARTDTO) {
         NpsChartDTO npsChartDTO = new NpsChartDTO();
         List<Serie0ChartDTO> series = new ArrayList<Serie0ChartDTO>();

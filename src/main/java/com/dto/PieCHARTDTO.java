@@ -8,6 +8,8 @@ import java.util.List;
  * Created by simon on 5/31/2019.
  */
 public class PieCHARTDTO {
+    private  boolean allowPointSelect = true;
+    private  String  cursor = "pointer";
     private DataLabelsCHARTDTO dataLabels = new DataLabelsCHARTDTO();
     private int startAngle = -90;
     private int  endAngle = 90;
@@ -55,5 +57,21 @@ public class PieCHARTDTO {
 
     public void setDataLabels(DataLabelsCHARTDTO dataLabels) {
         this.dataLabels = dataLabels;
+    }
+
+    public boolean isAllowPointSelect() {
+        return allowPointSelect;
+    }
+
+    public void setAllowPointSelect(boolean allowPointSelect) {
+        this.allowPointSelect = allowPointSelect;
+    }
+
+    public String getCursor() {
+        return cursor;
+    }
+
+    public void setCursor(String cursor) {
+        this.cursor = cursor;
     }
 }
