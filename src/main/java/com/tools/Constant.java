@@ -26,6 +26,9 @@ public interface Constant {
     String PASIVO = "#f6ed16";
     String DETRACTOR = "#e7300f";
 
+    String ALARMA_GOOD = "alarma_good";
+    String ALARMA_PASIVO = "alarma_none";
+    String ALARMA_DETRACTOR = "alarma_bad";
 
 
 

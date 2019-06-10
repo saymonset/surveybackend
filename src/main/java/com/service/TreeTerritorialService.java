@@ -4,6 +4,7 @@ import com.model.mongo.Company;
 import com.model.mongo.TreeModelTerritorial;
 import com.repository.mongo.TreeModelTerritorialRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
  * Created by simon on 5/18/2019.
  */
 @Service
+@Transactional
 public class TreeTerritorialService {
     @Inject
     private TreeModelTerritorialRepository treeModelTerritorialRepository;
@@ -65,6 +67,9 @@ public class TreeTerritorialService {
 
         return marcaChildsRoot;
     }
+
+
+
 
     /**Dame la marcas  hijos*/
     private List<TreeModelTerritorial> getMarcaChilds(List<TreeModelTerritorial> trees, List<TreeModelTerritorial> marcaChildsRoot, Company company ){

@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.inject.Inject;
@@ -27,7 +28,8 @@ import java.util.*;
  * Created by simon on 5/24/2019.
  */
 @Service
-public class SendSurveyService {
+@Transactional
+public class SurveyService {
     Logger logger =  LoggerFactory.getLogger(this.getClass().getName());
     @Inject
     private SendSurveyRepository mandoEncuestaRepository;
@@ -51,6 +53,25 @@ public class SendSurveyService {
     @Inject
     private CompanyRepository companyRepository;
 
+    @Inject
+    private AlertService alertService;
+
+    @Inject
+    private ProcesoRegistroRepository procesoRegistroRepository;
+
+    @Inject
+    private ProcesoHabitacionRepository procesoHabitacionRepository;
+
+    @Inject
+    private ProcesoPersonalRepository procesoPersonalRepository;
+    @Inject
+    private ProcesoComidaRepository procesoComidaRepository;
+
+    @Inject
+    private ProcesoSalidaRepository procesoSalidaRepository;
+
+    @Inject
+    private ToolsSurvey toolsSurvey;
 
 
     public void sendSurvey(String codeCompany, String sheet1, int numCol, File file0) throws Exception {
@@ -119,24 +140,9 @@ public class SendSurveyService {
                                 }else if (sendSurvey != null){
                                     resent = true;
                                 }
-
-
-
-
-
                                 if (resent || sendMail){
-                                    //long i1 - 100000;
-
                                    emailService.send("ecologicalpaper", email, email,  "ecologicalpaper.com", "template/invitacionSurvey.vsl", context) ;
-                                    for (int h = 100000; h>0; h--){
-
-                                    }
                                 }
-
-
-
-
-
                                 if (sendMail){
                                     mandoEncuesta = new SendSurvey();
 
@@ -151,29 +157,16 @@ public class SendSurveyService {
                                     mandoEncuestaRepository.save(mandoEncuesta);
                                 }else if (resent){
                                     Optional<SendSurvey> ssendSurvey =  mandoEncuestaRepository.findById(sendSurvey.getId());
-                                    /**
-                                     * Optional<Foo> result = repository.findById(…);
-
-                                     result.ifPresent(it -> …); // do something with the value if present
-                                     result.map(it -> …); // map the value if present
-                                     Foo foo = result.orElse(null); // if you want to continue just like before
-                                     * */
                                     ssendSurvey.ifPresent(it -> {
                                         sendSurvey.setCountResent(sendSurvey.getCountResent() + 1);
                                         sendSurvey.setResentAt(new Date());
                                         mandoEncuestaRepository.save(sendSurvey);
                                     });
-
                                 }
-
-
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-
                         }
-
-
                         node += 5;
                     }
                 }
@@ -221,7 +214,6 @@ public class SendSurveyService {
                 e.printStackTrace();
             }
 
-
             /**La encuesta la vio*/
             SendSurvey sendSurvey = mandoEncuestaRepository.findByCodigoEncuestaAndEmailAndAnsweredAndCompany(codigoEncuesta,email,false, company);
             sendSurvey.setEmailViewed(true);
@@ -233,7 +225,6 @@ public class SendSurveyService {
 
     public SurveyDTO procesar( Map<String, Object> response) {
 
-
         Map<String, Object> result = (Map<String, Object>) response.get("result");
         Map<String, Object> origin = (Map<String, Object>) response.get("origin");
         Map<String, Object> surveyDTOs = (Map<String, Object>) response.get("surveyDTO");
@@ -241,9 +232,7 @@ public class SendSurveyService {
         String codeCompany = (String )response.get("codeCompany");
         Company company =   companyRepository.findByCode(codeCompany);
 
-        List<Map<String, Object>> questions = satisfactionService.questions(origin);
-
-
+        List<Map<String, Object>> questions = toolsSurvey.questions(origin);
         surveyDTOs.forEach((k,v)->
                 {
                     if (k.equalsIgnoreCase("email")){
@@ -258,18 +247,15 @@ public class SendSurveyService {
                     if (k.equalsIgnoreCase("codigoEncuesta")){
                         surveyDTOResult.setCodigoEncuesta((String)v);
                     }
-                    System.out.println("Item : " + k + " Count : " + v);
+                   // System.out.println("Item : " + k + " Count : " + v);
 
                 }
         );
-
         /**La respondio la vio*/
         SendSurvey sendSurvey = mandoEncuestaRepository.findByCodigoEncuestaAndEmailAndAnsweredAndCompany(surveyDTOResult.getCodigoEncuesta(),surveyDTOResult.getEmail(),false, company);
-
-      //  sendSurvey.setAnswered(true);
+        sendSurvey.setAnswered(true);
         mandoEncuestaRepository.save(sendSurvey);
-
-
+        /** se almacena la encuesta tal y como viene*/
         RawSurveyResponse rawSurveyResponse = new RawSurveyResponse();
         rawSurveyResponse.setCompany(company);
         rawSurveyResponse.setOrigin(origin);
@@ -277,23 +263,68 @@ public class SendSurveyService {
         rawSurveyResponse.setSendSurvey(sendSurvey);
         rawSurveyResponse.setQuestions(questions);
         rawSurveyRepository.save(rawSurveyResponse);
-
+        /** End se almacena la encuesta tal y como viene*/
 
         Survey survey = surveyRepository.findByCodigoEncuestaAndCompany(surveyDTOResult.getCodigoEncuesta(), company);
 
-        List<Map<String, Object>> simplifySurvey = satisfactionService.simplifyAll(result, questions);
+        List<Map<String, Object>> simplifySurvey = toolsSurvey.simplifyAll(result, questions);
 
-         satisfactionService.getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_REGISTRO, sendSurvey, survey, company);
+        /**Averiguamos las alarmas*/
+        List<String> goods = toolsSurvey.getAlerta(simplifySurvey,  Constant.ALARMA_GOOD);
+        List<String> pasivos = toolsSurvey.getAlerta(simplifySurvey,  Constant.ALARMA_PASIVO);
+        List<String> detractors = toolsSurvey.getAlerta(simplifySurvey,  Constant.ALARMA_DETRACTOR);
 
-        satisfactionService.getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_HABITACION, sendSurvey, survey, company);
+        AlertResponse alertResponse = new AlertResponse();
+        alertResponse.setSendSurvey(sendSurvey);
+        alertResponse.setCompany(company);
+        alertResponse.setCodigoEncuesta(sendSurvey.getCodigoEncuesta());
+        alertResponse.setDivisionServicios(survey.getDivisionServicios());
+        alertResponse.setDivisionTerritorial(survey.getDivisionTerritorial());
+        alertResponse.setResponsedate(new Date());
 
-        satisfactionService.getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_PERSONAL, sendSurvey, survey, company);
 
-        satisfactionService.getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_COMIDA, sendSurvey, survey, company);
+        if (goods!=null && goods.size() > 0){
+            alertResponse.setType(Constant.ALARMA_GOOD);
+            alertResponse.setComment(goods.get(0));
+            alertService.save(alertResponse);
+        }
 
-        satisfactionService.getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_SALIDA, sendSurvey, survey, company);
+        if (pasivos!=null && pasivos.size() > 0){
+            alertResponse.setType(Constant.ALARMA_PASIVO);
+            alertResponse.setComment(pasivos.get(0));
+            alertService.save(alertResponse);
+        }
 
-        int point = satisfactionService.getSatisfaction(simplifySurvey, Constant.SATISFACTION,"rating") ;
+        if (detractors!=null && detractors.size() > 0){
+            alertResponse.setType(Constant.ALARMA_DETRACTOR);
+            alertResponse.setComment(detractors.get(0));
+            alertService.save(alertResponse);
+        }
+
+
+        /**
+         *
+         *
+         procesoRegistroResponse.setType(toolsSurvey.typeSatisfactionGeneralNps(procesoRegistroResponse.getPoint()));
+         * */
+
+        /**/
+
+
+        /**Solo se trata la informacion de la encuesta donde tipo es matrix*/
+        getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_REGISTRO, sendSurvey, survey, company);
+
+        getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_HABITACION, sendSurvey, survey, company);
+
+        getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_PERSONAL, sendSurvey, survey, company);
+
+        getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_COMIDA, sendSurvey, survey, company);
+
+        getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_SALIDA, sendSurvey, survey, company);
+        /**Fin Solo se trata la informacion de la encuesta donde tipo es matrix*/
+
+        /**Se calcula el nps y satisfaction general rating**/
+        int point = toolsSurvey.getSatisfaction(simplifySurvey, Constant.SATISFACTION,"rating") ;
         if (point > 0){
             SatisfactionResponse satisfactionResponse = new SatisfactionResponse();
             satisfactionResponse.setCompany(company);
@@ -303,15 +334,12 @@ public class SendSurveyService {
             satisfactionResponse.setDivisionTerritorial(survey.getDivisionTerritorial());
             satisfactionResponse.setPoint(point);
             satisfactionResponse.setResponsedate(new Date());
-            satisfactionResponse.setType(satisfactionService.typeNps(point));
+            satisfactionResponse.setType(toolsSurvey.typeSatisfactionGeneralNps(point));
             satisfactionRepository.save(satisfactionResponse);
         }
 
-
-
         NetPromoterScore netPromoterScore = new NetPromoterScore();
-
-        point = satisfactionService.getSatisfaction(simplifySurvey, Constant.NPS_SCORE,"rating") ;
+        point = toolsSurvey.getSatisfaction(simplifySurvey, Constant.NPS_SCORE,"rating") ;
         if (point > 0) {
             netPromoterScore.setCompany(company);
             netPromoterScore.setSendSurvey(sendSurvey);
@@ -320,14 +348,117 @@ public class SendSurveyService {
             netPromoterScore.setDivisionTerritorial(survey.getDivisionTerritorial());
             netPromoterScore.setPoint(point);
             netPromoterScore.setResponsedate(new Date());
-            netPromoterScore.setType(satisfactionService.typeNpsParent(point));
+            netPromoterScore.setType(toolsSurvey.typeNpsParent(point));
             netPromoterScoreRepository.save(netPromoterScore);
         }
-//        String type = satisfactionService.typeNps(procesoRegistroSatisfaction);
-
+        /**Fin Se calcula el nps y satisfaction general rating**/
 
         return surveyDTOResult;
     }
+
+//  getSatisfactionMatrix(simplifySurvey, Constant.PROCESO_REGISTRO, sendSurvey, survey, company);
+    public void getSatisfactionMatrix(List<Map<String, Object>> simplifySurvey, String evaluar, SendSurvey sendSurvey, Survey survey, Company company ) {
+        float count = 0;
+        float satisfaction = 0;
+        boolean exist = false;
+        String type = "matrix" ;
+        for (Map<String, Object> map : simplifySurvey) {
+
+            if (map.containsKey("observer") && String.valueOf(map.get("observer")).equals(evaluar) && String.valueOf(map.get("type")).equals(type)) {
+                        String value = (String )map.get("value");
+                        StringTokenizer stk = new StringTokenizer(value,"|");
+                        while (stk.hasMoreTokens()){
+                            String vars = stk.nextToken();
+                            StringTokenizer stkPoint = new StringTokenizer(vars,":");
+                            while (stkPoint.hasMoreTokens()){
+                                String text = stkPoint.nextToken();
+                                String value0 = stkPoint.nextToken();
+                                int  point = Integer.valueOf(stkPoint.nextToken());
+                                if (Constant.PROCESO_REGISTRO.equalsIgnoreCase(evaluar)){
+                                    ProcesoRegistroResponse procesoRegistroResponse = new ProcesoRegistroResponse();
+                                    procesoRegistroResponse.setCompany(company);
+                                    procesoRegistroResponse.setCodigoEncuesta(sendSurvey.getCodigoEncuesta());
+                                    procesoRegistroResponse.setDivisionServicios(survey.getDivisionServicios());
+                                    procesoRegistroResponse.setDivisionTerritorial(survey.getDivisionTerritorial());
+                                    procesoRegistroResponse.setPoint(point);
+                                    procesoRegistroResponse.setResponsedate(new Date());
+                                    procesoRegistroResponse.setSendSurvey(sendSurvey);
+                                    procesoRegistroResponse.setText(text);
+                                    procesoRegistroResponse.setValue(value0);
+                                    procesoRegistroResponse.setType(toolsSurvey.typeSatisfactionGeneralNps(procesoRegistroResponse.getPoint()));
+                                    procesoRegistroRepository.save(procesoRegistroResponse);
+                                }
+
+                                if (Constant.PROCESO_HABITACION.equalsIgnoreCase(evaluar)){
+
+                                    ProcesoHabitacionResponse procesoRegistroResponse = new ProcesoHabitacionResponse();
+                                    procesoRegistroResponse.setCompany(company);
+                                    procesoRegistroResponse.setCodigoEncuesta(sendSurvey.getCodigoEncuesta());
+                                    procesoRegistroResponse.setDivisionServicios(survey.getDivisionServicios());
+                                    procesoRegistroResponse.setDivisionTerritorial(survey.getDivisionTerritorial());
+                                    procesoRegistroResponse.setPoint(point);
+                                    procesoRegistroResponse.setResponsedate(new Date());
+                                    procesoRegistroResponse.setSendSurvey(sendSurvey);
+                                    procesoRegistroResponse.setText(text);
+                                    procesoRegistroResponse.setValue(value0);
+                                    procesoRegistroResponse.setType(toolsSurvey.typeSatisfactionGeneralNps(procesoRegistroResponse.getPoint()));
+                                    procesoHabitacionRepository.save(procesoRegistroResponse);
+                                }
+
+                                if (Constant.PROCESO_PERSONAL.equalsIgnoreCase(evaluar)){
+                                    ProcesoPersonalResponse procesoRegistroResponse = new ProcesoPersonalResponse();
+                                    procesoRegistroResponse.setCompany(company);
+                                    procesoRegistroResponse.setCodigoEncuesta(sendSurvey.getCodigoEncuesta());
+                                    procesoRegistroResponse.setDivisionServicios(survey.getDivisionServicios());
+                                    procesoRegistroResponse.setDivisionTerritorial(survey.getDivisionTerritorial());
+                                    procesoRegistroResponse.setPoint(point);
+                                    procesoRegistroResponse.setResponsedate(new Date());
+                                    procesoRegistroResponse.setSendSurvey(sendSurvey);
+                                    procesoRegistroResponse.setText(text);
+                                    procesoRegistroResponse.setValue(value0);
+                                    procesoRegistroResponse.setType(toolsSurvey.typeSatisfactionGeneralNps(procesoRegistroResponse.getPoint()));
+                                    procesoPersonalRepository.save(procesoRegistroResponse);
+                                }
+
+                                if (Constant.PROCESO_COMIDA.equalsIgnoreCase(evaluar)){
+                                    ProcesoComidaResponse procesoRegistroResponse = new ProcesoComidaResponse();
+                                    procesoRegistroResponse.setCompany(company);
+                                    procesoRegistroResponse.setCodigoEncuesta(sendSurvey.getCodigoEncuesta());
+                                    procesoRegistroResponse.setDivisionServicios(survey.getDivisionServicios());
+                                    procesoRegistroResponse.setDivisionTerritorial(survey.getDivisionTerritorial());
+                                    procesoRegistroResponse.setPoint(point);
+                                    procesoRegistroResponse.setResponsedate(new Date());
+                                    procesoRegistroResponse.setSendSurvey(sendSurvey);
+                                    procesoRegistroResponse.setText(text);
+                                    procesoRegistroResponse.setValue(value0);
+                                    procesoRegistroResponse.setType(toolsSurvey.typeSatisfactionGeneralNps(procesoRegistroResponse.getPoint()));
+                                    procesoComidaRepository.save(procesoRegistroResponse);
+                                }
+
+                                if (Constant.PROCESO_SALIDA.equalsIgnoreCase(evaluar)){
+                                    ProcesoSalidaResponse procesoRegistroResponse = new ProcesoSalidaResponse();
+                                    procesoRegistroResponse.setCompany(company);
+                                    procesoRegistroResponse.setCodigoEncuesta(sendSurvey.getCodigoEncuesta());
+                                    procesoRegistroResponse.setDivisionServicios(survey.getDivisionServicios());
+                                    procesoRegistroResponse.setDivisionTerritorial(survey.getDivisionTerritorial());
+                                    procesoRegistroResponse.setPoint(point);
+                                    procesoRegistroResponse.setResponsedate(new Date());
+                                    procesoRegistroResponse.setSendSurvey(sendSurvey);
+                                    procesoRegistroResponse.setText(text);
+                                    procesoRegistroResponse.setValue(value0);
+                                    procesoRegistroResponse.setType(toolsSurvey.typeSatisfactionGeneralNps(procesoRegistroResponse.getPoint()));
+                                    procesoSalidaRepository.save(procesoRegistroResponse);
+                                }
+
+                            }
+                        }
+            }
+        }
+    }
+
+
+
+
 
 
 }

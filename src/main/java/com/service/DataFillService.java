@@ -15,6 +15,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
 
 import javax.inject.Inject;
@@ -27,6 +28,7 @@ import java.util.*;
  * Created by simon on 5/17/2019.
  */
 @Service
+@Transactional
 public class DataFillService {
     Logger logger =  LoggerFactory.getLogger(this.getClass().getName());
     @Autowired

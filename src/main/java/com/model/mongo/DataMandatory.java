@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Created by simon on 5/31/2019.
  */
-public class ProcesoMatrix {
+public class DataMandatory {
 
      private String type;
      private Date responsedate;

@@ -5,33 +5,17 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
- * Created by simon on 5/30/2019.
+ * Created by simon on 6/10/2019.
  */
 @Document
-public class ProcesoPersonalResponse  extends DataMandatory {
+public class AlertResponse extends DataMandatory {
     @Id
     private String id;
     @DBRef
     private SendSurvey sendSurvey;
     @DBRef
     private Company company;
-    private String text;
-    private String value;
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
+    private String comment;
 
     public String getId() {
         return id;
@@ -49,14 +33,19 @@ public class ProcesoPersonalResponse  extends DataMandatory {
         this.sendSurvey = sendSurvey;
     }
 
-
-
     public Company getCompany() {
         return company;
     }
 
-
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

@@ -4,13 +4,11 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
-
 /**
  * Created by simon on 5/30/2019.
  */
 @Document
-public class ProcesoRegistroResponse extends ProcesoMatrix{
+public class ProcesoRegistroResponse extends DataMandatory {
     @Id
     private String id;
     @DBRef

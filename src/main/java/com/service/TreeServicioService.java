@@ -3,6 +3,7 @@ import com.model.mongo.Company;
 import com.model.mongo.TreeModelServicio;
 import com.repository.mongo.TreeModelServicioRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
  * Created by simon on 5/18/2019.
  */
 @Service
+@Transactional
 public class TreeServicioService {
     @Inject
     private TreeModelServicioRepository treeModelServicioRepository;

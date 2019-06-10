@@ -1,13 +1,9 @@
 package com.rest;
 
 import com.dto.SurveyDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.payload.UploadFileResponse;
-import com.security.SecurityConstants;
-import com.service.SendSurveyService;
+import com.service.SurveyService;
 import com.tools.FileTool;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
 import java.io.File;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,7 +26,7 @@ public class SurveyRest {
     private Logger logger =  LoggerFactory.getLogger(this.getClass().getName());
     private  SurveyDTO  surveyDTOResult = new SurveyDTO();
     @Inject
-    private SendSurveyService sendSurveyService;
+    private SurveyService sendSurveyService;
 
     @PostMapping("/send")
     public UploadFileResponse sendSurvey(@RequestParam("file") MultipartFile file, @RequestParam("codeCompany") String codeCompany) {

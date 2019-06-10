@@ -7,7 +7,7 @@ import java.util.List;
  * Created by simon on 6/9/2019.
  */
 public class SatisfactionGeneralCHARTDTO {
-    private TitleCHARTDTO title =  new TitleCHARTDTO("Satisfaccion General");
+    private TitleCHARTDTO title;
     private TooltipCHARTDTO tooltip = new TooltipCHARTDTO("{series.name}: <b>{point.percentage:.1f}%</b>");
     private PlotOptionsCHARTDTO plotOptions = new PlotOptionsCHARTDTO();;
     private List<Serie0ChartDTO> series = new ArrayList<Serie0ChartDTO>();
@@ -23,13 +23,7 @@ public class SatisfactionGeneralCHARTDTO {
 
     }
 
-    public TitleCHARTDTO getTitle() {
-        return title;
-    }
 
-    public void setTitle(TitleCHARTDTO title) {
-        this.title = title;
-    }
 
     public TooltipCHARTDTO getTooltip() {
         return tooltip;
@@ -53,5 +47,14 @@ public class SatisfactionGeneralCHARTDTO {
 
     public void setSeries(List<Serie0ChartDTO> series) {
         this.series = series;
+    }
+
+
+    public void setTitle(TitleCHARTDTO title) {
+        this.title = title;
+    }
+
+    public TitleCHARTDTO getTitle() {
+        return title;
     }
 }

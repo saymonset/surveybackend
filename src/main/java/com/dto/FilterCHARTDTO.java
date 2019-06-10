@@ -1,5 +1,12 @@
 package com.dto;
 
+import com.model.mongo.Company;
+import com.model.mongo.TreeModelServicio;
+import com.model.mongo.TreeModelTerritorial;
+
+import java.util.Date;
+import java.util.List;
+
 /**
  * Created by simon on 6/1/2019.
  */
@@ -9,7 +16,12 @@ public class FilterCHARTDTO {
     private String  dateBegin;
     private String  dateEnd;
     private String codeCompany;
-
+    private List<String> servicios = null;
+    private List<String> territorios = null;
+    private Date start = null;
+    private Date end = null;
+    private boolean isProcesar ;
+  private Company company;
     public String getTerritorialNode() {
         return territorialNode;
     }
@@ -48,5 +60,55 @@ public class FilterCHARTDTO {
 
     public void setCodeCompany(String codeCompany) {
         this.codeCompany = codeCompany;
+    }
+
+
+    public Date getStart() {
+        return start;
+    }
+
+    public void setStart(Date start) {
+        this.start = start;
+    }
+
+    public Date getEnd() {
+        return end;
+    }
+
+    public void setEnd(Date end) {
+        this.end = end;
+    }
+
+
+    public List<String> getServicios() {
+        return servicios;
+    }
+
+    public void setServicios(List<String> servicios) {
+        this.servicios = servicios;
+    }
+
+    public List<String> getTerritorios() {
+        return territorios;
+    }
+
+    public void setTerritorios(List<String> territorios) {
+        this.territorios = territorios;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public boolean isProcesar() {
+        return isProcesar;
+    }
+
+    public void setProcesar(boolean procesar) {
+        isProcesar = procesar;
     }
 }
