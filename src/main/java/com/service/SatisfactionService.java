@@ -59,9 +59,9 @@ public class SatisfactionService {
 
         List<Object> operationsummaryRescue2 = new ArrayList<>();
 
-        operationsummaryRescue2.add(new KeyValueCHARTDTO(typeNPS.pasivos, pasivos, Constant.PASIVO));
-        operationsummaryRescue2.add( new KeyValueCHARTDTO(typeNPS.promotores, promotores, Constant.PROMOTOR));
-        operationsummaryRescue2.add(new KeyValueCHARTDTO(typeNPS.detractores, detractores, Constant.DETRACTOR));
+        operationsummaryRescue2.add(new KeyValueCHARTDTO(typeNPS.pasivos, pasivos, Constant.PASIVO_COLOR));
+        operationsummaryRescue2.add( new KeyValueCHARTDTO(typeNPS.promotores, promotores, Constant.PROMOTOR_COLOR));
+        operationsummaryRescue2.add(new KeyValueCHARTDTO(typeNPS.detractores, detractores, Constant.DETRACTOR_COLOR));
 
         nerie0ChartDTO.setData(operationsummaryRescue2);
         //sg.setTitle(new com.dto.piecircle.TitleCHARTDTO("Satisfaccion General"));

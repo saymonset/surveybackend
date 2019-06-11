@@ -1,29 +1,16 @@
-package com.dto;
-
-import com.tools.Constant;
+package com.dto.barrtreestado;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by simon on 5/31/2019.
- */
-public class NpsChartDTO {
-    private  ChartCHARTDTO chart = new ChartCHARTDTO();
+public class AlertCHARTDTO {
+    private ChartCHARTDTO chart = new ChartCHARTDTO();
     private TitleCHARTDTO title = new TitleCHARTDTO();
+    private XaxisCHARTDTO xAxis = new XaxisCHARTDTO();
+    private YaxisCHARTDTO yAxis = new YaxisCHARTDTO();
     private TooltipCHARTDTO tooltip = new TooltipCHARTDTO();
     private PlotOptionsCHARTDTO plotOptions = new PlotOptionsCHARTDTO();
-    private List<Serie0ChartDTO> series = new ArrayList<Serie0ChartDTO>();
-   private  List<String> colors = new ArrayList<>();
-
-    public NpsChartDTO() {
-        // promotor
-        getColors().add(Constant.PROMOTOR_COLOR);
-        //Pasivo
-        getColors().add( Constant.PASIVO_COLOR);
-        //Detractor
-        getColors().add(Constant.DETRACTOR_COLOR);
-    }
+    private List<Serie0ChartDTO> series = new ArrayList<>();
 
     public ChartCHARTDTO getChart() {
         return chart;
@@ -39,6 +26,22 @@ public class NpsChartDTO {
 
     public void setTitle(TitleCHARTDTO title) {
         this.title = title;
+    }
+
+    public XaxisCHARTDTO getxAxis() {
+        return xAxis;
+    }
+
+    public void setxAxis(XaxisCHARTDTO xAxis) {
+        this.xAxis = xAxis;
+    }
+
+    public YaxisCHARTDTO getyAxis() {
+        return yAxis;
+    }
+
+    public void setyAxis(YaxisCHARTDTO yAxis) {
+        this.yAxis = yAxis;
     }
 
     public TooltipCHARTDTO getTooltip() {
@@ -57,20 +60,12 @@ public class NpsChartDTO {
         this.plotOptions = plotOptions;
     }
 
+
     public List<Serie0ChartDTO> getSeries() {
         return series;
     }
 
     public void setSeries(List<Serie0ChartDTO> series) {
         this.series = series;
-    }
-
-
-    public List<String> getColors() {
-        return colors;
-    }
-
-    public void setColors(List<String> colors) {
-        this.colors = colors;
     }
 }

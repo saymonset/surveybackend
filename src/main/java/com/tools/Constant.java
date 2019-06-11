@@ -22,9 +22,9 @@ public interface Constant {
 
     int NUM_BARRA_NPS = 10;
 
-    String PROMOTOR = "#32f253";
-    String PASIVO = "#f6ed16";
-    String DETRACTOR = "#e7300f";
+    String PROMOTOR_COLOR = "#32f253";
+    String PASIVO_COLOR = "#f6ed16";
+    String DETRACTOR_COLOR = "#e7300f";
 
     String ALARMA_GOOD = "alarma_good";
     String ALARMA_PASIVO = "alarma_none";

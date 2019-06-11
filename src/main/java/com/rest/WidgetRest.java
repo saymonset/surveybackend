@@ -1,14 +1,12 @@
 package com.rest;
 
 import com.dto.*;
+import com.dto.barrtreestado.AlertCHARTDTO;
 import com.model.mongo.Company;
 import com.model.mongo.TreeModelServicio;
 import com.model.mongo.TreeModelTerritorial;
 import com.repository.mongo.CompanyRepository;
-import com.service.NetPromoterScoreService;
-import com.service.SatisfactionService;
-import com.service.TreeServicioService;
-import com.service.TreeTerritorialService;
+import com.service.*;
 import com.tools.DateUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +35,8 @@ public class WidgetRest {
     private TreeServicioService treeServicioService;
     @Inject
     private CompanyRepository companyRepository;
+    @Inject
+    private AlertService alertService;
 
 
     @PostMapping("/nps")
@@ -51,6 +51,11 @@ public class WidgetRest {
         return satisfactionService.searchSatisfactionGeneralSurvey(filterCHARTDTO);
     }
 
+    @PostMapping("/alerts")
+    public AlertCHARTDTO alerts(@RequestBody FilterCHARTDTO filterCHARTDTO) {
+        filterCHARTDTO = SearchFiltro(filterCHARTDTO);
+        return alertService.alerts(filterCHARTDTO);
+    }
 
 
     public FilterCHARTDTO SearchFiltro(@RequestBody FilterCHARTDTO filterCHARTDTO) {
@@ -68,7 +73,7 @@ public class WidgetRest {
             filterCHARTDTO.setTerritorialNode(treeTerritorialService.getTree(company).getNode());
         }
         if (null != filterCHARTDTO && filterCHARTDTO.getTerritorialNode() != null){
-            marcaTerritorios = treeTerritorialService.getMarcaChilds(filterCHARTDTO.getTerritorialNode(), company);
+            marcaTerritorios = treeTerritorialService.getMarcaChildsNietos(filterCHARTDTO.getTerritorialNode(), company);
             if (null != marcaTerritorios){
                 marcaTerritorios.stream().forEach(e->{
                     territorials.add(e.getDivisionTerritorial());
@@ -82,7 +87,7 @@ public class WidgetRest {
         }
 
         if (null != filterCHARTDTO && filterCHARTDTO.getServicioNode() != null){
-            marcaServicios = treeServicioService.getMarcaChilds(filterCHARTDTO.getServicioNode(), company);
+            marcaServicios = treeServicioService.getMarcaChildsNietos(filterCHARTDTO.getServicioNode(), company);
             if (null != marcaServicios ){
                 marcaServicios.stream().forEach((e->{
                     marcas.add(e.getDivisionServicios());
