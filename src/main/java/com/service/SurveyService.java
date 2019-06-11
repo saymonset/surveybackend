@@ -8,6 +8,7 @@ import com.model.mongo.*;
 import com.repository.mongo.*;
 import com.tools.Constant;
 import com.tools.ToJson;
+import com.tools.TypeNPS;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -270,9 +271,9 @@ public class SurveyService {
         List<Map<String, Object>> simplifySurvey = toolsSurvey.simplifyAll(result, questions);
 
         /**Averiguamos las alarmas*/
-        List<String> goods = toolsSurvey.getAlerta(simplifySurvey,  Constant.ALARMA_GOOD);
-        List<String> pasivos = toolsSurvey.getAlerta(simplifySurvey,  Constant.ALARMA_PASIVO);
-        List<String> detractors = toolsSurvey.getAlerta(simplifySurvey,  Constant.ALARMA_DETRACTOR);
+        List<String> goods = toolsSurvey.getAlerta(simplifySurvey,  TypeNPS.PROMOTER);
+        List<String> pasivos = toolsSurvey.getAlerta(simplifySurvey, TypeNPS.PASSIVE );
+        List<String> detractors = toolsSurvey.getAlerta(simplifySurvey, TypeNPS.DETRACTOR);
 
         AlertResponse alertResponse = new AlertResponse();
         alertResponse.setSendSurvey(sendSurvey);
@@ -284,19 +285,19 @@ public class SurveyService {
 
 
         if (goods!=null && goods.size() > 0){
-            alertResponse.setType(Constant.ALARMA_GOOD);
+            alertResponse.setType(TypeNPS.PROMOTER);
             alertResponse.setComment(goods.get(0));
             alertService.save(alertResponse);
         }
 
         if (pasivos!=null && pasivos.size() > 0){
-            alertResponse.setType(Constant.ALARMA_PASIVO);
+            alertResponse.setType(TypeNPS.PASSIVE);
             alertResponse.setComment(pasivos.get(0));
             alertService.save(alertResponse);
         }
 
         if (detractors!=null && detractors.size() > 0){
-            alertResponse.setType(Constant.ALARMA_DETRACTOR);
+            alertResponse.setType(TypeNPS.DETRACTOR);
             alertResponse.setComment(detractors.get(0));
             alertService.save(alertResponse);
         }

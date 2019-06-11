@@ -9,6 +9,7 @@ import com.model.mongo.TreeModelTerritorial;
 import com.repository.mongo.AlertRepository;
 import com.tools.Calc;
 import com.tools.Constant;
+import com.tools.TypeNPS;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -71,9 +72,9 @@ public class AlertService {
         }
 
 /*
-        List<String> goods = toolsSurvey.getAlerta(simplifySurvey,  Constant.ALARMA_GOOD);
-        List<String> pasivos = toolsSurvey.getAlerta(simplifySurvey,  Constant.ALARMA_PASIVO);
-        List<String> detractors = toolsSurvey.getAlerta(simplifySurvey,  Constant.ALARMA_DETRACTOR);*/
+        List<String> goods = toolsSurvey.getAlerta(simplifySurvey,  TypeNPS.PROMOTER);
+        List<String> PASSIVE = toolsSurvey.getAlerta(simplifySurvey,  TypeNPS.PASSIVE);
+        List<String> detractors = toolsSurvey.getAlerta(simplifySurvey,  TypeNPS.DETRACTOR);*/
 
 
 
@@ -83,18 +84,18 @@ public class AlertService {
             /**Solo los hijos del nodo*/
             filterTerritoryChild = treeTerritorialService.onlyChildNietosNodeStrind(e.getNode(), filterCHARTDTO.getCompany());
             Map<String,Object> serieInfo = sgCalc(filterTerritoryChild,chilldsServiciosStr, filterCHARTDTO.getStart(),  filterCHARTDTO.getEnd(), filterCHARTDTO.getCompany());
-           if (!resultSerie.containsKey(Constant.ALARMA_PASIVO)){
-               resultSerie.put(Constant.ALARMA_PASIVO,new ArrayList());
+           if (!resultSerie.containsKey(TypeNPS.PASSIVE)){
+               resultSerie.put(TypeNPS.PASSIVE,new ArrayList());
            }
-            if (!resultSerie.containsKey(Constant.ALARMA_DETRACTOR)){
-                resultSerie.put(Constant.ALARMA_DETRACTOR,new ArrayList());
+            if (!resultSerie.containsKey(TypeNPS.DETRACTOR)){
+                resultSerie.put(TypeNPS.DETRACTOR,new ArrayList());
             }
-            if (!resultSerie.containsKey(Constant.ALARMA_GOOD)){
-                resultSerie.put(Constant.ALARMA_GOOD,new ArrayList());
+            if (!resultSerie.containsKey(TypeNPS.PROMOTER)){
+                resultSerie.put(TypeNPS.PROMOTER,new ArrayList());
             }
-            resultSerie.get(Constant.ALARMA_PASIVO).add( serieInfo.get( Constant.ALARMA_PASIVO));
-            resultSerie.get(Constant.ALARMA_DETRACTOR).add( serieInfo.get( Constant.ALARMA_DETRACTOR));
-            resultSerie.get(Constant.ALARMA_GOOD).add( serieInfo.get( Constant.ALARMA_GOOD));
+            resultSerie.get(TypeNPS.PASSIVE).add( serieInfo.get( TypeNPS.PASSIVE));
+            resultSerie.get(TypeNPS.DETRACTOR).add( serieInfo.get( TypeNPS.DETRACTOR));
+            resultSerie.get(TypeNPS.PROMOTER).add( serieInfo.get(TypeNPS.PROMOTER));
 
 
 
@@ -105,21 +106,21 @@ public class AlertService {
 
         List<Serie0ChartDTO> series = new ArrayList<>();
         serie0ChartDTO = new Serie0ChartDTO();
-        serie0ChartDTO.setName( Constant.ALARMA_PASIVO);
+        serie0ChartDTO.setName( TypeNPS.PASSIVE);
         serie0ChartDTO.setColor(Constant.PASIVO_COLOR);
-        serie0ChartDTO.setData(resultSerie.get(Constant.ALARMA_PASIVO));
+        serie0ChartDTO.setData(resultSerie.get(TypeNPS.PASSIVE));
         series.add(serie0ChartDTO);
 
         serie0ChartDTO = new Serie0ChartDTO();
-        serie0ChartDTO.setName( Constant.ALARMA_DETRACTOR);
+        serie0ChartDTO.setName( TypeNPS.DETRACTOR);
         serie0ChartDTO.setColor(Constant.DETRACTOR_COLOR);
-        serie0ChartDTO.setData(resultSerie.get(Constant.ALARMA_DETRACTOR));
+        serie0ChartDTO.setData(resultSerie.get(TypeNPS.DETRACTOR));
         series.add(serie0ChartDTO);
 
         serie0ChartDTO = new Serie0ChartDTO();
-        serie0ChartDTO.setName( Constant.ALARMA_GOOD);
+        serie0ChartDTO.setName( TypeNPS.PROMOTER);
         serie0ChartDTO.setColor(Constant.PROMOTOR_COLOR);
-        serie0ChartDTO.setData(resultSerie.get(Constant.ALARMA_GOOD));
+        serie0ChartDTO.setData(resultSerie.get(TypeNPS.PROMOTER));
         series.add(serie0ChartDTO);
 
         alerts.setSeries(series);
@@ -139,22 +140,22 @@ public class AlertService {
         int contPromotor = 0;
 
         if (start != null && end != null) {
-            detractores = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBetweenAndCompany(territorials, marcas, Constant.ALARMA_DETRACTOR,  start,  end, company);
-            pasivos = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBetweenAndCompany(territorials, marcas, Constant.ALARMA_PASIVO,  start,  end, company);
-            promotores = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBetweenAndCompany(territorials, marcas, Constant.ALARMA_GOOD,  start,  end, company);
+            detractores = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBetweenAndCompany(territorials, marcas, TypeNPS.DETRACTOR,  start,  end, company);
+            pasivos = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBetweenAndCompany(territorials, marcas, TypeNPS.PASSIVE,  start,  end, company);
+            promotores = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBetweenAndCompany(territorials, marcas, TypeNPS.PROMOTER,  start,  end, company);
 
         }else if  (start != null) {
-            detractores = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateAfterAndCompany(territorials, marcas,   Constant.ALARMA_DETRACTOR,  start, company);
-            pasivos = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateAfterAndCompany(territorials, marcas,   Constant.ALARMA_PASIVO,  start, company);
-            promotores = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateAfterAndCompany(territorials, marcas,   Constant.ALARMA_GOOD,  start, company);
+            detractores = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateAfterAndCompany(territorials, marcas,   TypeNPS.DETRACTOR,  start, company);
+            pasivos = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateAfterAndCompany(territorials, marcas,   TypeNPS.PASSIVE,  start, company);
+            promotores = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateAfterAndCompany(territorials, marcas,   TypeNPS.PROMOTER,  start, company);
         }else if  (end != null) {
-            detractores = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBeforeAndCompany(territorials, marcas,   Constant.ALARMA_DETRACTOR,  end, company);
-            pasivos = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBeforeAndCompany(territorials, marcas,   Constant.ALARMA_PASIVO,  end, company);
-            promotores = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBeforeAndCompany(territorials, marcas,   Constant.ALARMA_GOOD,  end, company);
+            detractores = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBeforeAndCompany(territorials, marcas,   TypeNPS.DETRACTOR,  end, company);
+            pasivos = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBeforeAndCompany(territorials, marcas,   TypeNPS.PASSIVE,  end, company);
+            promotores = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBeforeAndCompany(territorials, marcas,   TypeNPS.PROMOTER,  end, company);
         }else  if (start == null && end == null){
-            detractores = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndCompany(territorials, marcas,     Constant.ALARMA_DETRACTOR, company);
-            pasivos = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndCompany(territorials, marcas,     Constant.ALARMA_PASIVO, company);
-            promotores = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndCompany(territorials, marcas,     Constant.ALARMA_GOOD, company);
+            detractores = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndCompany(territorials, marcas,     TypeNPS.DETRACTOR, company);
+            pasivos = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndCompany(territorials, marcas,     TypeNPS.PASSIVE, company);
+            promotores = alertRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndCompany(territorials, marcas,     TypeNPS.PROMOTER, company);
         }
 
 
@@ -182,9 +183,9 @@ public class AlertService {
 
 
 
-        result.put( Constant.ALARMA_DETRACTOR,detractorValue);
-        result.put( Constant.ALARMA_PASIVO,pasivosValue);
-        result.put( Constant.ALARMA_GOOD,promotoresValue);
+        result.put( TypeNPS.DETRACTOR,detractorValue);
+        result.put( TypeNPS.PASSIVE,pasivosValue);
+        result.put( TypeNPS.PROMOTER,promotoresValue);
         return result;
 
     }

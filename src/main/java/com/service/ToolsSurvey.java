@@ -1,6 +1,6 @@
 package com.service;
 
-import com.tools.typeNPS;
+import com.tools.TypeNPS;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -202,22 +202,22 @@ public class ToolsSurvey {
     public String typeSatisfactionGeneralNps(float value){
         String type = "";
         if (value == 5){
-            type = typeNPS.promotores;
+            type = TypeNPS.PROMOTER;
         }else if (value == 3 || value == 4){
-            type = typeNPS.pasivos;
+            type = TypeNPS.PASSIVE;
         }else if (value < 3){
-            type = typeNPS.detractores;
+            type = TypeNPS.DETRACTOR;
         }
         return type;
     }
 
     public String typeNpsParent(float value){
-        String npsType =typeNPS.pasivos;
+        String npsType = TypeNPS.PASSIVE;
         if (value < 7) {
-            npsType =  typeNPS.detractores;
+            npsType =  TypeNPS.DETRACTOR;
         }
         if (value >= 9) {
-            npsType = typeNPS.promotores;
+            npsType = TypeNPS.PROMOTER;
         }
 
 

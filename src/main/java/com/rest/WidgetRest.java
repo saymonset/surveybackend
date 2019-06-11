@@ -147,4 +147,4 @@ public class WidgetRest {
 /*
  ['Detractores', 13.29],
          ['Promotores', 13],
-         ['pasivos', 3.78]*/
+         ['PASSIVE', 3.78]*/

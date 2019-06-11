@@ -7,7 +7,7 @@ import com.model.mongo.*;
 import com.repository.mongo.*;
 import com.tools.Calc;
 import com.tools.Constant;
-import com.tools.typeNPS;
+import com.tools.TypeNPS;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -42,8 +42,8 @@ public class SatisfactionService {
         Map<String,Object> npsMap = sgCalc(filterCHARTDTO.getTerritorios(),  filterCHARTDTO.getServicios(), filterCHARTDTO.getStart(),  filterCHARTDTO.getEnd(), filterCHARTDTO.getCompany());
         com.dto.piecircle.SatisfactionGeneralCHARTDTO sg = null;
         if (filterCHARTDTO.isProcesar() ){
-            sg =  searchSatisfactionGeneralSurvey((Float)npsMap.get(typeNPS.detractores),
-                    (Float)npsMap.get(typeNPS.promotores), (Float)npsMap.get(typeNPS.pasivos)) ;
+            sg =  searchSatisfactionGeneralSurvey((Float)npsMap.get(TypeNPS.DETRACTOR),
+                    (Float)npsMap.get(TypeNPS.PROMOTER), (Float)npsMap.get(TypeNPS.PASSIVE)) ;
         }
 
         return sg;
@@ -59,9 +59,9 @@ public class SatisfactionService {
 
         List<Object> operationsummaryRescue2 = new ArrayList<>();
 
-        operationsummaryRescue2.add(new KeyValueCHARTDTO(typeNPS.pasivos, pasivos, Constant.PASIVO_COLOR));
-        operationsummaryRescue2.add( new KeyValueCHARTDTO(typeNPS.promotores, promotores, Constant.PROMOTOR_COLOR));
-        operationsummaryRescue2.add(new KeyValueCHARTDTO(typeNPS.detractores, detractores, Constant.DETRACTOR_COLOR));
+        operationsummaryRescue2.add(new KeyValueCHARTDTO(TypeNPS.PASSIVE, pasivos, Constant.PASIVO_COLOR));
+        operationsummaryRescue2.add( new KeyValueCHARTDTO(TypeNPS.PROMOTER, promotores, Constant.PROMOTOR_COLOR));
+        operationsummaryRescue2.add(new KeyValueCHARTDTO(TypeNPS.DETRACTOR, detractores, Constant.DETRACTOR_COLOR));
 
         nerie0ChartDTO.setData(operationsummaryRescue2);
         //sg.setTitle(new com.dto.piecircle.TitleCHARTDTO("Satisfaccion General"));
@@ -82,22 +82,22 @@ public class SatisfactionService {
         int contPromotor = 0;
 
         if (start != null && end != null) {
-            detractores = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBetweenAndCompany(territorials, marcas, typeNPS.detractores,  start,  end, company);
-            pasivos = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBetweenAndCompany(territorials, marcas, typeNPS.pasivos,  start,  end, company);
-            promotores = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBetweenAndCompany(territorials, marcas, typeNPS.promotores,  start,  end, company);
+            detractores = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBetweenAndCompany(territorials, marcas, TypeNPS.DETRACTOR,  start,  end, company);
+            pasivos = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBetweenAndCompany(territorials, marcas, TypeNPS.PASSIVE,  start,  end, company);
+            promotores = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBetweenAndCompany(territorials, marcas, TypeNPS.PROMOTER,  start,  end, company);
 
         }else if  (start != null) {
-            detractores = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateAfterAndCompany(territorials, marcas,   typeNPS.detractores,  start, company);
-            pasivos = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateAfterAndCompany(territorials, marcas,   typeNPS.pasivos,  start, company);
-            promotores = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateAfterAndCompany(territorials, marcas,   typeNPS.promotores,  start, company);
+            detractores = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateAfterAndCompany(territorials, marcas,   TypeNPS.DETRACTOR,  start, company);
+            pasivos = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateAfterAndCompany(territorials, marcas,   TypeNPS.PASSIVE,  start, company);
+            promotores = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateAfterAndCompany(territorials, marcas,   TypeNPS.PROMOTER,  start, company);
         }else if  (end != null) {
-            detractores = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBeforeAndCompany(territorials, marcas,   typeNPS.detractores,  end, company);
-            pasivos = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBeforeAndCompany(territorials, marcas,   typeNPS.pasivos,  end, company);
-            promotores = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBeforeAndCompany(territorials, marcas,   typeNPS.promotores,  end, company);
+            detractores = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBeforeAndCompany(territorials, marcas,   TypeNPS.DETRACTOR,  end, company);
+            pasivos = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBeforeAndCompany(territorials, marcas,   TypeNPS.PASSIVE,  end, company);
+            promotores = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndResponsedateBeforeAndCompany(territorials, marcas,   TypeNPS.PROMOTER,  end, company);
         }else  if (start == null && end == null){
-            detractores = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndCompany(territorials, marcas,     typeNPS.detractores, company);
-            pasivos = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndCompany(territorials, marcas,     typeNPS.pasivos, company);
-            promotores = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndCompany(territorials, marcas,     typeNPS.promotores, company);
+            detractores = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndCompany(territorials, marcas,     TypeNPS.DETRACTOR, company);
+            pasivos = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndCompany(territorials, marcas,     TypeNPS.PASSIVE, company);
+            promotores = satisfactionRepository.findByDivisionTerritorialInAndDivisionServiciosInAndTypeAndCompany(territorials, marcas,     TypeNPS.PROMOTER, company);
         }
 
 
@@ -131,9 +131,9 @@ public class SatisfactionService {
 
 
 
-        result.put( typeNPS.detractores,detractorValue);
-        result.put( typeNPS.pasivos,pasivosValue);
-        result.put( typeNPS.promotores,promotoresValue);
+        result.put( TypeNPS.DETRACTOR,detractorValue);
+        result.put( TypeNPS.PASSIVE,pasivosValue);
+        result.put( TypeNPS.PROMOTER,promotoresValue);
         return result;
 
     }
