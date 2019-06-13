@@ -43,19 +43,26 @@ public class SurveyRest {
         return new UploadFileResponse();
     }
 
- /**Abre la encuesta*/
-    @RequestMapping(value = "/openAndSendToClientSurvey", method = RequestMethod.GET)
+
+   /* @RequestMapping(value = "/openAndSendToClientSurvey", method = RequestMethod.GET)
     public SurveyDTO openAndSendToClientSurvey(@RequestParam String codigoEncuesta, @RequestParam String email, @RequestParam String lang, @RequestParam String codeCompany ) {
         SurveyDTO surveyDTO = sendSurveyService.openAndSendToClientSurvey(codigoEncuesta, email,  lang, codeCompany);
         return  surveyDTO;
-    }
+    }*/
+
+    /**Abre la encuesta*/
     @RequestMapping(value = "/openAndSendToClientSurvey", method = RequestMethod.POST)
     public SurveyDTO openAndSendToClientSurveyPost(@RequestBody Map<String, Object> response) {
         String codigoEncuesta = response.get("codigoEncuesta")!=null?(String)response.get("codigoEncuesta"):null;
         String email = response.get("email")!=null?(String)response.get("email"):null;
         String lang = response.get("lang")!=null?(String)response.get("lang"):null;
         String codeCompany = response.get("codeCompany")!=null?(String)response.get("codeCompany"):null;
-        SurveyDTO surveyDTO =  sendSurveyService.openAndSendToClientSurvey(codigoEncuesta, email,  lang, codeCompany);
+        SurveyDTO surveyDTO = null;
+        if (null != codigoEncuesta){
+            surveyDTO =  sendSurveyService.openAndSendToClientSurvey(codigoEncuesta, email,  lang, codeCompany);
+        }
+
+
         return  surveyDTO;
     }
     @RequestMapping(value = "/existSurveyBd", method = RequestMethod.GET)

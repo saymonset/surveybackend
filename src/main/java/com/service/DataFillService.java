@@ -3,6 +3,7 @@ package com.service;
 import com.enums.RolNombre;
 import com.model.mongo.*;
 import com.repository.mongo.*;
+import com.tools.Constant;
 import com.tools.ToJson;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -53,7 +54,7 @@ public class DataFillService {
     UsuarioService usuarioService;
     // CREATE DATA /////////////////////////////////////////////////////////////
     public void createAll(File file1 ) {
-        usuarioRoot("root@gmail.com");
+      //  usuarioRoot("root@gmail.com");
         cargarCompanyExcel(file1);
 
     }
@@ -66,6 +67,12 @@ public class DataFillService {
                     "classpath:data/datamonitorear/data.xlsx");*/
             //readAllrow("divisiónTerritorial", 8,file1);
             Company company =   readCompany("company", 3,file1);
+
+            File directorio=new File(Constant.JSON_DATA + company.getCode());
+            if (!directorio.exists()){
+                directorio.mkdirs();
+            }
+
             usuario(company.getEmail(), company);
             rol(  company);
             survey(company, file1);

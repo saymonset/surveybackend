@@ -38,8 +38,8 @@ spring.datasource.password=123456
                  #Borra collections
                  db.sendSurvey.drop();
                  db.sendSurvey.find().pretty();
-db.sendSurvey.update({_id: ObjectId("5d00ed69b1bdd407c0f4f641")},{$set:{emailViewed:false}})
-db.sendSurvey.update({_id: ObjectId("5d00ed69b1bdd407c0f4f641")},{$set:{answered:false}})
+db.sendSurvey.update({_id: ObjectId("5d01837cb1bdd457300f87fe")},{$set:{emailViewed:false}})
+db.sendSurvey.update({_id: ObjectId("5d01837cb1bdd457300f87fe")},{$set:{answered:false}})
 
 run with gradle bootrun
 

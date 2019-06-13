@@ -1,6 +1,7 @@
 package com.tools;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.model.mongo.Company;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +9,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,11 +59,14 @@ public class ToJson {
      * @param language el lenguaje en el cual va a venir el archivo
      * @return
      */
-    public Resource getResource(String nameFile, String language){
+    public Resource getResource(String nameFile, String language, Company company){
+
+
+
 
         Resource resource;
-        String path = Constant.JSON_DATA + nameFile  + ".json";
-        String pathLanguage = Constant.JSON_DATA + nameFile + "_" + language + ".json";
+        String path = Constant.JSON_DATA + company.getCode() +"/" + nameFile  + ".json";
+        String pathLanguage = Constant.JSON_DATA + company.getCode() + "/" +  nameFile + "_" + language + ".json";
 
         if(language!=null){
             boolean exist = existResource(pathLanguage);

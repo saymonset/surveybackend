@@ -9,6 +9,7 @@ public class SurveyDTO {
     private String lang;
     private String json;
     private String codeCompany;
+    private String message;
     public String getCodigoEncuesta() {
         return codigoEncuesta;
     }
@@ -48,4 +49,14 @@ public class SurveyDTO {
     public void setCodeCompany(String codeCompany) {
         this.codeCompany = codeCompany;
     }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+
 }

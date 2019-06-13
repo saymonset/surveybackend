@@ -1,5 +1,5 @@
 {
-  "title": "<AQUÍ_PONEMOS_EL_NOMBRE_DE_LA_ENCUESTA_SELECCIONADA>",
+  "title": "SunSol Hoteles",
   "pages": [
     {
       "name": "page1",
@@ -179,7 +179,7 @@
           "name": "detractor",
           "title":"Por favor, indica alguna sugerencia para mejorar día a día nuestro servicio",
           "visible": false,
-          "visibleIf": "{satisfaction} < 3 }"
+          "visibleIf": "{satisfaction} < 3 "
         },
         {
           "type": "comment",

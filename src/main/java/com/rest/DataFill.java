@@ -21,7 +21,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/datafill")
 @CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
-public class CreateDataRest {
+public class DataFill {
     @Inject
     private DataFillService dataFillService;
 
