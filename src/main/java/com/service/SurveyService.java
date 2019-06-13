@@ -127,7 +127,7 @@ public class SurveyService {
                         SendSurvey enc  = null;//mandoEncuestaRepository.findByNode("-1");
                         VelocityContext context = new VelocityContext();
                         context.put("clientName",lastName + ", " + name);
-                        context.put("urlSurvey","http://localhost:8180/survey?codigoEncuesta="+codigoEncuesta+"&email="+email+"&lang=es" + "&codeCompany="+codeCompany);
+                        context.put("urlSurvey",Constant.HTTP_URL + "survey?codigoEncuesta="+codigoEncuesta+"&email="+email+"&lang=es" + "&codeCompany="+codeCompany);
                         if (enc == null ){
 
 
@@ -142,6 +142,7 @@ public class SurveyService {
                                     resent = true;
                                 }
                                 if (resent || sendMail){
+                                    /**Mamda mails*/
                                    emailService.send("ecologicalpaper", email, email,  "ecologicalpaper.com", "template/invitacionSurvey.vsl", context) ;
                                 }
                                 if (sendMail){
@@ -195,7 +196,7 @@ public class SurveyService {
     }
 
 
-    public SurveyDTO searchSurvey(@RequestParam String codigoEncuesta, @RequestParam String email, @RequestParam String lang, String codeCompany) {
+    public SurveyDTO openAndSendToClientSurvey(@RequestParam String codigoEncuesta, @RequestParam String email, @RequestParam String lang, String codeCompany) {
         Company company =   companyRepository.findByCode(codeCompany);
         SurveyDTO surveyDTO = new SurveyDTO();
         Survey enc  = encuestaRepository.
@@ -215,7 +216,7 @@ public class SurveyService {
                 e.printStackTrace();
             }
 
-            /**La encuesta la vio*/
+            /**La encuesta es enviada al browser del cliente y la esta viendo*/
             SendSurvey sendSurvey = mandoEncuestaRepository.findByCodigoEncuestaAndEmailAndAnsweredAndCompany(codigoEncuesta,email,false, company);
             sendSurvey.setEmailViewed(true);
             mandoEncuestaRepository.save(sendSurvey);
@@ -270,37 +271,6 @@ public class SurveyService {
 
         List<Map<String, Object>> simplifySurvey = toolsSurvey.simplifyAll(result, questions);
 
-        /**Averiguamos las alarmas*/
-        List<String> goods = toolsSurvey.getAlerta(simplifySurvey,  TypeNPS.PROMOTER);
-        List<String> pasivos = toolsSurvey.getAlerta(simplifySurvey, TypeNPS.PASSIVE );
-        List<String> detractors = toolsSurvey.getAlerta(simplifySurvey, TypeNPS.DETRACTOR);
-
-        AlertResponse alertResponse = new AlertResponse();
-        alertResponse.setSendSurvey(sendSurvey);
-        alertResponse.setCompany(company);
-        alertResponse.setCodigoEncuesta(sendSurvey.getCodigoEncuesta());
-        alertResponse.setDivisionServicios(survey.getDivisionServicios());
-        alertResponse.setDivisionTerritorial(survey.getDivisionTerritorial());
-        alertResponse.setResponsedate(new Date());
-
-
-        if (goods!=null && goods.size() > 0){
-            alertResponse.setType(TypeNPS.PROMOTER);
-            alertResponse.setComment(goods.get(0));
-            alertService.save(alertResponse);
-        }
-
-        if (pasivos!=null && pasivos.size() > 0){
-            alertResponse.setType(TypeNPS.PASSIVE);
-            alertResponse.setComment(pasivos.get(0));
-            alertService.save(alertResponse);
-        }
-
-        if (detractors!=null && detractors.size() > 0){
-            alertResponse.setType(TypeNPS.DETRACTOR);
-            alertResponse.setComment(detractors.get(0));
-            alertService.save(alertResponse);
-        }
 
 
         /**
@@ -337,6 +307,49 @@ public class SurveyService {
             satisfactionResponse.setResponsedate(new Date());
             satisfactionResponse.setType(toolsSurvey.typeSatisfactionGeneralNps(point));
             satisfactionRepository.save(satisfactionResponse);
+
+            /**Averiguamos las alarmas*/
+            List<String> goods = toolsSurvey.getAlerta(simplifySurvey,  TypeNPS.PROMOTER);
+            List<String> pasivos = toolsSurvey.getAlerta(simplifySurvey, TypeNPS.PASSIVE );
+            List<String> detractors = toolsSurvey.getAlerta(simplifySurvey, TypeNPS.DETRACTOR);
+
+            AlertResponse alertResponse = new AlertResponse();
+            alertResponse.setSendSurvey(sendSurvey);
+            alertResponse.setCompany(company);
+            alertResponse.setCodigoEncuesta(sendSurvey.getCodigoEncuesta());
+            alertResponse.setDivisionServicios(survey.getDivisionServicios());
+            alertResponse.setDivisionTerritorial(survey.getDivisionTerritorial());
+            alertResponse.setResponsedate(new Date());
+
+
+            if (goods!=null && goods.size() > 0){
+                if (!satisfactionResponse.getType().equalsIgnoreCase(TypeNPS.PROMOTER)){
+                    logger.error("El tipo de satisfaccion general no coincide con la encuesta JSON");
+                }
+                alertResponse.setType(satisfactionResponse.getType());
+                alertResponse.setComment(goods.get(0));
+                alertService.save(alertResponse);
+            }
+
+            if (pasivos!=null && pasivos.size() > 0){
+                if (!satisfactionResponse.getType().equalsIgnoreCase(TypeNPS.PASSIVE)){
+                    logger.error("El tipo de satisfaccion general no coincide con la encuesta JSON");
+                }
+                alertResponse.setType(satisfactionResponse.getType());
+                alertResponse.setComment(pasivos.get(0));
+                alertService.save(alertResponse);
+            }
+
+            if (detractors!=null && detractors.size() > 0){
+                if (!satisfactionResponse.getType().equalsIgnoreCase(TypeNPS.DETRACTOR)){
+                    logger.error("El tipo de satisfaccion general no coincide con la encuesta JSON");
+                }
+                alertResponse.setType(satisfactionResponse.getType());
+                alertResponse.setComment(detractors.get(0));
+                alertService.save(alertResponse);
+            }
+
+
         }
 
         NetPromoterScore netPromoterScore = new NetPromoterScore();

@@ -1,5 +1,5 @@
 {
-
+  "title": "<AQUÍ_PONEMOS_EL_NOMBRE_DE_LA_ENCUESTA_SELECCIONADA>",
   "pages": [
     {
       "name": "page1",
@@ -174,32 +174,32 @@
         {
           "type": "comment",
           "observer" :"satisfaction",
-          "alarma": "alarma_bad",
+          "alarma": "detractor",
           "isRequired": true,
-          "name": "alarma_bad",
+          "name": "detractor",
           "title":"Por favor, indica alguna sugerencia para mejorar día a día nuestro servicio",
           "visible": false,
-          "visibleIf": "{satisfaction}=1 or {satisfaction}=2 "
+          "visibleIf": "{satisfaction} < 3 }"
         },
         {
           "type": "comment",
           "observer" :"satisfaction",
-          "alarma": "alarma_none",
-          "name": "alarma_none",
+          "alarma": "passive",
+          "name": "passive",
           "title":"Por favor, nos indica cualquier apreciación y/o sugerencia ",
           "visible": false,
-          "visibleIf": "{satisfaction}=3"
+          "visibleIf": "{satisfaction}=3 or {satisfaction}=4"
         },
 
 
         {
           "type": "comment",
           "observer" :"satisfaction",
-          "alarma": "alarma_good",
-          "name": "alarma_good",
+          "alarma": "promoter",
+          "name": "promoter",
           "title":"Por favor, indica cuál fue la experiencia",
           "visible": false,
-          "visibleIf": "{satisfaction}=4 or {satisfaction}=5 "
+          "visibleIf": "{satisfaction}=5 "
         },
         {
           "type": "rating",

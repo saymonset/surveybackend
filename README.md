@@ -29,7 +29,6 @@ spring.datasource.password=123456
   mongod --config C:\opt\mongodb\mongo.config
   
   El archivo mongo.config tiene esta instruccion
-  
               #store data here
               dbpath=C:\opt\mongodb\data
                 #db.dropDatabase();
@@ -37,8 +36,10 @@ spring.datasource.password=123456
                  #use nameDb;
                  #show collections
                  #Borra collections
-                 db.userMongo.drop();
-                 db.userMongo.find().pretty();
+                 db.sendSurvey.drop();
+                 db.sendSurvey.find().pretty();
+db.sendSurvey.update({_id: ObjectId("5d00ed69b1bdd407c0f4f641")},{$set:{emailViewed:false}})
+db.sendSurvey.update({_id: ObjectId("5d00ed69b1bdd407c0f4f641")},{$set:{answered:false}})
 
 run with gradle bootrun
 

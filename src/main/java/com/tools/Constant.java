@@ -26,6 +26,8 @@ public interface Constant {
     String PASIVO_COLOR = "#f6ed16";
     String DETRACTOR_COLOR = "#e7300f";
 
+    String HTTP_URL = "http://localhost:8180/";
+
  /*   String ALARMA_GOOD = "alarma_good";
     String ALARMA_PASIVO = "alarma_none";
     String ALARMA_DETRACTOR = "alarma_bad";*/

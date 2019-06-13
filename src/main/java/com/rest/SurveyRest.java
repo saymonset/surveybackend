@@ -28,6 +28,7 @@ public class SurveyRest {
     @Inject
     private SurveyService sendSurveyService;
 
+    /**Envia por mail la encuesta*/
     @PostMapping("/send")
     public UploadFileResponse sendSurvey(@RequestParam("file") MultipartFile file, @RequestParam("codeCompany") String codeCompany) {
 
@@ -42,19 +43,28 @@ public class SurveyRest {
         return new UploadFileResponse();
     }
 
-
-    @RequestMapping(value = "/searchSurvey", method = RequestMethod.GET)
-    public SurveyDTO searchSurvey(@RequestParam String codigoEncuesta, @RequestParam String email, @RequestParam String lang,@RequestParam String codeCompany ) {
-        SurveyDTO surveyDTO = sendSurveyService.searchSurvey(codigoEncuesta, email,  lang, codeCompany);
+ /**Abre la encuesta*/
+    @RequestMapping(value = "/openAndSendToClientSurvey", method = RequestMethod.GET)
+    public SurveyDTO openAndSendToClientSurvey(@RequestParam String codigoEncuesta, @RequestParam String email, @RequestParam String lang, @RequestParam String codeCompany ) {
+        SurveyDTO surveyDTO = sendSurveyService.openAndSendToClientSurvey(codigoEncuesta, email,  lang, codeCompany);
         return  surveyDTO;
     }
-
+    @RequestMapping(value = "/openAndSendToClientSurvey", method = RequestMethod.POST)
+    public SurveyDTO openAndSendToClientSurveyPost(@RequestBody Map<String, Object> response) {
+        String codigoEncuesta = response.get("codigoEncuesta")!=null?(String)response.get("codigoEncuesta"):null;
+        String email = response.get("email")!=null?(String)response.get("email"):null;
+        String lang = response.get("lang")!=null?(String)response.get("lang"):null;
+        String codeCompany = response.get("codeCompany")!=null?(String)response.get("codeCompany"):null;
+        SurveyDTO surveyDTO =  sendSurveyService.openAndSendToClientSurvey(codigoEncuesta, email,  lang, codeCompany);
+        return  surveyDTO;
+    }
     @RequestMapping(value = "/existSurveyBd", method = RequestMethod.GET)
     public Boolean existSurveyBd(@RequestParam String codeCompany ) {
         boolean result = sendSurveyService.findByCompany(codeCompany );
         return result;
     }
 
+    /**Contesta la encuesta*/
     @RequestMapping(value = "/sent/result",method = RequestMethod.POST)
     public ResponseEntity<?> procesar(@RequestBody Map<String, Object> response) {
 

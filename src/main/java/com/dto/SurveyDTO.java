@@ -8,7 +8,7 @@ public class SurveyDTO {
     private String email;
     private String lang;
     private String json;
-
+    private String codeCompany;
     public String getCodigoEncuesta() {
         return codigoEncuesta;
     }
@@ -39,5 +39,13 @@ public class SurveyDTO {
 
     public void setJson(String json) {
         this.json = json;
+    }
+
+    public String getCodeCompany() {
+        return codeCompany;
+    }
+
+    public void setCodeCompany(String codeCompany) {
+        this.codeCompany = codeCompany;
     }
 }
